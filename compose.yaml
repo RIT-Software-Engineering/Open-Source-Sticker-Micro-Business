@@ -5,6 +5,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+      
+  database:
+    image: mysql:8.4
+    env_file: .env
+    volumes:
+      - mysql_data:/var/lib/mysql
 
   frontend:
     build:
@@ -14,3 +20,6 @@ services:
       - "5173:5173"
     depends_on:
       - backend
+      
+volumes:
+  mysql_data:
