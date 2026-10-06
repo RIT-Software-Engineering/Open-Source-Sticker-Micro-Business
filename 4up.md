@@ -15,6 +15,11 @@ Each week a new 4-Up will be appeneded to the top of the section below.
 
 ---
 
+| **9/28/2026-10/4/2026** | |
+| --- | --- |
+| **Progress** <ul><li>Introduced Discovery tickets in the new GitHub board. Discovery tickets aim at uncovering knowledge for implementation tickets.</li><li>Established a plan for this and the following sprint. The work will be Discovery-driven to uncover the functional responsibilities of our system and the navigation of our UI.</li><li>Established frontend and backend teams to work Discovery tickets for each in parallel.</li></ul> | **Risks** <ul><li>None</li></ul> |
+| **Plans** <ul><li>Frontend team working on mapping UI flows for core user flows.</li><li>Backend team working on mapping data flows for core user flows.</li><li>First team sync-up set for Thursday, 10/8/2026.</li><li>End of Sprint 1 on Thursday, 10/15/2026.</li></ul> | **Needs** <ul><li>None</li></ul> |
+
 | **9/23/2026-9/27/2026** | |
 | --- | --- |
 | **Progress** <ul><li>Decided on the organization of the project Google Drive.</li><li>Created documentation templates for use throughout the project.<ul><li>Agreed on the initial set of documents and subsections we will provide to end-users.</li><li>Agreed on the template that will be used for sprint retrospectives.</li><li>Agreed on the template that will be used to record project metrics.</li></ul></li><li>Agreed on the testing infrastructure for the backend.<ul><li>Decided to defer selection of frontend testing infrastructure until UI development is further underway.</li></ul></li><li>Reviewed how accessibility will be evaluated throughout the project.</li><li>Uploaded Git Standards and Java Standards documentation to GitHub in markdown syntax.</li></ul> | **Risks** <ul><li>Heavy exam week for our team members</li></ul> |
