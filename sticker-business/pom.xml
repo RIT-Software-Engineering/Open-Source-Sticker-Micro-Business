@@ -58,7 +58,7 @@
         <dependency>
             <groupId>org.jspecify</groupId>
             <artifactId>jspecify</artifactId>
-            <!-- <version>${jspecify.version}</version> -->
+            <version>${jspecify.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -76,17 +76,21 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.14.1</version>
                 <configuration>
                     <release>${java.version}</release>
                     <parameters>true</parameters>
                     <compilerArgs>
                         <arg>-XDcompilePolicy=simple</arg>
-                        <arg>-Xplugin:ErrorProne
-            -Xep:NullAway:ERROR
-            -XepOpt:NullAway:AnnotatedPackages=gold_star</arg>
                         <arg>--should-stop=ifError=FLOW</arg>
+                        <arg>
+                            -Xplugin:ErrorProne
+                            -Xep:NullAway:ERROR
+                            -XepOpt:NullAway:AnnotatedPackages=gold_star
+                            -XepOpt:NullAway:JSpecifyMode=true
+                        </arg>
                     </compilerArgs>
                     <annotationProcessorPaths>
                         <path>
@@ -107,20 +111,21 @@
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
                 <version>2.43.0</version>
+
                 <configuration>
                     <java>
                         <googleJavaFormat>
-                            <version>1.30.0</version>                     
-                            <style>GOOGLE</style>                      
+                            <version>1.30.0</version>
+                            <style>GOOGLE</style>
                             <reflowLongStrings>true</reflowLongStrings>
-                            <formatJavadoc>true</formatJavadoc>       
+                            <formatJavadoc>true</formatJavadoc>
                             <reorderImports>true</reorderImports>
                         </googleJavaFormat>
                     </java>
                 </configuration>
+
                 <executions>
                     <execution>
-                        <!-- Break build if anyone forgets to format -->
                         <goals>
                             <goal>check</goal>
                         </goals>
