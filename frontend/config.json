@@ -1,0 +1,18 @@
+{
+    "splash": "home",
+    "colors": {
+        "light": {
+            "back": "#ffffff",
+            "accent": "#c0c0c0",
+            "text": "#000000"
+        },
+        "dark": {
+            "back": "#505050",
+            "accent": "#c0c0c0",
+            "text": "#ffffff"
+        },
+        "primary": "#217537",
+        "secondary": "#32a852",
+        "placeholder": "#80808080"
+    }
+}
