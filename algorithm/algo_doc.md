@@ -76,9 +76,9 @@ Continue for all of those position, then consider rotations of the shape.
 
 A simple algorithm prefers lowest x, then lowest y, cram it all in the corner. However, I also want to consider going for the most square space.
 O O X X		feels more helpful than		O O X X
-O O X X							O O O X
-O O O O 							O O O X 
-O O O O							O O O X
+O O X X							        O O O X
+O O O O 							    O O O X 
+O O O O							        O O O X
 
 Because it can fit a bigger sticker in that space. (Want to figure this out, what im working on currently.)
 
