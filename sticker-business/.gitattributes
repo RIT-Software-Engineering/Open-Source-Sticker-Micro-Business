@@ -1,2 +1,5 @@
 /mvnw text eol=lf
+*.java text eol=lf
+
+# only use CRLF line endings on windows command files
 *.cmd text eol=crlf
