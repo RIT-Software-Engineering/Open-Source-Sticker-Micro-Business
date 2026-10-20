@@ -26,7 +26,7 @@ def test_stickers_can_have_independent_tag_lists():
     first = Sticker(
         id="sticker-a",
         name="Sticker A",
-        size = 10.0
+        size = 10.0,
         description = "First sticker.",
         tags = ["test"],
         category = "Tests",
@@ -37,7 +37,7 @@ def test_stickers_can_have_independent_tag_lists():
     second = Sticker(
         id="sticker-b",
         name="Sticker B",
-        size = 20.0
+        size = 20.0,
         description = "Second sticker.",
         tags = ["example"],
         category = "Examples",
