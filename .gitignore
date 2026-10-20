@@ -1,3 +1,8 @@
 .env
 .env.*
 !.env.example
+
+# Share only the team VS Code settings.
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
