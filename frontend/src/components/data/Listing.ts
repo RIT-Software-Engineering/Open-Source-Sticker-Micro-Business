@@ -1,1 +1,1 @@
-export type IListing = unknown;
+export type IListing = {id: unknown};

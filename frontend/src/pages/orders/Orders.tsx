@@ -8,7 +8,7 @@ import Header from "../../components/display/Header";
 const CARD_SIZE = 25;
 
 export default function Orders({nav}: INavigableProps): ReactElement {
-    const orders: IOrder[] = [0, 1, 2];
+    const orders: IOrder[] = [0, 1, 2].map(id => ({id}));
 
     return <div style={{display: "flex", flexDirection: "column", flex: 1, padding: 15}}>
         Orders

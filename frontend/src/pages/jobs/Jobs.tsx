@@ -7,8 +7,8 @@ import JobCard from "./JobCard";
 const CARD_SIZE = 25;
 
 export default function Jobs({nav}: INavigableProps): ReactElement {
-    const currentJobs : IOrder[] = [0, 1, 2];
-    const previousJobs: IOrder[] = [0, 1, 2];
+    const currentJobs : IOrder[] = [0, 1, 2].map(id => ({id}));
+    const previousJobs: IOrder[] = [0, 1, 2].map(id => ({id}));
 
     return <div style={{display: "flex", flexDirection: "column", flex: 1, padding: 15}}>
         Jobs

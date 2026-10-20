@@ -1,1 +1,1 @@
-export type IJob = unknown;
+export type IJob = {id: unknown};

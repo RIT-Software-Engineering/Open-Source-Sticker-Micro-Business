@@ -2,34 +2,38 @@ import { useState } from "react";
 import Listener from "./Listener";
 import { useRerender } from "./Utility";
 
-class Frame {
-    private name: string;
-    public state: Record<string, unknown>;
+class Link {
+    private _path: string[];
+    private _params: Map<string, string>
 
-    constructor(name: string) {
-        this.name = name;
-        this.state = {};
+    constructor(path: string[] = [], params: Map<string, string> = new Map()) {
+        this._path = path;
+        this._params = new Map(params);
     }
 
-    public get Name(): string {
-        return this.name;
+    public get path(): string[] {
+        return [...this._path];
+    }
+
+    public get params(): Map<string, string> {
+        return new Map(this._params)
     }
 }
 
 export default class Navigator extends Listener {
     private head: number;
-    private history: Frame[];
+    private history: Link[];
 
-    constructor(start: string) {
+    constructor(path: string[] = [], params: Map<string, string> = new Map()) {
         super();
 
         this.head = 0;
-        this.history = [new Frame(start)];
+        this.history = [new Link(path, params)];
     }
 
-    public To(page: string): void {
+    public To(path: string[] = [], params: Map<string, string> = new Map()): void {
         this.history = this.history.slice(0, this.head + 1);
-        this.history.push(new Frame(page));
+        this.history.push(new Link(path, params));
         this.head++;
         this.NotifyListeners();
     }
@@ -41,24 +45,12 @@ export default class Navigator extends Listener {
         }
     }
 
-    private get Frame(): Frame {
+    public get current(): Link {
         return this.history[this.head];
-    }
-
-    public get Name(): string {
-        return this.Frame.Name;
-    }
-
-    public get State(): Record<string, unknown> {
-        return this.Frame.state;
-    }
-
-    public set State(value: Record<string, unknown>) {
-        this.Frame.state = value;
     }
 }
 
-export function useNavigator(splash: string): Navigator {
+export function useNavigator(splash: string[]): Navigator {
     const rerender = useRerender();
     const navigator = useState(new Navigator(splash))[0];
 

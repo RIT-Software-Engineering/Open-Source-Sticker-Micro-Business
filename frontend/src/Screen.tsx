@@ -15,8 +15,11 @@ export default function Screen(): ReactElement {
         <Navbar nav={nav}/>
         <div style={{display: "flex", flex: 1}}>
             {(() => {
-                switch(nav.Name) {
-                    case "home"  : /* ===> */ return <Home   nav={nav}/>; /* =X=> */ break;
+                if(nav.current.path.length == 0) {
+                    return <Home nav={nav}/>;
+                }
+
+                switch(nav.current.path[0]) {
                     case "shop"  : /* ===> */ return <Shop   nav={nav}/>; /* =X=> */ break;
                     case "orders": /* ===> */ return <Orders nav={nav}/>; /* =X=> */ break;
                     case "jobs"  : /* ===> */ return <Jobs   nav={nav}/>; /* =X=> */ break;
