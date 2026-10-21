@@ -17,8 +17,8 @@ Each week a new 4-Up will be appeneded to the top of the section below.
 
 | **10/5/2026-10/18/2026** | |
 | --- | --- |
-| **Progress** <ul><li>Completed retrospective</li><li>Completed data model</li><li>Completed initial UML class diagram (with application services)</li><li>Completed initial Entity relationship diagram (ERD)</li><li>More work on wireframes and frontend design (buttons, spacing, color palette)</li><li>Some implementation of wireframes in the code base</li></ul> | **Risks** <ul><li>It's week 9 and we have not begun implementing user stories yet. Plan is to begin user story implementation during this sprint.</li></ul> |
-| **Plans** <ul><li>Implement the initial UML class diagram and ERD in the code base.</li><li>Continue algorithm implementation.</li><li>Continue implementation of wireframes in the code base.</li><li>Begin implementation of user stories in the current sprint (ends on 10/29).</li></ul> | **Needs** <ul><li>None</li></ul> |
+| **Progress** <ul><li>Completed retrospective</li><li>Completed data model</li><li>Completed initial UML class diagram (with application services)</li><li>Completed initial Entity relationship diagram (ERD)</li><li>More work on wireframes and frontend design (buttons, spacing, color palette)</li><li>Some implementation of wireframes in the code base</li></ul> | **Risks** <ul><li>It's week 9 and we do not have a demonstratable product yet.</li></ul> |
+| **Plans** <ul><li>Implement the initial UML class diagram and ERD in the code base.</li><li>Continue algorithm implementation.</li><li>Continue implementation of wireframes in the code base.</li><li>Continue implementation of user stories in the current sprint (ends on 10/29).</li></ul> | **Needs** <ul><li>Is sticker sizing out of scope?</li></ul> |
 
 | **9/28/2026-10/4/2026** | |
 | --- | --- |
