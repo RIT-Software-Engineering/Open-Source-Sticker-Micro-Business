@@ -16,6 +16,24 @@ def _sample_path(path_data,samples_per_curve=12):
         ValueError: If the path is empty, discontinuous, or open.
     """
     path = parse_path(path_data)
+    print(f"Number of segments: {len(path)}")
+    for i, segment in enumerate(path):
+        print(
+            f"Segement {i}: "
+            f"Start = {segment.start}, "
+            f"End={segment.end}" 
+        )
+
+    for i in range(len(path) - 1):
+        current_end = path[i].end
+        next_start = path[i+1].start 
+
+        if abs(current_end - next_start) > 1e-7:
+            print(
+                f"DISCONTINUITY between segments {i} and {i+1}: "
+                f"{current_end} != {next_start}"
+            )
+
 
     if len(path) == 0:
         raise ValueError("Sticker SVG contains an empty path")
@@ -96,13 +114,19 @@ def load_sticker_svg(path:str | Path):
 
             try:
                 points = _sample_path(path_data)
-            except (ValueError, TypeError, ZeroDivisionError):
-                continue
+            except (ValueError, AssertionError) as exc:
+                raise ValueError(
+                    f"Invalid sticker outline in {path}: {exc}"
+                ) from exc
 
-            if points:
-                polygon = Polygon(points)
-                if polygon.is_valid and polygon.area > 0:
-                    polygons.append(polygon)
+            polygon = Polygon(points)
+
+            if not polygon.is_valid or polygon.area <= 0:
+                raise ValueError(
+                    f"Invalid polygon geometry in SVG: {path}"
+                )
+
+            polygons.append(polygon)
 
         elif tag in {"polygon", "polyline"}:
             points_text = element.get("points","")
