@@ -113,7 +113,6 @@
                 <version>2.43.0</version>
 
                 <configuration>
-                    <lineEndings>UNIX</lineEndings>
                     <java>
                         <googleJavaFormat>
                             <version>1.30.0</version>
