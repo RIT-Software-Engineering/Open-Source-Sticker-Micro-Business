@@ -7,7 +7,7 @@ FIXTURES = Path(__file__).parent / "fixtures"
 
 def test_svg_loads_as_one_nonempty_sticker():
     geometry = load_sticker_svg(
-        FIXTURES / "tetrispiecesI.svg"
+        FIXTURES / "tetrispieceI.svg"
     )
 
     assert not geometry.is_empty
@@ -25,7 +25,7 @@ def test_svg_without_usable_geometry_is_rejected(tmp_path):
         encoding="utf-8",
     )
 
-    with pytest.raises(ValueError, match="no usable sticker geometry"):
+    with pytest.raises(ValueError, match="No usable sticker geometry"):
         load_sticker_svg(empty_svg)
 
 def test_missing_svg_file_is_rejected(tmp_path):
