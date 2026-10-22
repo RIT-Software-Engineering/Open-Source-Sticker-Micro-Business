@@ -10,18 +10,34 @@ def _local_tag(element):
     return element.tag.rsplit("}",1)[-1]
 
 def _sample_path(path_data,samples_per_curve=12):
-    """Convert an SVG path into sampled coordinate pairs."""
+    """Convert an SVG path into sampled coordinate pairs.
+    
+    Raises:
+        ValueError: If the path is empty, discontinuous, or open.
+    """
     path = parse_path(path_data)
 
+    if len(path) == 0:
+        raise ValueError("Sticker SVG contains an empty path")
+
+    # Check continuity before isclosed(), which asserts continuity
+    if not path.iscontinuous():
+        raise ValueError(
+            "Sticker SVG path contains disconnecte segments; " 
+            "each sticker must have one continuous outline"
+        )
+
     if not path.isclosed():
-        return None
+        raise ValueError(
+            "Sticker SVG path is open; each sticker must have "
+            "one closed outline"
+        )
     
     points = []
 
     for segment in path:
-        start = segment.start
         if not points:
-            points.append((start.real, start.imag))
+            points.append((segment.start.real, segment.start.imag))
 
         # sampling handles lines and curves with the same interface
         for i in range(1, samples_per_curve+1):
@@ -29,7 +45,7 @@ def _sample_path(path_data,samples_per_curve=12):
             points.append((point.real, point.imag))
 
     if len(points) < 4:
-        return None
+        raise ValueError("Sticker SVG path has too few points")
 
     return points
 
