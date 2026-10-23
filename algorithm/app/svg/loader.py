@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 import xml.etree.ElementTree as ET
 
 from shapely.geometry import Polygon
@@ -9,63 +10,60 @@ def _local_tag(element):
     """Return an SVG element's tag without the XML namespace, for testing/parsing."""
     return element.tag.rsplit("}",1)[-1]
 
-def _sample_path(path_data,samples_per_curve=12):
-    """Convert an SVG path into sampled coordinate pairs.
-    
-    Raises:
-        ValueError: If the path is empty, discontinuous, or open.
-    """
+def _split_subpaths(path_data):
+    """Split SVG path data at moveto commands into seperate subpaths."""
+    # An uppercase or lowercase M starts a subpath
+    # exponents can't be mistaken as commands
+    starts = [
+        match.start()
+        for match in re.finditer(r"[Mm]", path_data)
+    ]
+
+    if not starts:
+        return []
+
+    starts.append(len(path_data))
+
+    return [
+        path_data[starts[i]:starts[i+1]].strip()
+        for i in range(len(starts) - 1)
+        if path_data[starts[i]:starts[i+1]].strip()
+    ]
+
+def _sample_closed_path(path_data, samples_per_curve=12):
+    """Convert one closed psubpath into polygon coordinates"""
     path = parse_path(path_data)
-    print(f"Number of segments: {len(path)}")
-    for i, segment in enumerate(path):
-        print(
-            f"Segement {i}: "
-            f"Start = {segment.start}, "
-            f"End={segment.end}" 
-        )
-
-    for i in range(len(path) - 1):
-        current_end = path[i].end
-        next_start = path[i+1].start 
-
-        if abs(current_end - next_start) > 1e-7:
-            print(
-                f"DISCONTINUITY between segments {i} and {i+1}: "
-                f"{current_end} != {next_start}"
-            )
-
 
     if len(path) == 0:
-        raise ValueError("Sticker SVG contains an empty path")
+        return None
 
-    # Check continuity before isclosed(), which asserts continuity
-    if not path.iscontinuous():
-        raise ValueError(
-            "Sticker SVG path contains disconnecte segments; " 
-            "each sticker must have one continuous outline"
-        )
+    #check continuity
+    if not path.iscontinuous() or not path.isclosed():
+        return None
 
-    if not path.isclosed():
-        raise ValueError(
-            "Sticker SVG path is open; each sticker must have "
-            "one closed outline"
-        )
-    
     points = []
 
     for segment in path:
         if not points:
-            points.append((segment.start.real, segment.start.imag))
+            points.append(
+                (segment.start.real, segment.start.imag)
+            )
 
-        # sampling handles lines and curves with the same interface
         for i in range(1, samples_per_curve+1):
             point = segment.point(i/samples_per_curve)
             points.append((point.real, point.imag))
 
-    if len(points) < 4:
-        raise ValueError("Sticker SVG path has too few points")
+    if len(points < 4):
+        return None
 
-    return points
+    polygon = Polygon(points)
+
+    if polygon.is_empty or not polygon.is_valid or polygon.area <= 0:
+        return None
+
+    return polygon    
+
+
 
 def _parse_points(points_text):
     """Parse the points attribute of an SVG polygon or line."""
@@ -81,71 +79,97 @@ def _parse_points(points_text):
     numbers = [float(value) for value in values]
     return list(zip(numbers[::2], numbers[1::2]))
 
-def load_sticker_svg(path:str | Path):
-    """Load one svg file and return its combined sticker outline.
-    
-    Returns:
-        A Shapely polygon or multipolygon (like a polygon but multi)
-        
-    Raises:
-        FileNotFoundError: If the SVG file doesn't exist.
-        ValueError: If the SVG contains no usable geometry.
-    """
+def _read_polygons(root):
+    """Extract closed polygon geometry from supported SVG elements."""
+    polygons = []
+    for element in root.iter():
+        tag = _local_tag(element)
 
+        if tag == "path":
+            path_data = element.get("d","").strip()
+
+            for subpath_data in _split_subpaths(path_data):
+                try:
+                    polygon = _sample_closed_path(subpath_data)
+                except (ValueError, AssertionError, ZeroDivisionError):
+                    polygon = None
+
+                if polygon is not None:
+                    polygons.append(polygon)
+
+        elif tag in {"polygon", "polyline"}:
+            points = _parse_points(element.get("points", ""))
+
+            if tag == "polyline" and points and points[0] != points[-1]:
+                continue
+
+            if len(points) >= 3:
+                polygon = Polygon(points)
+
+                if polygon.is_valid and polygon.area > 0:
+                    polygons.append(polygon)
+
+    return polygons
+
+def load_sticker_svg(
+    path: str | Path,
+    *,
+    merge_tolerance: float = 0.0,
+):
+    """Load one sticker SVG and return its exterior silhouette.
+
+    Args:
+        path: SVG file path.
+        merge_tolerance: Maximum geometric closing distance, in SVG units.
+            Zero merges touching shapes but does not bridge gaps.
+
+    Returns:
+        A Shapely Polygon representing the sticker's outside outline.
+
+    Raises:
+        FileNotFoundError: If the file does not exist.
+        ValueError: If no usable single sticker outline can be extracted.
+    """
     path = Path(path)
 
     if not path.is_file():
         raise FileNotFoundError(path)
+
+    if merge_tolerance < 0:
+        raise ValueError("merge_tolerance cannot be negative")
 
     try:
         root = ET.parse(path).getroot()
     except ET.ParseError as exc:
         raise ValueError(f"Invalid SVG file: {path}") from exc
 
-    polygons = []
-
-    for element in root.iter():
-        tag = _local_tag(element)
-
-        if tag == "path":
-            path_data = element.get("d", "").strip()
-            if not path_data:
-                continue
-
-            try:
-                points = _sample_path(path_data)
-            except (ValueError, AssertionError) as exc:
-                raise ValueError(
-                    f"Invalid sticker outline in {path}: {exc}"
-                ) from exc
-
-            polygon = Polygon(points)
-
-            if not polygon.is_valid or polygon.area <= 0:
-                raise ValueError(
-                    f"Invalid polygon geometry in SVG: {path}"
-                )
-
-            polygons.append(polygon)
-
-        elif tag in {"polygon", "polyline"}:
-            points_text = element.get("points","")
-            points = _parse_points(points_text)
-
-            if tag == "polyline" and points:
-                if points[0] != points[-1]:
-                    continue
-
-            polygon = Polygon(points)
-            if polygon.is_valid and polygon.area > 0:
-                polygons.append(polygon)
+    polygons = _read_polygons(root)
 
     if not polygons:
-        raise ValueError("No usable sticker geometry")
+        raise ValueError("no usable sticker geometry")
 
     geometry = unary_union(polygons)
 
-    if geometry.is_empty or not geometry.is_valid or geometry.area <= 0:
+    # Close small gaps, then restore the original overall scale as much
+    # as possible. This is a geometric closing operation.
+    if merge_tolerance > 0:
+        geometry = (
+            geometry.buffer(merge_tolerance)
+            .buffer(-merge_tolerance)
+        )
+
+    # The cutter needs one continuous exterior outline.
+    if geometry.geom_type == "MultiPolygon":
+        raise ValueError(
+            "Sticker geometry contains disconnected components. "
+            "Increase merge_tolerance only if the gaps are unintended."
+        )
+
+    if geometry.geom_type != "Polygon" or geometry.is_empty:
         raise ValueError("no usable sticker geometry")
 
-    return geometry
+    if not geometry.is_valid or geometry.area <= 0:
+        raise ValueError("no usable sticker geometry")
+
+    # Return only the exterior silhouette, discarding interior rings.
+    return Polygon(geometry.exterior)
