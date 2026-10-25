@@ -112,3 +112,62 @@ paths:
       summary: Modify an existing category.
 
   /staging-area:
+    get:
+      summary: Get the staging area of the user with the given user ID.
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get.
+  /staging-area/items:
+    post:
+      summary: Add a sticker to the staging area.
+  /staging-area/items/{stickerSelectionId}:
+    put:
+      summary: Change the quantity of stickers in a sticker selection.
+    delete:
+      summary: Delete the sticker selection.
+  /staging-area/generate:
+    post:
+      summary: Generate the sticker sheet preview.
+
+  /cart:
+    get:
+      summary: Get the cart of the user with the given user ID.
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get.
+  /cart/items:
+    post:
+      summary: Add a sticker sheet to the cart.
+  /cart/items/{cartItemId}:
+    put:
+      summary: Change the quantity of stickersheet in a cart item.
+    delete:
+      summary: Delete a cart item.
+  /cart/checkout:
+    post:
+      summary: Checkout the cart.
+
+  /orders:
+    get:
+      summary: Get all the orders of the admin.
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get.
+  /orders/{orderId}:
+    get:
+      summary: Get the order associated with that ID.
+    patch:
+      summary: Update the status of the order.
+
