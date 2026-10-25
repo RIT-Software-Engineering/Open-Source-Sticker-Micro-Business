@@ -13,8 +13,10 @@ RUN sh mvnw -B dependency:go-offline
 
 # Compile the source code
 COPY src/ src/
-# Tests run locally with ./mvnw test or on the CI, NOT in Docker
-RUN sh mvnw -B package -DskipTests
+# Tests and the Spotless format check run locally and in CI, NOT in Docker.
+# (Spotless can't read git's line-ending settings inside the container,
+# so it would wrongly flag CRLF files.)
+RUN sh mvnw -B package -DskipTests -Dspotless.check.skip=true
 
 # STAGE 2: run the jar with JRE
 FROM eclipse-temurin:${JAVA_VERSION}-jre
