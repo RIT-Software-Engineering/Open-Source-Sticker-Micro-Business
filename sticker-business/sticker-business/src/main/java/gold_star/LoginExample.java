@@ -20,7 +20,14 @@ public class LoginExample {
         setPassword();
         System.out.println("Try to log in: ");
         String input = scan.nextLine(); // take input again
-        assertTrue(encoder.matches(input, password));
+        if(encoder.matches(input, password)) {
+            System.out.println("Correct!");
+        } else {
+            System.out.println("Incorrect password");
+        }
+
+        System.out.println("What the database stores:");
+        System.out.println(password);
     }
     
 }
