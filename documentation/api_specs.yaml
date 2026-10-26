@@ -177,7 +177,6 @@ paths:
   /stickers:
     get:
       summary: Returns a list of all stickers the admin uploaded.
-      description: Optional extended description in CommonMark or HTML.
       responses:
         "200":
           description: List of stickers uploaded by the admin.
