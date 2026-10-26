@@ -12,6 +12,17 @@ servers:
 
 components:
   schemas:
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        email:
+          type: string
+        stagingArea:
+          $ref: "#/components/schemas/StagingArea"
+
     Tag:
       type: object
       properties:
@@ -29,6 +40,65 @@ components:
           format: int32
         name:
           type: string
+        stickers:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: "#/components/schemas/Sticker"
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        customerId:
+          type: integer
+          format: int32
+        placementTimestamp:
+          type: string
+          format: date-time
+          description: Order placement time as an RFC 3339 date-time.
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+    
+    OrderStatus:
+      type: string
+      enum:
+        - SUBMITTED
+        - ACCEPTED
+        - DENIED
+        - IN_PROGRESS
+        - PRINTED
+        - SHIPPED
+        - CANCELED
+
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        quantity:
+          type: integer
+          format: int32
+        sheet:
+          $ref: "#/components/schemas/StickerSheet"
+
+    StagingArea:
+      type: object
+      properties:
+        id: 
+          type: integer
+          format: int32
+        selections:
+          type: array
+          items:
+            $ref: "#/components/schemas/StickerSelection"
 
     Sticker:
       type: object
@@ -41,18 +111,22 @@ components:
           type: string
           example: "my sticker"
         designPath:
-          type: java.io.File
+          type: string
           example: "./sticker-library/stickers/mySticker.svg"
+          description: Path or URL used to retrieve the sticker design.
         physicalWidth:
-          type: double
+          type: number
+          format: double
           example: 123.56
           description: Physical width of the stickers in inches.
         physicalHeight:
-          type: double
+          type: number
+          format: double
           example: 123.56
           description: Physical height of the stickers in inches.
         borderThickness:
-          type: double
+          type: number
+          format: double
           example: 123.56
           description: The border thickness (margin) of the sticker.
         tags:
@@ -60,9 +134,44 @@ components:
           items:
             $ref: "#/components/schemas/Tag"
           description: An array of tags associated with the sticker.
-        category:
-          
 
+    StickerSelection:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        sticker:
+          $ref: "#/components/schemas/Sticker"
+        quantity:
+          type: integer
+          format: int32
+          description: The quantity of a single type of sticker in a sticker selection.
+
+    StickerSheet:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        price:
+          type: number
+          format: double
+          description: The price of the sticker sheet in USD.
+        pdfPath:
+          type: string
+          description: The path to the PDF file of the sticker sheet.
+        hpglPath:
+          type: string
+          description: The path to the HPGL file of the sticker sheet.
+        width:
+          type: number
+          format: double
+          description: The width of the sticker sheet in inches.
+        height:
+          type: number
+          format: double
+          description: The height of the sticker sheet in inches.
 
 paths:
   /stickers:
@@ -170,4 +279,3 @@ paths:
       summary: Get the order associated with that ID.
     patch:
       summary: Update the status of the order.
-
