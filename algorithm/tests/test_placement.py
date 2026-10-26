@@ -1,6 +1,7 @@
 import pytest
 from shapely.geometry import box
 from app.geometry.placement import place_sticker, stickers_overlap
+from app.geometry.placement import fits_on_page
 
 def test_placement_moves_sticker_to_requested_position():
     sticker = box(0,0,10,5)
@@ -14,7 +15,7 @@ def test_rotation_preserves_area_and_swaps_bounds_at_90_degrees():
         sticker,
         x=0,
         y=0,
-        rotation_degreese=90,
+        rotation_degrees=90,
     )
 
     min_x,min_y,max_x,max_y = placed.bounds
@@ -37,3 +38,21 @@ def test_seperate_stickers_do_not_overlap():
     first = box(0,0,10,10)
     second = box(20,20,30,30)
     assert not stickers_overlap(first,second)
+
+
+# extra geometry: page boundaries
+def test_sticker_inside_page_fits():
+    sticker = box(10,10,30,20)
+    page = box(0,0,100,100)
+
+    assert fits_on_page(sticker, page)
+
+def test_sticker_outside_page_does_not_fit():
+    sticker = box(90,90,110,110)
+    page = box(0,0,100,100)
+    assert not fits_on_page(sticker,page)
+
+def test_sticker_touching_page_edge_fits():
+    sticker = box(0,0,100,20)
+    page = box(0,0,100,100)
+    assert fits_on_page(sticker, page)
