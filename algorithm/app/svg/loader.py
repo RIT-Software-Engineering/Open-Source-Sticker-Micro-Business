@@ -53,7 +53,7 @@ def _sample_closed_path(path_data, samples_per_curve=12):
             point = segment.point(i/samples_per_curve)
             points.append((point.real, point.imag))
 
-    if len(points < 4):
+    if len(points) < 4:
         return None
 
     polygon = Polygon(points)

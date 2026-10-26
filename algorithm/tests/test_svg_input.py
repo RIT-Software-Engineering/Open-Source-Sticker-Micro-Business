@@ -62,3 +62,17 @@ def test_missing_svg_file_is_rejected(tmp_path):
 
     with pytest.raises(FileNotFoundError):
         load_sticker_svg(missing_svg)
+
+
+def test_svg_loads_as_one_nonempty_sticker():
+    geometry = load_sticker_svg(FIXTURES / "tetrispieceI.svg")
+
+    assert not geometry.is_empty
+    assert geometry.is_valid
+    assert geometry.geom_type == "Polygon"
+    assert geometry.area > 0
+
+    # sticker should just have exterior
+    assert len(geometry.interiors) == 0
+    assert geometry.exterior.is_ring
+    assert geometry.is_simple
