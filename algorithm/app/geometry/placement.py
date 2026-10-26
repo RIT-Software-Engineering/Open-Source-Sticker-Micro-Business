@@ -19,3 +19,9 @@ def place_sticker(geometry, x, y, rotation_degrees=0):
 def stickers_overlap(first,second):
     """Return whether two stickers overlap in their interiors"""
     return first.intersection(second).area >0
+
+# page logic
+def fits_on_page(sticker,page):
+    """Return whether the entire sticker lies inside the page"""
+    return page.covers(sticker)
+
