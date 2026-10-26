@@ -1,4 +1,4 @@
-openapi: 3.0.4
+openapi: 3.1.0
 info:
   title: Sticker Micro-Business API
   description: API Specs for the Sticker Micro-Business application
@@ -7,7 +7,7 @@ info:
 
 servers:
   - url: http://localhost:8080/v1
-    description: Optional server description, e.g. Main (production) server
+    description: Local dev server for the API version 1.
 
 
 components:
@@ -180,21 +180,93 @@ paths:
       description: Optional extended description in CommonMark or HTML.
       responses:
         "200":
-          description: A JSON array of user names
+          description: List of stickers uploaded by the admin.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  type: string
+                  $ref: "#/components/schemas/Sticker"
+              example:
+                - id: 123
+                  name: "my sticker"
+                  designPath: "./sticker-library/stickers/mySticker.svg"
+                  physicalWidth: 3.5
+                  physicalHeight: 2.0
+                  borderThickness: 0.125
+                  tags:
+                    - id: 7
+                      name: "animals"
 
   /stickers/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: ID of the sticker.
+        schema:
+          type: integer
+          format: int32
+        example: 123
     get:
       summary: Returns the sticker associated with that ID.
+      responses:
+        "200":
+          description: The requested sticker.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sticker"
+              example:
+                id: 123
+                name: "my sticker"
+                designPath: "./sticker-library/stickers/mySticker.svg"
+                physicalWidth: 3.5
+                physicalHeight: 2.0
+                borderThickness: 0.125
+                tags:
+                  - id: 7
+                    name: "animals"
     put:
       summary: Modify an existing sticker.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Sticker"
+            example:
+              id: 123
+              name: "my sticker"
+              designPath: "./sticker-library/stickers/mySticker.svg"
+              physicalWidth: 3.5
+              physicalHeight: 2.0
+              borderThickness: 0.125
+              tags:
+                - id: 7
+                  name: "animals"
+      responses:
+        "200":
+          description: The updated sticker.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sticker"
+              example:
+                id: 123
+                name: "my sticker"
+                designPath: "./sticker-library/stickers/mySticker.svg"
+                physicalWidth: 3.5
+                physicalHeight: 2.0
+                borderThickness: 0.125
+                tags:
+                  - id: 7
+                    name: "animals"
     delete:
       summary: Delete an existing sticker.
+      responses:
+        "204":
+          description: Sticker deleted.
 
   /stickers/upload:
     post:
