@@ -22,6 +22,8 @@ components:
           type: string
         stagingArea:
           $ref: "#/components/schemas/StagingArea"
+        cart:
+          $ref: "#/components/schemas/Cart"
 
     Tag:
       type: object
@@ -45,6 +47,29 @@ components:
           uniqueItems: true
           items:
             $ref: "#/components/schemas/Sticker"
+
+    Cart:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        sheets:
+          type: array
+          items:
+            $ref: "#/components/schemas/CartItem"
+
+    CartItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        stickerSheet:
+          $ref: "#/components/schemas/StickerSheet"
+        quantity:
+          type: integer
+          format: int32
 
     Order:
       type: object
