@@ -2,6 +2,8 @@ import pytest
 from shapely.geometry import box
 from app.packing.greedy import pack_stickers
 
+from app.packing.semi_greedy import pack_stickers_semi_greedy
+
 def test_packs_two_stickers_without_overlap():
     stickers = [
         box(0,0,10,10),
@@ -66,3 +68,17 @@ def test_places_large_sticker_before_small_sticker():
     #both should fit, but the large sticker should be placed first at [0][0]
     assert len(placements) == 2
     assert placements[0][0] is large
+
+#purely semi greedy tests
+
+def test_semi_greedy_packs_a_sticker():
+    sticker = box(0,0,5,5)
+    page = box(0,0,10,10)
+
+    placements = pack_stickers_semi_greedy(
+        [sticker], page, seed=42
+    )
+
+    assert len(placements) == 1
+    assert page.covers(placements[0][1])
+
