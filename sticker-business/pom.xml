@@ -61,6 +61,12 @@
 	    </dependency>
 
         <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>1.86</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.jspecify</groupId>
             <artifactId>jspecify</artifactId>
             <version>${jspecify.version}</version>

@@ -23,7 +23,7 @@ public class LoginExample {
     setPassword();
     System.out.println("Try to log in: ");
     String input = scan.nextLine(); // take input again
-    if (encoder.matches(input, password)) {
+    if (encoder.matches(pepper + input, password)) {
       System.out.println("Correct!");
     } else {
       System.out.println("Incorrect password");
