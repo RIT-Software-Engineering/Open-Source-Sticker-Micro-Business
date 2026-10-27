@@ -15,6 +15,21 @@ Each week a new 4-Up will be appeneded to the top of the section below.
 
 ---
 
+| **10/19/2026-10/25/2026** | |
+| --- | --- |
+| **Progress** <ul><li>Merged in our first feature ticket!!!</li><li>Continued frontend implementation.</li><li>Continued work on the 2D shape packing algorithm.</li><li>Began API design.</li><li>Began design on login user flows.</li></ul> | **Risks** <ul><li>Still no demonstratable product.</li></ul> |
+| **Plans** <ul><li>Hold sprint retrospective at the next team meeting on 10/29.</li><li>Review API design at the team meeting.</li><li>Review login flows at the team meeting.</li></ul> | **Needs** <ul><li>Hardware to connect to the pen plotter.</li></ul> |
+
+| **10/5/2026-10/18/2026** | |
+| --- | --- |
+| **Progress** <ul><li>Completed retrospective</li><li>Completed data model</li><li>Completed initial UML class diagram (with application services)</li><li>Completed initial Entity relationship diagram (ERD)</li><li>More work on wireframes and frontend design (buttons, spacing, color palette)</li><li>Some implementation of wireframes in the code base</li></ul> | **Risks** <ul><li>It's week 9 and we do not have a demonstratable product yet.</li></ul> |
+| **Plans** <ul><li>Implement the initial UML class diagram and ERD in the code base.</li><li>Continue algorithm implementation.</li><li>Continue implementation of wireframes in the code base.</li><li>Continue implementation of user stories in the current sprint (ends on 10/29).</li></ul> | **Needs** <ul><li>Is sticker sizing out of scope?</li></ul> |
+
+| **9/28/2026-10/4/2026** | |
+| --- | --- |
+| **Progress** <ul><li>Introduced Discovery tickets in the new GitHub board. Discovery tickets aim at uncovering knowledge for implementation tickets.</li><li>Established a plan for this and the following sprint. The work will be Discovery-driven to uncover the functional responsibilities of our system and the navigation of our UI.</li><li>Established frontend and backend teams to work Discovery tickets for each in parallel.</li></ul> | **Risks** <ul><li>None</li></ul> |
+| **Plans** <ul><li>Frontend team working on mapping UI flows for core user flows.</li><li>Backend team working on mapping data flows for core user flows.</li><li>First team sync-up set for Thursday, 10/8/2026.</li><li>End of Sprint 1 on Thursday, 10/15/2026.</li></ul> | **Needs** <ul><li>None</li></ul> |
+
 | **9/23/2026-9/27/2026** | |
 | --- | --- |
 | **Progress** <ul><li>Decided on the organization of the project Google Drive.</li><li>Created documentation templates for use throughout the project.<ul><li>Agreed on the initial set of documents and subsections we will provide to end-users.</li><li>Agreed on the template that will be used for sprint retrospectives.</li><li>Agreed on the template that will be used to record project metrics.</li></ul></li><li>Agreed on the testing infrastructure for the backend.<ul><li>Decided to defer selection of frontend testing infrastructure until UI development is further underway.</li></ul></li><li>Reviewed how accessibility will be evaluated throughout the project.</li><li>Uploaded Git Standards and Java Standards documentation to GitHub in markdown syntax.</li></ul> | **Risks** <ul><li>Heavy exam week for our team members</li></ul> |
