@@ -159,6 +159,11 @@ components:
           items:
             $ref: "#/components/schemas/Tag"
           description: An array of tags associated with the sticker.
+        displayed:
+          type: boolean
+          default: false
+          example: true
+          description: Whether the sticker is visible in the customer storefront.
 
     StickerSelection:
       type: object
@@ -295,83 +300,585 @@ paths:
   /stickers/upload:
     post:
       summary: Upload a sticker.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: SVG file containing the sticker design.
+                name:
+                  type: string
+                physicalWidth:
+                  type: number
+                  format: double
+                  description: Physical width of the sticker
+                physicalHeight:
+                  type: number
+                  format: double
+                  description: Physical height of the sticker
+                borderThickness:
+                  type: number
+                  format: double
+                  description: Border thickness of the sticker
+                tagIds:
+                  type: array
+                  items:
+                    type: integer
+                    format: int32
+      responses:
+        "201":
+          description: The uploaded sticker.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sticker"
+              example:
+                id: 123
+                name: "my sticker"
+                designPath: "./sticker-library/stickers/mySticker.svg"
+                physicalWidth: 3.5
+                physicalHeight: 2.0
+                borderThickness: 0.125
+                tags:
+                  - id: 7
+                    name: "animals"
+                displayed: false
 
   /stickers-display:
     get:
       summary: Returns the list of stickers viewable by the customers.
+      responses:
+        "200":
+          description: List of stickers viewable by the customers.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Sticker"
+              example:
+                - id: 123
+                  name: "my sticker"
+                  designPath: "./sticker-library/stickers/mySticker.svg"
+                  physicalWidth: 3.5
+                  physicalHeight: 2.0
+                  borderThickness: 0.125
+                  tags:
+                    - id: 7
+                      name: "animals"
+                  displayed: true
 
   /sticker-display/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: ID of the sticker.
+        schema:
+          type: integer
+          format: int32
+        example: 123
     post:
       summary: Make a sticker viewable for the customers.
+      responses:
+        "200":
+          description: This sticker is now viewable by the customers.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sticker"
+              example:
+                id: 123
+                name: "my sticker"
+                designPath: "./sticker-library/stickers/mySticker.svg"
+                physicalWidth: 3.5
+                physicalHeight: 2.0
+                borderThickness: 0.125
+                tags:
+                  - id: 7
+                    name: "animals"
+                displayed: true
 
   /categories:
     get:
       summary: Get all categories
+      responses:
+        "200":
+          description: List of all categories.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+              example:
+                - id: 1
+                  name: "animals"
+                  stickers: []
     post:
       summary: Create a category.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+            example:
+              name: "animals"
+      responses:
+        "201":
+          description: The created category.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+              example:
+                id: 1
+                name: "animals"
+                stickers: []
 
   /categories/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: ID of the category.
+        schema:
+          type: integer
+          format: int32
+        example: 1
     get:
       summary: Get the category associated with that ID.
+      responses:
+        "200":
+          description: The requested category.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+              example:
+                id: 1
+                name: "animals"
+                stickers: []
     put:
       summary: Modify an existing category.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+            example:
+              name: "nature"
+      responses:
+        "200":
+          description: The updated category.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+              example:
+                id: 1
+                name: "nature"
+                stickers: []
 
   /staging-area:
     get:
       summary: Get the staging area of the user with the given user ID.
       parameters:
-        - in: path
+        - in: query
           name: userId
           schema:
             type: integer
+            format: int32
           required: true
           description: Numeric ID of the user to get.
+      responses:
+        "200":
+          description: The requested user's staging area.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StagingArea"
+              example:
+                id: 5
+                selections: []
+                
   /staging-area/items:
     post:
       summary: Add a sticker to the staging area.
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: integer
+            format: int32
+          required: true
+          description: Numeric ID of the user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stickerId:
+                  type: integer
+                  format: int32
+                quantity:
+                  type: integer
+                  format: int32
+            example:
+              stickerId: 123
+              quantity: 2
+      responses:
+        "201":
+          description: The sticker selection added to the staging area.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StickerSelection"
+              example:
+                id: 15
+                sticker:
+                  id: 123
+                  name: "my sticker"
+                  designPath: "./sticker-library/stickers/mySticker.svg"
+                  physicalWidth: 3.5
+                  physicalHeight: 2.0
+                  borderThickness: 0.125
+                  displayed: true
+                  tags:
+                    - id: 7
+                      name: "animals"
+                quantity: 2
+                
   /staging-area/items/{stickerSelectionId}:
+    parameters:
+      - in: path
+        name: stickerSelectionId
+        required: true
+        description: ID of the sticker selection.
+        schema:
+          type: integer
+          format: int32
     put:
       summary: Change the quantity of stickers in a sticker selection.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+                  format: int32
+            example:
+              quantity: 5
+      responses:
+        "200":
+          description: The updated sticker selection.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StickerSelection"
+              example:
+                id: 15
+                sticker:
+                  id: 123
+                  name: "my sticker"
+                  designPath: "./sticker-library/stickers/mySticker.svg"
+                  physicalWidth: 3.5
+                  physicalHeight: 2.0
+                  borderThickness: 0.125
+                  displayed: true
+                  tags:
+                    - id: 7
+                      name: "animals"
+                quantity: 5
     delete:
       summary: Delete the sticker selection.
+      responses:
+        "204":
+          description: Sticker selection deleted.
+
+      
   /staging-area/generate:
     post:
       summary: Generate the sticker sheet preview.
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: integer
+            format: int32
+          required: true
+          description: Numeric ID of the user.
+      responses:
+        "201":
+          description: The generated sticker sheet.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StickerSheet"
+              example:
+                id: 20
+                price: 10.00
+                pdfPath: "./sticker-sheets/20/sheet.pdf"
+                width: 4.0
+                height: 8.0
+
 
   /cart:
     get:
       summary: Get the cart of the user with the given user ID.
       parameters:
-        - in: path
+        - in: query
           name: userId
           schema:
             type: integer
           required: true
           description: Numeric ID of the user to get.
+      responses:
+        "200":
+          description: The requested user's cart.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+              example:
+                id: 8
+                sheets: []
+
   /cart/items:
     post:
       summary: Add a sticker sheet to the cart.
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: integer
+            format: int32
+          required: true
+          description: Numeric ID of the user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stickerSheetId:
+                  type: integer
+                  format: int32
+                quantity:
+                  type: integer
+                  format: int32
+            example:
+              stickerSheetId: 20
+              quantity: 1
+      responses:
+        "201":
+          description: The sticker sheet added to the cart.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CartItem"
+              example:
+                id: 12
+                stickerSheet:
+                  id: 20
+                  price: 10.00
+                  pdfPath: "./sticker-sheets/20/sheet.pdf"
+                  width: 4.0
+                  height: 8.0
+                quantity: 1
+                
   /cart/items/{cartItemId}:
+    parameters:
+    - in: path
+      name: cartItemId
+      required: true
+      description: ID of the cart item.
+      schema:
+        type: integer
+        format: int32
     put:
       summary: Change the quantity of stickersheet in a cart item.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+                  format: int32
+            example:
+              quantity: 3
+      responses:
+        "200":
+          description: The updated cart item.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CartItem"
+              example:
+                id: 12
+                stickerSheet:
+                  id: 20
+                  price: 10.00
+                  pdfPath: "./sticker-sheets/20/sheet.pdf"
+                  width: 4.0
+                  height: 8.0
+                quantity: 3
     delete:
       summary: Delete a cart item.
+      responses:
+        "204":
+          description: Cart item deleted.
+
+
   /cart/checkout:
     post:
       summary: Checkout the cart.
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: integer
+            format: int32
+          required: true
+          description: Numeric ID of the user.
+      responses:
+        "201":
+          description: The order created from the user's cart.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+              example:
+                id: 30
+                customerId: 10
+                placementTimestamp: "2026-10-27T09:00:00Z"
+                status: "SUBMITTED"
+                items:
+                  - id: 31
+                    quantity: 1
+                    sheet:
+                      id: 20
+                      price: 10.00
+                      pdfPath: "./sticker-sheets/20/sheet.pdf"
 
   /orders:
     get:
       summary: Get all the orders of the admin.
       parameters:
-        - in: path
+        - in: query
           name: userId
           schema:
             type: integer
-          required: true
+            format: int32
+          required: false
           description: Numeric ID of the user to get.
+      responses:
+        "200":
+          description: List of orders.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+              example:
+                - id: 30
+                  customerId: 10
+                  placementTimestamp: "2026-10-27T09:00:00Z"
+                  status: "SUBMITTED"
+                  items:
+                    - id: 31
+                      quantity: 1
+                      sheet:
+                        id: 20
+                        price: 10.00
+                        pdfPath: "./sticker-sheets/20/sheet.pdf"
+
   /orders/{orderId}:
+    parameters:
+      - in: path
+        name: orderId
+        required: true
+        description: ID of the order.
+        schema:
+          type: integer
+          format: int32
     get:
       summary: Get the order associated with that ID.
+      responses:
+        "200":
+          description: The requested order.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+              example:
+                id: 30
+                customerId: 10
+                placementTimestamp: "2026-10-27T09:00:00Z"
+                status: "SUBMITTED"
+                items:
+                  - id: 31
+                    quantity: 1
+                    sheet:
+                      id: 20
+                      price: 10.00
+                      pdfPath: "./sticker-sheets/20/sheet.pdf"
+                      width: 4.0
+                      height: 8.0
     patch:
       summary: Update the status of the order.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  $ref: "#/components/schemas/OrderStatus"
+            example:
+              status: "ACCEPTED"
+      responses:
+        "200":
+          description: The updated order.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+              example:
+                id: 30
+                customerId: 10
+                placementTimestamp: "2026-10-27T09:00:00Z"
+                status: "ACCEPTED"
+                items:
+                  - id: 31
+                    quantity: 1
+                    sheet:
+                      id: 20
+                      price: 10.00
+                      pdfPath: "./sticker-sheets/20/sheet.pdf"
+                      width: 4.0
+                      height: 8.0
