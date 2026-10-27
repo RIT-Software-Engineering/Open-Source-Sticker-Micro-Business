@@ -15,6 +15,11 @@ Each week a new 4-Up will be appeneded to the top of the section below.
 
 ---
 
+| **10/19/2026-10/25/2026** | |
+| --- | --- |
+| **Progress** <ul><li>Merged in our first feature ticket!!!</li><li>Continued frontend implementation.</li><li>Continued work on the 2D shape packing algorithm.</li><li>Began API design.</li><li>Began design on login user flows.</li></ul> | **Risks** <ul><li>Still no demonstratable product.</li></ul> |
+| **Plans** <ul><li>Hold sprint retrospective at the next team meeting on 10/29.</li><li>Review API design at the team meeting.</li><li>Review login flows at the team meeting.</li></ul> | **Needs** <ul><li>Hardware to connect to the pen plotter.</li></ul> |
+
 | **10/5/2026-10/18/2026** | |
 | --- | --- |
 | **Progress** <ul><li>Completed retrospective</li><li>Completed data model</li><li>Completed initial UML class diagram (with application services)</li><li>Completed initial Entity relationship diagram (ERD)</li><li>More work on wireframes and frontend design (buttons, spacing, color palette)</li><li>Some implementation of wireframes in the code base</li></ul> | **Risks** <ul><li>It's week 9 and we do not have a demonstratable product yet.</li></ul> |
