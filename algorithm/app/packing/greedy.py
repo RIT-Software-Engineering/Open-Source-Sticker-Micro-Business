@@ -24,6 +24,15 @@ def pack_stickers(stickers,page):
     if step <= 0:
         return placements
 
+    remaining = sorted(
+        stickers,
+        key=lambda s: (
+            (s.bounds[2]-s.bounds[0])
+            * (s.bounds[3] - s.bounds[1])
+        ),
+        reverse= True
+    )
+
     y = min_y
     while y < max_y:
         x = min_x

@@ -53,7 +53,7 @@ def test_rotates_sticker_when_needed():
     sticker = box(0,0,10,5)
     page = box(0,0,5,10)
 
-    placements = pack_stickers([sticker],page)
+    placements = pack_stickers_semi_greedy([sticker],page)
 
     assert len(placements)==1
     assert page.covers(placements[0][1])
@@ -63,7 +63,7 @@ def test_places_large_sticker_before_small_sticker():
     large = box(0,0,8,8)
     page = box(0,0,10,10)
 
-    placements = pack_stickers([small,large], page)
+    placements = pack_stickers_semi_greedy([small,large], page)
 
     #both should fit, but the large sticker should be placed first at [0][0]
     assert len(placements) == 2
