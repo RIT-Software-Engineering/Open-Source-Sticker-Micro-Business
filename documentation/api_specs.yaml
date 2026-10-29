@@ -14,6 +14,15 @@ components:
   schemas:
     Account:
       type: object
+      example:
+        id: 10
+        email: "sam@example.com"
+        stagingArea:
+          id: 5
+          selections: []
+        cart:
+          id: 8
+          sheets: []
       properties:
         id:
           type: integer
@@ -27,6 +36,9 @@ components:
 
     Tag:
       type: object
+      example:
+        id: 7
+        name: "animals"
       properties:
         id:
           type: integer
@@ -36,6 +48,10 @@ components:
 
     Category:
       type: object
+      example:
+        id: 1
+        name: "animals"
+        stickers: []
       properties:
         id:
           type: integer
@@ -50,6 +66,9 @@ components:
 
     Cart:
       type: object
+      example:
+        id: 8
+        sheets: []
       properties:
         id:
           type: integer
@@ -61,6 +80,16 @@ components:
 
     CartItem:
       type: object
+      example:
+        id: 12
+        stickerSheet:
+          id: 20
+          price: 10.0
+          pdfPath: "./sticker-sheets/20/sheet.pdf"
+          hpglPath: "./sticker-sheets/20/sheet.hpgl"
+          width: 4.0
+          height: 8.0
+        quantity: 1
       properties:
         id:
           type: integer
@@ -73,6 +102,21 @@ components:
 
     Order:
       type: object
+      example:
+        id: 30
+        customerId: 10
+        placementTimestamp: "2026-10-27T09:00:00Z"
+        status: "SUBMITTED"
+        items:
+          - id: 31
+            quantity: 1
+            sheet:
+              id: 20
+              price: 10.0
+              pdfPath: "./sticker-sheets/20/sheet.pdf"
+              hpglPath: "./sticker-sheets/20/sheet.hpgl"
+              width: 4.0
+              height: 8.0
       properties:
         id:
           type: integer
@@ -101,9 +145,20 @@ components:
         - PRINTED
         - SHIPPED
         - CANCELED
+      example: "SUBMITTED"
 
     OrderItem:
       type: object
+      example:
+        id: 31
+        quantity: 1
+        sheet:
+          id: 20
+          price: 10.0
+          pdfPath: "./sticker-sheets/20/sheet.pdf"
+          hpglPath: "./sticker-sheets/20/sheet.hpgl"
+          width: 4.0
+          height: 8.0
       properties:
         id:
           type: integer
@@ -116,6 +171,9 @@ components:
 
     StagingArea:
       type: object
+      example:
+        id: 5
+        selections: []
       properties:
         id: 
           type: integer
@@ -167,6 +225,20 @@ components:
 
     StickerSelection:
       type: object
+      example:
+        id: 15
+        sticker:
+          id: 123
+          name: "my sticker"
+          designPath: "./sticker-library/stickers/mySticker.svg"
+          physicalWidth: 3.5
+          physicalHeight: 2.0
+          borderThickness: 0.125
+          displayed: true
+          tags:
+            - id: 7
+              name: "animals"
+        quantity: 2
       properties:
         id:
           type: integer
@@ -180,6 +252,13 @@ components:
 
     StickerSheet:
       type: object
+      example:
+        id: 20
+        price: 10.0
+        pdfPath: "./sticker-sheets/20/sheet.pdf"
+        hpglPath: "./sticker-sheets/20/sheet.hpgl"
+        width: 4.0
+        height: 8.0
       properties:
         id:
           type: integer
@@ -330,6 +409,15 @@ paths:
                   items:
                     type: integer
                     format: int32
+            example:
+              file: "mySticker.svg"
+              name: "my sticker"
+              physicalWidth: 3.5
+              physicalHeight: 2.0
+              borderThickness: 0.125
+              tagIds:
+                - 7
+                - 9
       responses:
         "201":
           description: The uploaded sticker.
@@ -882,3 +970,5 @@ paths:
                       pdfPath: "./sticker-sheets/20/sheet.pdf"
                       width: 4.0
                       height: 8.0
+
+# Copilot generated most of the examples for the endpoints above. The examples are based on the schema definitions provided in the components section.
