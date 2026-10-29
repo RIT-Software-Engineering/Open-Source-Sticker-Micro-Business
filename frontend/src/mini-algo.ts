@@ -74,6 +74,7 @@ function fitTest(
 		return { fits: false, stickersToRemove: [] };
 	}
 
+	//Stuff for seeing what stickers could be removed
 	const excessArea = existingArea + stickerArea - SQUARE_INCHES;
 	if (excessArea > 0) {
 		const candidates = stagingArea.stickers
@@ -91,6 +92,8 @@ function fitTest(
 			const options: StickerSelection[][] = [];
 			const selected: typeof candidates = [];
 
+
+			//cool recursive thing you can do inside of functions
 			function collectOptions(startIndex: number, freedArea: number): void {
 				if (options.length >= MAX_REMOVAL_OPTIONS) {
 					return;
@@ -99,7 +102,7 @@ function fitTest(
 				if (selected.length === selectionCount) {
 					if (freedArea >= excessArea) {
 						options.push(
-							[...selected]
+							[...selected] // shalow copy 
 								.sort((left, right) => left.index - right.index)
 								.map(({ selection }) => selection),
 						);
@@ -131,6 +134,8 @@ function fitTest(
 					selected.pop();
 				}
 			}
+
+
 
 			collectOptions(0, 0);
 			if (options.length > 0) {
