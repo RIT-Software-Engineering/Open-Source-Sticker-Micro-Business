@@ -46,6 +46,18 @@ export const sticker_selection: StickerSelection = {
 	quantity: 1,
 };
 
+/**
+ * Checks whether a sticker selection can be added to the staging area.
+ *
+ * Calculates the total area used by the stickers in the staging area.
+ * Determines if adding the new sticker selection would exceed the staging area's capacity.
+ * If the new selection would exceed the capacity, it identifies combinations of existing selections that could be removed to make room.
+ * Returns a `FitTestResult` object containing whether the new selection fits and the suggested combinations to remove if it doesn't.
+ * STAGING_AREA_CAPACITY, MAX_REMOVAL_OPTIONS, MAX_STICKERS_PER_REMOVAL_OPTION define limits for the function's behavior.
+ *
+ * A result with `fits: false` and non-empty `stickersToRemove` means the new
+ * selection could fit if one of the suggested combinations were removed.
+ */
 export function fitTest(
 	stagingArea: Pick<StagingArea, 'stickers'>,
 	stickerToAdd: StickerSelection | null | undefined,
@@ -63,6 +75,7 @@ export function fitTest(
 		return { fits: false, stickersToRemove: [] };
 	}
 
+	//The hard part
 	const excessArea = existingArea + stickerArea - STAGING_AREA_CAPACITY;
 	if (excessArea > 0) {
 		const candidates = stagingArea.stickers
