@@ -3,8 +3,28 @@ import Button from "./Button";
 import { useColors } from "../../modules/Colors";
 import { useLocation, useNavigate } from "react-router";
 import { useRerender } from "../../modules/Utility";
+import BackgroundClicksScope from "./BackgroundClicks";
 
+/** The state of the button for active tabs */
+const ACTIVE_TAB_BUTTON_STATE = "hovered";
+/** The minimum uncollapsed width of the navbar */
 const COLLAPSE_WIDTH = 500;
+
+/**
+ * Display the tabs the user can select
+ */
+function Tabs(): ReactElement {
+    const location = useLocation();
+    const colors = useColors();
+    const navigate = useNavigate();
+
+    return <>
+        <Button value={location.pathname == "/"       ? ACTIVE_TAB_BUTTON_STATE : undefined} color={colors.neutral} onClick={() => navigate("/"     )}>Home  </Button>
+        <Button value={location.pathname == "/shop"   ? ACTIVE_TAB_BUTTON_STATE : undefined} color={colors.neutral} onClick={() => navigate("shop"  )}>Shop  </Button>
+        <Button value={location.pathname == "/orders" ? ACTIVE_TAB_BUTTON_STATE : undefined} color={colors.neutral} onClick={() => navigate("orders")}>Orders</Button>
+        <Button value={location.pathname == "/jobs"   ? ACTIVE_TAB_BUTTON_STATE : undefined} color={colors.neutral} onClick={() => navigate("jobs"  )}>Jobs  </Button>
+    </>
+}
 
 /**
  * The navbar for the app
@@ -15,12 +35,9 @@ export default function Navbar(): ReactElement {
     const rerender = useRerender("Navbar");
     const colors = useColors();
     const navigator = useNavigate();
-    const location = useLocation();
 
     const widthLog = useRef(window.innerWidth);
     widthLog.current = window.innerWidth;
-
-    const activeTabButtonState = "hovered";
 
     const OnClickHamburger = () => {
         menuOpen.current = !menuOpen.current;
@@ -51,7 +68,7 @@ export default function Navbar(): ReactElement {
         }
     }, []);
 
-    return <div style={{display: "flex", flex: 0, flexDirection: "column", backgroundColor: colors.neutral, borderBottomStyle: "solid", borderBottomWidth: 1, padding: 10}}>
+    return <BackgroundClicksScope style={{display: "flex", flex: 0, flexDirection: "column", backgroundColor: colors.neutral, borderBottomStyle: "solid", borderBottomWidth: 1, padding: 10}} onBackgroundClick={OnClickHamburger}>
         <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
             {/* Don't question the hamburger 🍔 */}
             {collapsed ? <Button style={{backgroundColor: "#00000000"}} onClick={OnClickHamburger}>
@@ -67,10 +84,7 @@ export default function Navbar(): ReactElement {
             {collapsed
                 ? undefined 
                 : <div style={{display: "flex", flexDirection: "row"}}>
-                    <Button value={location.pathname == "/"       ? activeTabButtonState : undefined} color={colors.neutral} onClick={() => navigator("/"     )}>Home  </Button>
-                    <Button value={location.pathname == "/shop"   ? activeTabButtonState : undefined} color={colors.neutral} onClick={() => navigator("shop"  )}>Shop  </Button>
-                    <Button value={location.pathname == "/orders" ? activeTabButtonState : undefined} color={colors.neutral} onClick={() => navigator("orders")}>Orders</Button>
-                    <Button value={location.pathname == "/jobs"   ? activeTabButtonState : undefined} color={colors.neutral} onClick={() => navigator("jobs"  )}>Jobs  </Button>
+                    <Tabs/>
                 </div>
             }
 
@@ -83,14 +97,15 @@ export default function Navbar(): ReactElement {
                 </Button>
             </div>
         </div>
+
+        {/* The collapsed tabs */}
         {collapsed && menuOpen.current
-            ? <div style={{display: "flex", flexDirection: "column"}}>
-                <Button value={location.pathname == "/"       ? activeTabButtonState : undefined} color={colors.neutral} onClick={() => navigator("/"     )}>Home  </Button>
-                <Button value={location.pathname == "/shop"   ? activeTabButtonState : undefined} color={colors.neutral} onClick={() => navigator("shop"  )}>Shop  </Button>
-                <Button value={location.pathname == "/orders" ? activeTabButtonState : undefined} color={colors.neutral} onClick={() => navigator("orders")}>Orders</Button>
-                <Button value={location.pathname == "/jobs"   ? activeTabButtonState : undefined} color={colors.neutral} onClick={() => navigator("jobs"  )}>Jobs  </Button>
+            ? <div style={{position: "relative", margin: "0 -10px"}}>
+                <div style={{position: "absolute", right: 0, left: 0, display: "flex", flexDirection: "column", padding: "5px 10px", backgroundColor: colors.neutral, borderTopStyle: "solid", borderBottomStyle: "solid", borderWidth: 1}}>
+                    <Tabs/>
+                </div>
             </div>
             : undefined
         }
-    </div>
+    </BackgroundClicksScope>
 }

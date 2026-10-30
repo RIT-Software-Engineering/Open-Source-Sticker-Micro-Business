@@ -49,7 +49,7 @@ type _ICustomButtonProps = {
 
 /** Props for the button component */
 export type IButtonProps = 
-    Exclude<ButtonHTMLAttributes<HTMLButtonElement>, keyof _ICustomButtonProps> &
+    Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof _ICustomButtonProps> &
     _ICustomButtonProps;
 
 /** A wrapped button component */

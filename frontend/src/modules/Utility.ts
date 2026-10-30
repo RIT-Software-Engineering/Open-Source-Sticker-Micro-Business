@@ -8,6 +8,7 @@ import type { StateRef } from "../Types";
  * @returns A rerenderer, pass why you are calling it
  */
 export function useRerender(name: string): StateRef<string> {
+    name; // Get rid of the warning
     const handle = useReducer(_ => Math.random(), 0)[1];
     
     return (_reason: string) => {

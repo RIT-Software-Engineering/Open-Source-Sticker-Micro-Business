@@ -11,6 +11,7 @@ import Listing from './pages/shop/Listing';
 import Login from './pages/login/Login';
 import Forgot from './pages/login/Forgot';
 import Reset from './pages/login/Reset';
+import BackgroundClicksScope, { BackgroundClicksProvider } from './components/control/BackgroundClicks';
 
 export default function App(): ReactElement {
     const location = useLocation();
@@ -20,7 +21,7 @@ export default function App(): ReactElement {
     let showNav = true;
     if(location.pathname.startsWith("/login")) showNav = false;
 
-    return <div style={{display: "flex", flex: 1, backgroundColor: background, color: colors.TextColor(background), fontFamily: "Inter", flexDirection: "column"}}>
+    return <BackgroundClicksProvider style={{display: "flex", flex: 1, backgroundColor: background, color: colors.TextColor(background), fontFamily: "Inter", flexDirection: "column"}}>
         {showNav ? <Navbar/> : <></>}
         <div style={{padding: 10, display: "flex", flex: 1}}>
             <Routes>
@@ -38,5 +39,5 @@ export default function App(): ReactElement {
                 </Route>
             </Routes>
         </div>
-    </div>
+    </BackgroundClicksProvider>
 }

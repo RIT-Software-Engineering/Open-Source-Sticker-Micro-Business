@@ -7,7 +7,7 @@ type _ICustomInputProps = {
 
 /** Props for the input component */
 export type IInputProps = 
-    Exclude<InputHTMLAttributes<HTMLInputElement>, keyof _ICustomInputProps> &
+    Omit<InputHTMLAttributes<HTMLInputElement>, keyof _ICustomInputProps> &
     _ICustomInputProps;
 
 export default function Input(props: IInputProps): ReactElement {
