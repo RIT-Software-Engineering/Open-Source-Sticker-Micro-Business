@@ -1,6 +1,9 @@
 import type { ReactElement } from "react";
 import { useColors } from "../../modules/Colors";
 
+/**
+ * Stub out temporary content
+ */
 export default function Temp({name}: {name: string}): ReactElement {
     const colors = useColors();
 

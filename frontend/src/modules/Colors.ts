@@ -1,14 +1,32 @@
 import { createContext, useContext, type Context, type CSSProperties } from "react";
 import tinycolor2 from "tinycolor2";
 
+/**
+ * This is pretty complicated, but it seems like the only way to get the styles from the spec  
+ * It doesn't seem to be doable from just CSS
+ * Pretty easy to use once you get used to it
+ */
+
+/** A way to look up palattes by color */
 const palatteLookup: Map<string, Palatte> = new Map();
 
+/**
+ * A color palatte
+ */
 class Palatte {
+    /** The palatte definition (colors in it) */
     private def: string[];
+    /** Backmap for color indices */
     private lookup: Map<string, number>;
+    /** The root color of the palatte */
     private _root: number;
 
+    /**
+     * @param def The colors in the palatte
+     * @param root The root color of the palatte
+     */
     constructor(def: string[], root: number) {
+        // Update the palatte by color lookup table
         for(const color of def) {
             palatteLookup.set(color, this);
         }
@@ -16,27 +34,46 @@ class Palatte {
         this._root = root;
         this.def = def;
         this.lookup = new Map();
+
+        // Build the color index backmap
         for(let i = 0; i < def.length; i++) {
             this.lookup.set(def[i], i);
         }
     }
 
+    /**
+     * The root color of the palatte
+     */
     public get root(): string {
         return this.def[this._root];
     }
 
+    /**
+     * Returns the lightest color of the palatte
+     * @param _value For consistency
+     */
     public Lightest(_value: string | undefined = undefined): string {
         return this.def[0];
     }
 
-    public Lighter(value: string | undefined = undefined): string {
+    /**
+     * Returns a lighter color in the palatte than the one specified
+     * @param value [=root] The color to start at
+     * @param factor [=0.5] About how much lighter should the result be from the source
+     * @returns The lighter color
+     */
+    public Lighter(value: string | undefined = undefined, factor: number = 0.5): string {
         if(value == null) value = this.root;
         const index = this.lookup.get(value);
         if(index == null) return value;
         if(index === 0) return value;
-        return this.def[Math.round(index / 2)];
+        return this.def[Math.round(index * factor)];
     }
 
+    /**
+     * Returns the next lightest color in the palatte from the one specified
+     * @param value [=root] The color to start at
+     */
     public Light(value: string | undefined = undefined): string {
         if(value == null) value = this.root;
         const index = this.lookup.get(value);
@@ -45,10 +82,17 @@ class Palatte {
         return this.def[index - 1];
     }
 
+    /**
+     * Is some color present in the palatte?
+     */
     public Has(value: string): boolean {
         return this.lookup.has(value);
     }
 
+    /**
+     * Returns the next darkest color in the palatte from the one specified
+     * @param value [=root] The color to start at
+     */
     public Dark(value: string | undefined = undefined): string {
         if(value == null) value = this.root;
         const index = this.lookup.get(value);
@@ -57,14 +101,24 @@ class Palatte {
         return this.def[index + 1];
     }
 
-    public Darker(value: string | undefined = undefined): string {
+    /**
+     * Returns a darker color in the palatte than the one specified
+     * @param value [=root] The color to start at
+     * @param factor [=0.5] About how much darker should the result be from the source
+     * @returns The darker color
+     */
+    public Darker(value: string | undefined = undefined, factor: number = 0.5): string {
         if(value == null) value = this.root;
         const index = this.lookup.get(value);
         if(index == null) return value;
         if(index === this.def.length - 1) return value;
-        return this.def[index + Math.round((this.def.length - 1 - index) / 2)];
+        return this.def[index + Math.round((this.def.length - 1 - index) * factor)];
     }
 
+    /**
+     * Returns the darkest color of the palatte
+     * @param _value For consistency
+     */
     public Darkest(_value: string | undefined = undefined): string {
         return this.def[this.def.length - 1];
     }
@@ -120,14 +174,6 @@ const errorPalatte = new Palatte([
     "#943524"
 ], 4);
 
-const palattes = Object.freeze({
-    primaryPalatte,
-    secondaryPalatte,
-    neutralPalatte,
-    successPalatte,
-    errorPalatte
-});
-
 function FindPalatte(value: string): Palatte {
     const palatte = palatteLookup.get(value);
     return palatte ?? neutralPalatte;
@@ -141,13 +187,49 @@ function TextColor(source: CSSProperties["color"]): CSSProperties["color"] {
     return dark;
 }
 
-const colors = Object.freeze({
-    ...palattes,
-    primary: primaryPalatte.root,
+interface IColors {
+    /** Primary colors for the application */
+    primaryPalatte  : Palatte,
+    /** Secondary colors for the application */
+    secondaryPalatte: Palatte,
+    /** Neutral colors (greys) */
+    neutralPalatte  : Palatte,
+    /** Success colors (greens) */
+    successPalatte  : Palatte,
+    /** Error colors (reds) */
+    errorPalatte    : Palatte,
+    /** The primary color for the application */
+    primary         : Palatte["root"],
+    /** The secondary color for the application */
+    secondary       : Palatte["root"],
+    /** A neutral grey */
+    neutral         : Palatte["root"],
+    /** The success color */
+    success         : Palatte["root"],
+    /** The error color */
+    error           : Palatte["root"],
+    /** White */
+    light           : typeof light,
+    /** Black */
+    dark            : typeof dark,
+    /** Find a palatte given a color */
+    FindPalatte     : typeof FindPalatte,
+    /** Find constrasting text color given a background color */
+    TextColor       : typeof TextColor
+}
+
+/** The public colors object */
+const colors: Readonly<IColors> = Object.freeze({
+    primaryPalatte,
+    secondaryPalatte,
+    neutralPalatte,
+    successPalatte,
+    errorPalatte,
+    primary  : primaryPalatte.root,
     secondary: secondaryPalatte.root,
-    neutral: neutralPalatte.root,
-    success: successPalatte.root,
-    error: errorPalatte.root,
+    neutral  : neutralPalatte.root,
+    success  : successPalatte.root,
+    error    : errorPalatte.root,
     light,
     dark,
     FindPalatte,
