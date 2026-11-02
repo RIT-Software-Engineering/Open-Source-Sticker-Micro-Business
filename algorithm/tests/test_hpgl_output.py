@@ -1,5 +1,5 @@
 from shapely.geometry import box
-from app.hptgl.output import save_hpgl
+from app.hpgl.output import save_hpgl
 
 def test_writes_a_closed_sticker_outline(tmp_path):
     sticker = box(0,0,10,5)
@@ -28,7 +28,7 @@ def test_scales_coordinates(tmp_path):
     save_hpgl(
         [(sticker,sticker)],
         output,
-        unites_per_unit = 10,
+        units_per_unit = 10,
     )
 
     content = output.read_text()
@@ -43,13 +43,13 @@ def test_applies_coordinate_offset(tmp_path):
     save_hpgl(
         [(sticker,sticker)],
         output,
-        units_per_unit = 1
+        units_per_unit = 1,
         offset = (20,30),
     )
 
     content = output.read_text()
 
-    assert "PU30.30;" in content
+    assert "PU30,30;" in content
     assert "PD30,35,20,35,20,30;" in content
 
 def test_lifts_pen_between_stickers(tmp_path):
