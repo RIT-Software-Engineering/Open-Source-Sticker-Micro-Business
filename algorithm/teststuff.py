@@ -6,7 +6,7 @@ from app.packing.semi_greedy import pack_stickers_semi_greedy
 from app.visualization.preview import save_packing_preview
 
 fixtures = Path("tests/fixtures")
-page = box(0, 0, 250, 180)
+page = box(0, 0, 500, 500)
 
 
 stickers = []
