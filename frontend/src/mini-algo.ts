@@ -133,12 +133,12 @@ export function fitTest(
 				}
 
 				
+				// Make sure that the amount of area that could be freed by the remaining stickers is enough to accommodate the excessArea
 				let maximumRemainingArea = 0;
 				for (let index = startIndex; index < startIndex + remainingCount; index++) {
 					maximumRemainingArea += candidates[index].area;
 				}
-				
-				if (freedArea + maximumRemainingArea < excessArea) {
+				if (freedArea + maximumRemainingArea < excessArea) { // if not end
 					return;
 				}
 
