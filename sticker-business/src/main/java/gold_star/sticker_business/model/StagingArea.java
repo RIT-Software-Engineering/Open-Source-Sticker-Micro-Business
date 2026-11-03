@@ -1,6 +1,7 @@
 package gold_star.sticker_business.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class StagingArea {
 
@@ -24,5 +25,35 @@ public class StagingArea {
 
   public List<StickerSelection> getSelections() {
     return selections;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (!(object instanceof StagingArea that)) {
+      return false;
+    }
+    return id == that.id
+        && Objects.equals(account, that.account)
+        && Objects.equals(selections, that.selections);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, account, selections);
+  }
+
+  @Override
+  public String toString() {
+    return "StagingArea{"
+        + "id="
+        + id
+        + ", account="
+        + account
+        + ", selections="
+        + selections
+        + '}';
   }
 }

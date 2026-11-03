@@ -1,5 +1,7 @@
 package gold_star.sticker_business.model;
 
+import java.util.Objects;
+
 public class StickerSheet {
 
   private final int id;
@@ -40,5 +42,46 @@ public class StickerSheet {
 
   public double getHeight() {
     return height;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (!(object instanceof StickerSheet that)) {
+      return false;
+    }
+    return id == that.id
+        && Double.compare(price, that.price) == 0
+        && Double.compare(width, that.width) == 0
+        && Double.compare(height, that.height) == 0
+        && Objects.equals(pdf, that.pdf)
+        && Objects.equals(hpgl, that.hpgl);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, price, pdf, hpgl, width, height);
+  }
+
+  @Override
+  public String toString() {
+    return "StickerSheet{"
+        + "id="
+        + id
+        + ", price="
+        + price
+        + ", pdf='"
+        + pdf
+        + '\''
+        + ", hpgl='"
+        + hpgl
+        + '\''
+        + ", width="
+        + width
+        + ", height="
+        + height
+        + '}';
   }
 }

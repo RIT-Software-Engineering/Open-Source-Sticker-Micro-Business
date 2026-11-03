@@ -1,5 +1,6 @@
 package gold_star.sticker_business.model;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class Sticker {
@@ -69,5 +70,64 @@ public class Sticker {
 
   public Category getCategory() {
     return category;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (!(object instanceof Sticker sticker)) {
+      return false;
+    }
+    return id == sticker.id
+        && Double.compare(physicalWidth, sticker.physicalWidth) == 0
+        && Double.compare(physicalHeight, sticker.physicalHeight) == 0
+        && Double.compare(borderThickness, sticker.borderThickness) == 0
+        && Objects.equals(name, sticker.name)
+        && Objects.equals(design, sticker.design)
+        && Objects.equals(tags, sticker.tags)
+        && Objects.equals(category, sticker.category);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+        id,
+        name,
+        design,
+        cutOutline,
+        physicalWidth,
+        physicalHeight,
+        borderThickness,
+        tags,
+        category);
+  }
+
+  @Override
+  public String toString() {
+    return "Sticker{"
+        + "id="
+        + id
+        + ", name='"
+        + name
+        + '\''
+        + ", design='"
+        + design
+        + '\''
+        + ", cutOutline='"
+        + cutOutline
+        + '\''
+        + ", physicalWidth="
+        + physicalWidth
+        + ", physicalHeight="
+        + physicalHeight
+        + ", borderThickness="
+        + borderThickness
+        + ", tags="
+        + tags
+        + ", category="
+        + category
+        + '}';
   }
 }

@@ -1,5 +1,7 @@
 package gold_star.sticker_business.model;
 
+import java.util.Objects;
+
 public class StickerSelection {
 
   private final int id;
@@ -22,5 +24,33 @@ public class StickerSelection {
 
   public int getQuantity() {
     return quantity;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (!(object instanceof StickerSelection that)) {
+      return false;
+    }
+    return id == that.id && quantity == that.quantity && Objects.equals(sticker, that.sticker);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, sticker, quantity);
+  }
+
+  @Override
+  public String toString() {
+    return "StickerSelection{"
+        + "id="
+        + id
+        + ", sticker="
+        + sticker
+        + ", quantity="
+        + quantity
+        + '}';
   }
 }
