@@ -4,7 +4,8 @@ const MAX_STICKERS_PER_REMOVAL_OPTION = 3;
 
 export interface Sticker {
 	name: string;
-	sizeArea: number;
+	height: number;
+	width: number;
 	description: string;
 	tags: string[];
 	id: string;
@@ -31,7 +32,8 @@ export interface FitTestResult {
 
 export const sticker: Sticker = {
 	name: '',
-	sizeArea: 3,
+	height: 3,
+	width: 3,
 	description: '',
 	tags: [],
 	id: '',
@@ -69,11 +71,11 @@ export function fitTest(
 
 	// calculate the area of stickers in the staging area
 	const existingArea = stagingArea.stickers.reduce((totalArea, currentSticker) => {
-		return totalArea + currentSticker.sticker.sizeArea * currentSticker.quantity;
+		return totalArea + currentSticker.sticker.height * currentSticker.sticker.width * currentSticker.quantity;
 	}, 0);
 
 	// calculate area of sticker(s) to add
-	const stickerArea = stickerToAdd.sticker.sizeArea * stickerToAdd.quantity;
+	const stickerArea = stickerToAdd.sticker.height * stickerToAdd.sticker.width * stickerToAdd.quantity;
 	if (stickerArea > STAGING_AREA_CAPACITY) {
 		// sticker cannot fit in area capacity
 		return { fits: false, stickersToRemove: [] };
@@ -94,7 +96,7 @@ export function fitTest(
 			.map((selection, index) => ({
 				selection,
 				index,
-				area: selection.sticker.sizeArea * selection.quantity,
+				area: selection.sticker.height * selection.sticker.width * selection.quantity,
 			}))
 			.sort((left, right) => right.area - left.area);
 
