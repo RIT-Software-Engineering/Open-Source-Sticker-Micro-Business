@@ -5,13 +5,14 @@ import { Route, Routes, useLocation } from 'react-router';
 import Home from './pages/home/Home';
 import Navbar from './components/control/Navbar';
 import Shop from './pages/shop/Shop';
-import Orders from './pages/orders/Orders';
-import Jobs from './pages/jobs/Jobs';
-import Listing from './pages/shop/Listing';
+import Orders from './pages/admin/orders/Orders';
+import Jobs from './pages/admin/jobs/Jobs';
+import Sticker from './pages/shop/Sticker';
 import Login from './pages/login/Login';
 import Forgot from './pages/login/Forgot';
 import Reset from './pages/login/Reset';
-import BackgroundClicksScope, { BackgroundClicksProvider } from './components/control/BackgroundClicks';
+import { BackgroundClicksProvider } from './components/control/BackgroundClicks';
+import User, { UserContext } from './modules/User';
 
 export default function App(): ReactElement {
     const location = useLocation();
@@ -21,23 +22,27 @@ export default function App(): ReactElement {
     let showNav = true;
     if(location.pathname.startsWith("/login")) showNav = false;
 
+    const user = new User();
+
     return <BackgroundClicksProvider style={{display: "flex", flex: 1, backgroundColor: background, color: colors.TextColor(background), fontFamily: "Inter", flexDirection: "column"}}>
-        {showNav ? <Navbar/> : <></>}
-        <div style={{padding: 10, display: "flex", flex: 1}}>
-            <Routes>
-                <Route path=""       element={<Home  />}/>
-                <Route path="shop">
-                    <Route index         element={<Shop   />}/>
-                    <Route path=":id"    element={<Listing/>}/>
-                </Route>
-                <Route path="orders" element={<Orders/>}/>
-                <Route path="jobs"   element={<Jobs  />}/>
-                <Route path="login">
-                    <Route index         element={<Login  />}/>
-                    <Route path="forgot" element={<Forgot />}/>
-                    <Route path="reset"  element={<Reset  />}/>
-                </Route>
-            </Routes>
-        </div>
+        <UserContext value={user}>
+            {showNav ? <Navbar/> : <></>}
+            <div style={{padding: 10, display: "flex", flex: 1}}>
+                <Routes>
+                    <Route path=""       element={<Home  />}/>
+                    <Route path="shop">
+                        <Route index         element={<Shop   />}/>
+                        <Route path=":id"    element={<Sticker/>}/>
+                    </Route>
+                    <Route path="orders" element={<Orders/>}/>
+                    <Route path="jobs"   element={<Jobs  />}/>
+                    <Route path="login">
+                        <Route index         element={<Login  />}/>
+                        <Route path="forgot" element={<Forgot />}/>
+                        <Route path="reset"  element={<Reset  />}/>
+                    </Route>
+                </Routes>
+            </div>
+        </UserContext>
     </BackgroundClicksProvider>
 }

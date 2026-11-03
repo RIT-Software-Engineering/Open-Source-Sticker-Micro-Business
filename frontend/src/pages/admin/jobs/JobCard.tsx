@@ -1,8 +1,8 @@
 import type { ReactElement } from "react";
-import Temp from "../../components/display/Temp";
-import type { IJob } from "../../modules/data/Jobs";
-import type { Callback } from "../../Types";
-import Button from "../../components/control/Button";
+import Temp from "../../../components/display/Temp";
+import type { IJob } from "../../../modules/data/Jobs";
+import type { Callback } from "../../../Types";
+import Button from "../../../components/control/Button";
 
 export interface IJobCardProps {
     /** The job to display */

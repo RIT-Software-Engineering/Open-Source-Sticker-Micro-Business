@@ -11,6 +11,11 @@
 * {
     font-size: 16;
     line-height: 140%;
+    font-family: "Inter";
+}
+
+body {
+  margin: 0;
 }
 
 .display {

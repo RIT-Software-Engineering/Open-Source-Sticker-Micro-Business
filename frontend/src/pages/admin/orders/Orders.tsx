@@ -1,8 +1,8 @@
 import type { ReactElement } from "react";
 import OrderCard from "./OrderCard";
-import Temp from "../../components/display/Temp";
-import type { IOrder } from "../../modules/data/Orders";
-import Header from "../../components/display/Header";
+import Temp from "../../../components/display/Temp";
+import type { IOrder } from "../../../modules/data/Orders";
+import Header from "../../../components/display/Header";
 
 /** The size (height) of order cards */
 const CARD_SIZE = 25;

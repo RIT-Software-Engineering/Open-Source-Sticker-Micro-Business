@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
-import Header from "../../components/display/Header";
-import type { IOrder } from "../../modules/data/Orders";
+import Header from "../../../components/display/Header";
+import type { IOrder } from "../../../modules/data/Orders";
 import JobCard from "./JobCard";
 
 /** The size of the job cards */

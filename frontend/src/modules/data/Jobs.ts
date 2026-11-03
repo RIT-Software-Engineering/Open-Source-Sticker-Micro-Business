@@ -1,1 +1,3 @@
-export type IJob = {id: unknown};
+export type IJob = {
+    id: number
+};

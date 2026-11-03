@@ -1,15 +1,63 @@
-import { useState, type ReactElement } from "react";
-import ListingCard from "./ListingCard";
-import type { IListing } from "../../modules/data/Listing";
+import { useMemo, useState, type ReactElement } from "react";
+import StickerCard from "./StickerCard";
+import type { ISticker } from "../../modules/data/Sticker";
 import { useColors } from "../../modules/Colors";
 import { useNavigate } from "react-router";
 import ReactModal from "react-modal";
-import AddListing from "./AddListing";
+import AddSticker from "./AddSticker";
+import Input from "../../components/control/Input";
+import Button from "../../components/control/Button";
+import type { ICategory } from "../../modules/data/Category";
+import { useUser } from "../../modules/User";
 
 /** The size of listing cards */
 const CARD_SIZE = 100;
 /** The padding for the add listing modal */
 const MODAL_PADDING = 20;
+
+function Search(): ReactElement {
+    const colors = useColors();
+
+    return <div style={{display: "flex", flexDirection: "row", marginBottom: 5, justifyContent: "center"}}>
+        <div style={{flexDirection: "row", display: "flex"}}>
+            <Input style={{minWidth: 250}} placeholder="I want to find..."/>
+            <Button color={colors.neutral} style={{padding: "5px 10px", borderTopLeftRadius: 0, borderBottomLeftRadius: 0}}>
+                Search
+            </Button>
+        </div>
+    </div>
+}
+
+interface ICategoryProps {
+    category: ICategory;
+    stickers: ISticker[];
+}
+
+function Category({category, stickers}: ICategoryProps): ReactElement {
+    const colors = useColors();
+    const navigate = useNavigate();
+
+    const contents = useMemo(() => {
+        const result = [];
+        for(const sticker of stickers) {
+            if(category.stickers.has(sticker.id)) {
+                result.push(sticker);
+            }
+        } return result;
+    }, [category, stickers]);
+
+    return <>
+        <div style={{backgroundColor: colors.neutralPalatte.Light(), borderStyle: "solid", borderWidth: 1, textAlign: "center"}}>
+            {category.name}
+        </div>
+        <div style={{}}>
+            <div style={{flexDirection: "row", display: "flex", overflow: "hidden"}}>
+                {/* {contents.map((sticker) => <div style={{width: 100, margin: 10, height: 100, backgroundColor: "red"}}/>)} */}
+                {contents.map((sticker) => <StickerCard key={sticker.id} sticker={sticker} size={CARD_SIZE} onClick={() => navigate(`${sticker.id}`)}/>)}
+            </div>
+        </div>
+    </>
+}
 
 /**
  * The shop page
@@ -19,9 +67,11 @@ export default function Shop(): ReactElement {
     const [adding, setAdding] = useState<boolean>(false);
 
     const colors = useColors();
-    const listings: IListing[] = [0, 1, 2, 3, 4, 5].map(id => ({id}));
+    const stickers: ISticker[] = [0, 1, 2, 3, 4, 5].map(id => ({id, name: `Sticker ${id}`, designPath: "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/penrose-tiling.svg"}));
+    const categories: ICategory[] = [0, 1].map(id => ({id, name: `Category ${id}`, stickers: new Set(stickers.map(sticker => sticker.id))}));
 
     const navigate = useNavigate();
+    const user = useUser();
 
     /**
      * What to do when a listing is added
@@ -32,30 +82,21 @@ export default function Shop(): ReactElement {
         setAdding(false);
     }
 
-    return <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap", rowGap: 15}}>
-        {/* Add listing button */}
-        <div style={{flex: 1, justifyContent: "center", display: "flex"}} key={-1}>
-            <ListingCard listing={null} size={CARD_SIZE} onClick={() => setAdding(true)}>
-                <div style={{borderStyle: "solid", display: "flex", flex: 1, flexDirection: "column", width: "100%", justifyContent: "center", alignItems: "center", borderColor: colors.neutralPalatte.Lighter(), borderWidth: 1}}>
-                    <p style={{fontSize: CARD_SIZE / 2}}>+</p>
-                    <p>Add Listing</p>
-                </div>
-            </ListingCard>
+    return <div style={{display: "flex", flexDirection: "column", flex: 1}}>
+        <Search/>
+
+        {user?.IsAdmin
+            ? <Button style={{marginRight: "auto", marginBottom: 10}} onClick={() => setAdding(true)}>Add Sticker</Button>
+            : undefined
+        }
+
+        <div style={{display: "flex", flexDirection: "column", rowGap: 15}}>
+            {categories.map(category => <Category category={category} stickers={stickers}/>)}
         </div>
-
-        {/* Listings */}
-        {listings.map((listing, index) => <div style={{flex: 1, justifyContent: "center", display: "flex"}} key={index}>
-            <ListingCard listing={listing} size={CARD_SIZE} onClick={() => navigate(`${listing.id}`)}/>
-        </div>)}
-
-        {/* Row align listings */}
-        {new Array(Math.floor(window.innerWidth / CARD_SIZE)).fill(0).map((_, index) => <div style={{flex: 1, justifyContent: "center", display: "flex"}} key={-index - 1}>
-            <ListingCard silent size={CARD_SIZE}><></></ListingCard>
-        </div>)}
 
         {/* Add listing modal */}
         <ReactModal contentLabel="Add Listing" isOpen={adding} onRequestClose={() => setAdding(false)} style={{content: {padding: MODAL_PADDING, display: "flex", flexDirection: "column"}, overlay: {overflowY: "scroll"}}}>
-            <AddListing
+            <AddSticker
                 screenPadding={MODAL_PADDING}
                 onSubmit={OnSubmitAddition}
                 onCancel={() => setAdding(false)}

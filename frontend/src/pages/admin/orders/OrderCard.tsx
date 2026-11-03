@@ -1,8 +1,8 @@
 import type { ReactElement } from "react";
-import Temp from "../../components/display/Temp";
-import type { IOrder } from "../../modules/data/Orders";
-import type { Callback } from "../../Types";
-import Button from "../../components/control/Button";
+import Temp from "../../../components/display/Temp";
+import type { IOrder } from "../../../modules/data/Orders";
+import type { Callback } from "../../../Types";
+import Button from "../../../components/control/Button";
 
 export interface IOrderCardProps {
     /** The order to display */

@@ -1,1 +1,3 @@
-export type IOrder = {id: unknown};
+export type IOrder = {
+    id: number
+};

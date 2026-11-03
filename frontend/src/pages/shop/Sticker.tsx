@@ -7,7 +7,7 @@ import Button from "../../components/control/Button";
  * 
  * @param id Takes an id path parameter corresponding to a listing id
  */
-export default function Listing(): ReactElement {
+export default function Sticker(): ReactElement {
     const {id} = useParams();
     const navigate = useNavigate()
 
