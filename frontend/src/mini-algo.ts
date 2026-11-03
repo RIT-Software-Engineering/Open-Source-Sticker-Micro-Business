@@ -63,21 +63,33 @@ export function fitTest(
 	stickerToAdd: StickerSelection | null | undefined,
 ): FitTestResult {
 	if (!stickerToAdd) {
+		// no sticker to add, return
 		return { fits: false, stickersToRemove: [] };
 	}
 
+	// calculate the area of stickers in the staging area
 	const existingArea = stagingArea.stickers.reduce((totalArea, currentSticker) => {
 		return totalArea + currentSticker.sticker.sizeArea * currentSticker.quantity;
 	}, 0);
 
+	// calculate area of sticker(s) to add
 	const stickerArea = stickerToAdd.sticker.sizeArea * stickerToAdd.quantity;
 	if (stickerArea > STAGING_AREA_CAPACITY) {
+		// sticker cannot fit in area capacity
 		return { fits: false, stickersToRemove: [] };
 	}
 
 	//The hard part
+	// excessArea captures how much space is over capacity in the staging area
+	// if all stickers were to be added.
+	// We need to figure out what stickers can be removed to accommodate the excessArea.
 	const excessArea = existingArea + stickerArea - STAGING_AREA_CAPACITY;
 	if (excessArea > 0) {
+		// Create a list of stickers from the staging area with their sizes
+		// sorted from greatest area to least area. This sort is important for the
+		// recursive function below.
+		// We also save the staging area index of the stickers so that they can be
+		// resorted by index below.
 		const candidates = stagingArea.stickers
 			.map((selection, index) => ({
 				selection,
@@ -86,19 +98,34 @@ export function fitTest(
 			}))
 			.sort((left, right) => right.area - left.area);
 
+		// We try removing 1 selection, then 2, up to MAX_STICKERS_PER_REMOVAL_OPTION,
+		// to make room for excessArea. The loop will stop at the first selectionCount
+		// that finds a combination of stickers that when removed accommodates excessArea.
 		for (
 			let selectionCount = 1;
 			selectionCount <= Math.min(candidates.length, MAX_STICKERS_PER_REMOVAL_OPTION);
 			selectionCount++
 		) {
+			// Valid combinations of stickers to remove from the staging area.
+			// By removing this combination of stickers, the excessArea can be accommodated.
 			const options: StickerSelection[][] = [];
+			// the current combination of stickers to remove
 			const selected: typeof candidates = [];
 
+			// Recursive function to find a list of options to remove from the sticker
+			// staging area to accommodate the excessArea.
+			// startIndex is the current index from which we can pick from.
+			// freedArea is the area freed by removing the stickers currently in selected.
 			function collectOptions(startIndex: number, freedArea: number): void {
+				// Stop the recursion once we have gathered enough removal options.
 				if (options.length >= MAX_REMOVAL_OPTIONS) {
 					return;
 				}
 
+				// If the current selected combination of stickers is equal to selectionCount,
+				// we examine if removing those stickers frees enough space
+				// to accommodate the excessArea. If so, we push that combination on to
+				// the list of options, sorted by their original staging area index.
 				if (selected.length === selectionCount) {
 					if (freedArea >= excessArea) {
 						options.push(
@@ -110,11 +137,19 @@ export function fitTest(
 					return;
 				}
 
+				// Are there enough candidates left to finish this combination?
 				const remainingCount = selectionCount - selected.length;
 				if (candidates.length - startIndex < remainingCount) {
 					return;
 				}
 
+				// Can we possibly free enough space for excessArea by removing the stickers
+				// immediately following the startIndex?
+				// remainingCount captures how many more stickers we can remove,
+				// so we calculate the area of those stickers to determine if their removal
+				// would free up enough space for the excessArea. If not we can return.
+				// Above we sorted the candidates by greatest size, so the next stickers
+				// to examine would be the next largest stickers in the staging area.
 				let maximumRemainingArea = 0;
 				for (let index = startIndex; index < startIndex + remainingCount; index++) {
 					maximumRemainingArea += candidates[index].area;
@@ -123,6 +158,7 @@ export function fitTest(
 					return;
 				}
 
+				// Recursively call this function with a new starting index.
 				for (
 					let index = startIndex;
 					index <= candidates.length - remainingCount &&
@@ -135,14 +171,18 @@ export function fitTest(
 				}
 			}
 
+			// Start the recursive function to find options of stickers to remove.
 			collectOptions(0, 0);
+			// If we found valid options of stickers to remove, we return them.
 			if (options.length > 0) {
 				return { fits: false, stickersToRemove: options };
 			}
 		}
 
+		// No combination of stickers to remove was found to accommodate excessArea.
 		return { fits: false, stickersToRemove: [] };
 	}
 
+	// The sticker fits!
 	return { fits: true, stickersToRemove: [] };
 }
