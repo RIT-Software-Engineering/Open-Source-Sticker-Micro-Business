@@ -110,15 +110,17 @@ test('returns alternate removal combinations in staging order', () => {
 	);
 });
 
-test('only suggests removing up to three stickers', () => {
-	const stickers = Array.from({ length: 12 }, (_, index) =>
-		selection(`sticker-${index}`, 1, 5),
+test('only suggests removing up to MAX_STICKERS_PER_REMOVAL (3) stickers', () => {
+	const stickers = Array.from({ length: 5 }, (_, index) =>
+		selection(`sticker-${index}`, 4, 5),
 	);
 
-	assert.deepEqual(fitTest({ stickers }, selection('new', 1, 3)), {
-		fits: false,
-		stickersToRemove: [],
-	});
+	const result = fitTest({ stickers }, selection('new', 1, 5));
+
+	assert.equal(result.fits, false);
+	assert(result.stickersToRemove.length > 0);
+	assert(result.stickersToRemove.some((option) => option.length === 3));
+	assert(result.stickersToRemove.every((option) => option.length <= 3));
 });
 
 test('caps removal suggestions at five options', () => {
