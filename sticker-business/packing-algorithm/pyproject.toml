@@ -10,6 +10,8 @@ requires-python = ">=3.11"
 dependencies = [
     "shapely>=2.0, <3.0",
     "svgpathtools>=1.6,<2.0",
+    "reportlab>=4.0",
+    "svglib>=1.5",
 ]
 
 [project.optional-dependencies]
