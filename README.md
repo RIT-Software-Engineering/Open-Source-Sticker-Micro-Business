@@ -88,6 +88,11 @@ docker compose up --build
 | Backend code (`sticker-business/`) | Run `docker compose up --build backend` in a new terminal to rebuild and restart only the backend. |
 | `.env` passwords | See "Access denied" under Troubleshooting. |
 
+## Continuous integration
+GitHub Actions runs checks on pull requests:
+- **Frontend** ([frontend.yml](.github/workflows/frontend.yml)): `npm ci`, `npm test`, `npm run lint`, and `npm run build` (which includes the TypeScript checks).
+- **Backend** ([backend.yml](.github/workflows/backend.yml)): `./mvnw -B clean verify`, which builds the application, runs its tests, and checks Java formatting; a separate job starts MySQL 8.4 and waits for its health check to pass.
+
 > **Tests do not run inside Docker.** The Docker build skips them to stay fast. Always run the `clean verify` command (below) before opening a pull request.
 
 **Useful backend commands** (run inside `sticker-business/`):
