@@ -1,5 +1,5 @@
 import type { ReactElement, ReactNode } from "react";
-import type { ISticker } from "../../modules/data/Sticker";
+import { exampleSticker, type ISticker } from "../../modules/data/Sticker";
 import type { StateRef } from "../../Types";
 import { useColors } from "../../modules/Colors";
 import Button from "../../components/control/Button";
@@ -24,11 +24,18 @@ export interface IListingCardProps {
 export default function ListingCard({silent, sticker, size, onClick, children}: IListingCardProps): ReactElement {
     const colors = useColors();
 
-    return <Button silent={silent} onClick={onClick != null ? () => onClick(sticker) : undefined} style={{width: size, padding: PREVIEW_PADDING, display: "flex", flexDirection: "column", alignItems: "center", borderStyle: "none", backgroundColor: "#00000000"}}>
-        {children ?? <>
-            <img src={sticker?.designPath} width={size - PREVIEW_PADDING * 2} alt={sticker?.name}></img>
-            <p style={{fontWeight: "bold", fontSize: 16}}>Sticker</p>
-            <p style={{fontStyle: "italic"}}>$0.00</p>
-        </>}
-    </Button>
+    sticker = sticker ?? exampleSticker();
+
+    return <div style={{width: size, display: "content", flexDirection: "column", alignItems: "center", borderStyle: "none"}}>
+        <Button silent={silent} onClick={onClick != null ? () => onClick(sticker) : undefined} style={{backgroundColor: "#00000000", padding: PREVIEW_PADDING}}>
+            {children ?? <div>
+                <img src={sticker?.designPath} width={size - PREVIEW_PADDING * 2} alt={sticker?.name}></img>
+                <p style={{fontWeight: "bold", fontSize: 16}}>{sticker?.name}</p>
+                <p style={{fontStyle: "italic"}}>{sticker.physicalWidth.toFixed(2)}" x {sticker.physicalHeight.toFixed(2)}"</p>
+            </div>}
+        </Button>
+        <div style={{display: "flex", flexDirection: "row", padding: "0 10px"}}>
+            <Button style={{flex: 1}}>Add to cart</Button>
+        </div>
+    </div>
 }

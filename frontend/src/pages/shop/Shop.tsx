@@ -9,9 +9,10 @@ import Input from "../../components/control/Input";
 import Button from "../../components/control/Button";
 import type { ICategory } from "../../modules/data/Category";
 import { useUser } from "../../modules/User";
+import { randomPick } from "../../modules/Utility";
 
 /** The size of listing cards */
-const CARD_SIZE = 100;
+const CARD_SIZE = 150;
 /** The padding for the add listing modal */
 const MODAL_PADDING = 20;
 
@@ -67,7 +68,7 @@ export default function Shop(): ReactElement {
     const [adding, setAdding] = useState<boolean>(false);
 
     const colors = useColors();
-    const stickers: ISticker[] = [0, 1, 2, 3, 4, 5].map(id => ({id, name: `Sticker ${id}`, designPath: "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/penrose-tiling.svg"}));
+    const stickers: ISticker[] = [0, 1, 2, 3, 4, 5].map(id => ({id, name: `Sticker ${id}`, designPath: "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/" + randomPick(["penrose-tiling", "python", "alphachannel", "caution", "compass", "couch"]) + ".svg", physicalHeight: Math.random(), physicalWidth: Math.random()}));
     const categories: ICategory[] = [0, 1].map(id => ({id, name: `Category ${id}`, stickers: new Set(stickers.map(sticker => sticker.id))}));
 
     const navigate = useNavigate();
@@ -91,7 +92,7 @@ export default function Shop(): ReactElement {
         }
 
         <div style={{display: "flex", flexDirection: "column", rowGap: 15}}>
-            {categories.map(category => <Category category={category} stickers={stickers}/>)}
+            {categories.map(category => <Category key={category.id} category={category} stickers={stickers}/>)}
         </div>
 
         {/* Add listing modal */}

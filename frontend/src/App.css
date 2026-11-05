@@ -34,6 +34,8 @@ h2 {
     font-size: 2em;
     font-weight: bold;
     line-height: 120%;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 h3 {

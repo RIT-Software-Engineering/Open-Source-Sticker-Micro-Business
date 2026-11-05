@@ -49,7 +49,7 @@ type _IBackgroundClicksScopeCustomProps = {
 }
 
 export type IBackgroundClicksScopeProps = 
-    Omit<HTMLAttributes<HTMLDivElement>, keyof _IBackgroundClicksScopeCustomProps> &
+    Omit<HTMLAttributes<HTMLDivElement> & {ref?: React.Ref<HTMLDivElement> | undefined}, keyof _IBackgroundClicksScopeCustomProps> &
     _IBackgroundClicksScopeCustomProps;
 
 /**

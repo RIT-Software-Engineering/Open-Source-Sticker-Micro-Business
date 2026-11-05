@@ -5,11 +5,10 @@ import { useLocation, useNavigate } from "react-router";
 import { useRerender } from "../../modules/Utility";
 import BackgroundClicksScope from "./BackgroundClicks";
 import { useUser } from "../../modules/User";
+import useConfig from "../../config";
 
 /** The state of the button for active tabs */
 const ACTIVE_TAB_BUTTON_STATE = "hovered";
-/** The minimum uncollapsed width of the navbar */
-const COLLAPSE_WIDTH = 500;
 
 /**
  * Display the tabs the user can select
@@ -47,6 +46,9 @@ export default function Navbar(): ReactElement {
     const colors = useColors();
     const user = useUser();
 
+    const config = useConfig();
+    const collapseWidth = config.navbar.collapseWidth;
+
     const widthLog = useRef(window.innerWidth);
     widthLog.current = window.innerWidth;
 
@@ -72,20 +74,36 @@ export default function Navbar(): ReactElement {
     }
 
     const DetermineCollapseExpand = () => {
-        if(widthLog.current < COLLAPSE_WIDTH != window.innerWidth < COLLAPSE_WIDTH) {
+        if(widthLog.current < collapseWidth != window.innerWidth < collapseWidth) {
             rerender("Navbar should collapse/expand");
         }
     }
 
-    const collapsed = window.innerWidth < COLLAPSE_WIDTH;
+    const collapsed = window.innerWidth < collapseWidth;
     if(!collapsed && menuOpen.current == "tabs") {
         menuOpen.current = "none";
     }
 
+    const navbarRef = useRef<HTMLDivElement | null>(null);
+    const navbarMeasurement = useRef<DOMRect | null>(null);
+
+    /**
+     * Measure the navbar when the ref is bound
+     */
+    const OnNavbarRef = (element: HTMLDivElement | null) => {
+        navbarRef.current = element;
+        navbarMeasurement.current = element?.getBoundingClientRect() ?? null;
+    }
+
     useEffect(() => {
         const ResizeListener = () => {
+            // Determine whether the navbar needs to collapse or expand
             DetermineCollapseExpand();
             widthLog.current = window.innerWidth;
+
+            // Remeasure the navbar
+            const lastMeasurement = navbarMeasurement.current;
+            navbarMeasurement.current = navbarRef.current?.getBoundingClientRect() ?? null;
         }
 
         window.addEventListener("resize", ResizeListener);
@@ -95,47 +113,56 @@ export default function Navbar(): ReactElement {
         }
     }, []);
 
-    return <BackgroundClicksScope style={{display: "flex", flex: 0, flexDirection: "column", backgroundColor: colors.neutral, borderBottomStyle: "solid", borderBottomWidth: 1, padding: 10}} onBackgroundClick={OnClickClose}>
-        <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-            {/* Don't question the hamburger 🍔 */}
-            {collapsed ? <Button value={menuOpen.current == "tabs" ? ACTIVE_TAB_BUTTON_STATE : undefined} color={colors.neutral} onClick={OnClickHamburger}>
-                <div style={{width: 22.5, backgroundColor: "black", height: 3, marginBottom: 5}}/>
-                <div style={{width: 22.5, backgroundColor: "black", height: 3, marginBottom: 5}}/>
-                <div style={{width: 22.5, backgroundColor: "black", height: 3}}/>
-            </Button> : undefined}
+    return <div style={{display: "flex", flex: 1, flexDirection: "column"}}>
+        <BackgroundClicksScope ref={OnNavbarRef} style={{display: "flex", flex: 1, flexDirection: "column", backgroundColor: colors.neutral, borderBottomStyle: "solid", borderBottomWidth: 1, padding: 10}} onBackgroundClick={OnClickClose}>
+            <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                {/* Don't question the hamburger 🍔 */}
+                {collapsed ? <Button value={menuOpen.current == "tabs" ? ACTIVE_TAB_BUTTON_STATE : undefined} color={colors.neutral} onClick={OnClickHamburger}>
+                    <div style={{width: 22.5, backgroundColor: "black", height: 3, marginBottom: 5}}/>
+                    <div style={{width: 22.5, backgroundColor: "black", height: 3, marginBottom: 5}}/>
+                    <div style={{width: 22.5, backgroundColor: "black", height: 3}}/>
+                </Button> : undefined}
 
-            {/* The star icon */}
-            <img src={"../../../assets/images/logo-temp.webp"} style={{width: 25, height: 25, padding: 10}}/>
+                {/* The star icon */}
+                <img src={"../../../assets/images/logo-temp.webp"} style={{width: 25, height: 25, padding: 10}}/>
 
-            {/* The uncollapsed tabs */}
-            {collapsed
-                ? undefined 
-                : <div style={{display: "flex", flexDirection: "row"}}>
-                    <Tabs/>
+                {/* The uncollapsed tabs */}
+                {collapsed
+                    ? undefined 
+                    : <div style={{display: "flex", flexDirection: "row"}}>
+                        <Tabs/>
+                    </div>
+                }
+
+                <div style={{flex: 1}}/>
+
+                {/* User buttons */}
+                <div style={{display: "flex", flexDirection: "row"}}>
+                    <Button value={menuOpen.current == "user" ? ACTIVE_TAB_BUTTON_STATE : undefined} color={colors.neutral} onClick={OnClickAdmin}>
+                        Hello, {user?.Name ?? "Guest"}
+                    </Button>
+                    <Button color={colors.neutral}>
+                        Cart (0)
+                    </Button>
                 </div>
+            </div>
+
+            {/* The collapsed tabs */}
+            {menuOpen.current != "none"
+                ? <div style={{position: "relative", margin: "10px -10px -10px", zIndex: 1}}>
+                    <div style={{position: "absolute", right: 0, left: 0, display: "flex", flexDirection: "column", padding: "5px 10px", backgroundColor: colors.neutral, borderTopStyle: "solid", borderBottomStyle: "solid", borderWidth: 1}}>
+                        {menuOpen.current == "tabs"
+                            ? <Tabs/>
+                            : <User/>
+                        }
+                    </div>
+                </div>
+                : undefined
             }
+        </BackgroundClicksScope>
 
-            <div style={{flex: 1}}/>
+        {/* <div style={{position: "absolute", top: 100, bottom: 0, minWidth: 25, minHeight: 25, backgroundColor: "red", zIndex: 1}}>
 
-            {/* User buttons */}
-            <div style={{display: "flex", flexDirection: "row"}}>
-                <Button value={menuOpen.current == "user" ? ACTIVE_TAB_BUTTON_STATE : undefined} color={colors.neutral} onClick={OnClickAdmin}>
-                    Hello, {user?.Name ?? "Guest"}
-                </Button>
-            </div>
-        </div>
-
-        {/* The collapsed tabs */}
-        {menuOpen.current != "none"
-            ? <div style={{position: "relative", margin: "10px -10px -10px", zIndex: 1}}>
-                <div style={{position: "absolute", right: 0, left: 0, display: "flex", flexDirection: "column", padding: "5px 10px", backgroundColor: colors.neutral, borderTopStyle: "solid", borderBottomStyle: "solid", borderWidth: 1}}>
-                    {menuOpen.current == "tabs"
-                        ? <Tabs/>
-                        : <User/>
-                    }
-                </div>
-            </div>
-            : undefined
-        }
-    </BackgroundClicksScope>
+        </div> */}
+    </div>
 }

@@ -1,4 +1,18 @@
 {
-    "lang": "TODO?",
-    "i18n": "is a good idea to set up to start, usually"
+    "$name": "English language definition file",
+    "$desc": "This file contains the english language assets to make localization (relatively) easy in the future. Note that template string follow the format $xxxxxx where x is the xth format template parameter",
+    "nav": {
+        "home"      : "Home",
+        "shop"      : "Shop",
+        "categories": "Categories",
+        "jobs"      : "Jobs",
+        "settings"  : "Settings",
+        "username"  : "Hello, $000000"
+    },
+    "user": {
+        "guest"     : "Guest"
+    },
+    "home": {
+        "greeting"  : "Hi, $000000"
+    }
 }

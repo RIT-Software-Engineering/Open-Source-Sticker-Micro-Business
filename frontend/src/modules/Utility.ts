@@ -15,3 +15,10 @@ export function useRerender(name: string): StateRef<string> {
         handle();
     };
 }
+
+/**
+ * Picks a random item from the source
+ */
+export function randomPick<T>(source: T[]): T {
+    return source[Math.floor(Math.random() * source.length)];
+}
