@@ -1,0 +1,15 @@
+# Check out repo with native OS ending
+* text=auto
+
+# Files that must be LF everywhere because they run inside Linux containers
+*.sh text eol=lf
+/sticker-business/mvnw text eol=lf
+
+# Windows-only scripts
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Frontend assets that should remain as binary
+*.png binary
+*.jpg binary
+*.ico binary

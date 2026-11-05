@@ -9,5 +9,5 @@
 - [ ] I have fulfilled all acceptance criteria.
 - [ ] All Tasks have been completed OR notes have been made on the ticket.
 - [ ] The solution builds.
-- [ ] 80% Code Coverage.
+- [ ] 100% of tests pass with 80% code coverage from unit tests.
 - [ ] Documentation has been updated.
