@@ -1,13 +1,13 @@
 {
     "$name": "English language definition file",
-    "$desc": "This file contains the english language assets to make localization (relatively) easy in the future. Note that template string follow the format $xxxxxx where x is the xth format template parameter",
+    "$desc": "This file contains the english language assets to make localization (relatively) easy in the future. Note that template string follow the format $xxxxxx where x is the xth format template parameter. So for example, 'I like my $000000 $111111 with $222222'{'green', 'eggs', 'ham'} would result in 'I like my green eggs with ham'",
     "nav": {
         "home"      : "Home",
         "shop"      : "Shop",
         "categories": "Categories",
         "jobs"      : "Jobs",
         "settings"  : "Settings",
-        "username"  : "Hello, $000000"
+        "username"  : "Sign Out, $000000"
     },
     "user": {
         "guest"     : "Guest"

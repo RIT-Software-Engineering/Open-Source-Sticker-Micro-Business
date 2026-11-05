@@ -20,31 +20,41 @@ function DefineStyle(radius: number, hpad: number, vpad: number, fontSize: numbe
 /**
  * Size detail enumeration
  */
-const SIZE_DEFINITION = {
+const SIZE_DEFINITION = Object.freeze({
     "large"     : DefineStyle(4, 32, 20, 1.25 ),
     "medium"    : DefineStyle(4, 32, 16, 1    ),
     "small"     : DefineStyle(4, 24, 12, 0.875),
     "extraSmall": DefineStyle(4, 24,  8, 0.875)
-}
+})
+
+/** States that the button can be in (the actual granular states) */
+type IInternalButtonState = "inactive" | "hovered" | "downInside" | "downOutside";
+/** States that the button can be in */
+export type IButtonState  = "hovered" | "down";
+/** Styling types of the button */
+export type IButtonType   = "outline" | "solid" | "invisible";
+/** Available sizes of the button */
+export type IButtonSize   = keyof typeof SIZE_DEFINITION;
 
 /** Base customized button props */
 type _ICustomButtonProps = {
+    children?   : ReactNode     | undefined;
     /** What to do when the button is clicked */
-    onClick? : Callback      | undefined;
-    children?: ReactNode     | undefined;
+    onClick?    : Callback      | undefined;
     /** The color of the button */
-    color?    : CSSProperties["color"];
-    /** Is the button outlined? */
-    outline? : boolean       | undefined;
+    color?      : CSSProperties["color"];
     /** Note that you cannot override `position` */
-    style?   : CSSProperties | undefined;
+    style?      : CSSProperties | undefined;
     /** The size of the button (default medium) */
-    size?    : keyof typeof SIZE_DEFINITION | undefined;
+    size?       : IButtonSize   | undefined;
     /** Is the button disabled */
-    disabled?: boolean       | undefined;
+    disabled?   : boolean       | undefined;
     /** Does the button not react */
-    silent?  : boolean       | undefined;
-    value?   : "hovered" | "down" | undefined;
+    silent?     : boolean       | undefined;
+    /** The value of the button if it is controlled */
+    value?      : IButtonState  | undefined;
+    /** Is the button dark text on a light background (default false) */
+    darkOnLight?: boolean       | undefined
 }
 
 /** Props for the button component */
@@ -54,10 +64,10 @@ export type IButtonProps =
 
 /** A wrapped button component */
 export default function Button(props: IButtonProps): ReactElement {
-    const {onClick, value, color: colorProp, outline, size, children, style, disabled, silent} = props;
+    const {onClick, value, color: colorProp, darkOnLight, size, children, style, disabled, silent} = props;
 
     const rerender = useRerender("Button");
-    const state = useRef<"inactive" | "hovered" | "downInside" | "downOutside">("inactive");
+    const state = useRef<IInternalButtonState>("inactive");
 
     const colors = useColors();
     const def = SIZE_DEFINITION[size ?? "medium"] ?? SIZE_DEFINITION["medium"];
@@ -115,6 +125,8 @@ export default function Button(props: IButtonProps): ReactElement {
     const OnClickEnd = (event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
         if(disabled) return;
 
+        const canPress = state.current == "downInside";
+
         if(props.onMouseUp != null) props.onMouseUp(event);
 
         if(state.current == "downOutside") {
@@ -123,7 +135,9 @@ export default function Button(props: IButtonProps): ReactElement {
             UpdateState("hovered");
         }
 
-        if(onClick != null) onClick();
+        if(canPress) {
+            if(onClick != null) onClick();
+        }
     }
 
     /**
@@ -141,7 +155,7 @@ export default function Button(props: IButtonProps): ReactElement {
             UpdateState("hovered");
         } else if(state.current == "downOutside") {
             UpdateState("downInside");
-        } rerender
+        }
     }
 
     /**
@@ -182,61 +196,76 @@ export default function Button(props: IButtonProps): ReactElement {
         }
     }, []);
 
-    /** The background color of the element if the element has palattized color */
+    // Determine the color of the button
+    /** The root color of the button */
     let color: CSSProperties["color"] = colorProp;
-    if(color != null && !silent) {
+    /** The shading color of the button (overlay) */
+    let shade: CSSProperties["color"] = undefined;
+    /** The text color of the button */
+    let text : CSSProperties["color"] = undefined;
+    /** The background color of the button */
+    let back : CSSProperties["color"] = undefined;
+    /** The palatte that the button is using */
+    const palatte = color == null ? colors.neutralPalatte : colors.FindPalatte(color);
+    const buttonColorState: IInternalButtonState = silent ? "inactive" : state.current;
+    if(color != null && palatte.Has(color)) {
+        // Palatte color
         if(disabled) {
-            // If the button is disabled, set the color to disabled
-            color = colors.neutralPalatte.Dark(colors.neutralPalatte.Lightest());
+            back = colors.neutralPalatte.Dark(colors.neutralPalatte.Lightest());
+            text = colors.TextColor(back);
         } else {
-            const palatte = colors.FindPalatte(color);
-            if(palatte != colors.neutralPalatte || colors.neutralPalatte.Has(color)) {
-                switch(state.current) {
+            if(darkOnLight) {
+                // Text color is primary
+                switch(buttonColorState) {
                     case "downInside":
                     case "downOutside":
-                        // If the button is held, make it really dark
-                        color = palatte.Darkest(color);
+                        back = color;
+                        text = colors.TextColor(back);
                         break;
                     case "hovered":
-                        // If the button is hovered, make it darker
-                        color = palatte.Darker(color);
+                        back = palatte.Light(color);
+                        text = color;
+                        break;
+                    default:
+                        text = color;
                         break;
                 }
+            } else {
+                // Background color is primary
+                switch(buttonColorState) {
+                    case "downInside":
+                    case "downOutside":
+                        back = palatte.Dark(color);
+                        break;
+                    case "hovered":
+                        back = color;
+                        break;
+                    default:
+                        back = palatte.Light(color);
+                        break;
+                }
+
+                text = colors.TextColor(back);
             }
         }
-    }
-
-    /** The shading of the element if the specific color can't be calculated */
-    let shadeColor: CSSProperties["color"] = undefined;
-    if(color == null && !silent) {
+    } else {
+        // No color or non-palatte color
         if(disabled) {
             // If the button is disabled, set the color to disabled
-            shadeColor = "#80808060"
+            shade = "#80808060"
         } else {
-            switch(state.current) {
+            switch(buttonColorState) {
                 case "downInside":
                 case "downOutside":
                     // If the button is held, make it really dark
-                    shadeColor = "#80808080";
+                    shade = "#80808080";
                     break;
                 case "hovered":
                     // If the button is hovered, make it darker
-                    shadeColor = "#80808050";
+                    shade = "#80808050";
+                    break;
             }
         }
-    }
-
-    /** The text color of the element */
-    let textColor = undefined;
-    if(color == null) {
-        // If don't know the color, don't know the text color
-        textColor = undefined;
-    } else if(outline) {
-        // If the button is outlined, the text color should be the same as the border color
-        textColor = color;
-    } else {
-        // Otherwise, the text color should contrast with the button's color
-        textColor = colors.TextColor(color);
     }
 
     return <button
@@ -246,9 +275,9 @@ export default function Button(props: IButtonProps): ReactElement {
         onMouseEnter={OnEnter}
         onMouseLeave={OnLeave}
         onClick={() => {}} // On click is handled manually
-        style={{...def, borderWidth: BORDER_WIDTH, backgroundColor: outline ? "#00000000" : color, color: textColor, borderColor: outline ? color : "#00000000", cursor: "pointer", ...(style ?? {}), position: "relative"}}
+        style={{...def, borderWidth: 0, backgroundColor: back ?? "#00000000", color: text, borderColor: darkOnLight ? color : "#00000000", cursor: "pointer", ...(style ?? {}), position: "relative"}}
     >
-        <div style={{position: "absolute", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: shadeColor, margin: -BORDER_WIDTH, borderRadius: def.borderRadius}}/>
+        <div style={{position: "absolute", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: shade, margin: -BORDER_WIDTH, borderRadius: def.borderRadius}}/>
         {children}
     </button>
 }

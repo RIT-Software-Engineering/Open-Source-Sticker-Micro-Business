@@ -30,7 +30,7 @@ export default function App(): ReactElement {
     // Note that this is treated as the visual root component of the app (fills screen)
     return <BackgroundClicksProvider style={{width: "100vw", height: "100vh", display: "flex", flex: 1, backgroundColor: background, color: colors.TextColor(background), fontFamily: "Inter", flexDirection: "column"}}>
         <UserContext value={user}>            
-            <Navpane storeName={STORE_NAME}>
+            <Navpane storeName={STORE_NAME} show={showNav}>
                 <div style={{padding: 10, display: "flex", flex: 1}}>
                     <Routes>
                         <Route path=""        element={<Home   />}/>
