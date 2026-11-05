@@ -3,7 +3,7 @@ from app.hpgl.output import save_hpgl
 
 def test_writes_a_closed_sticker_outline(tmp_path):
     sticker = box(0,0,10,5)
-    output = tmp_path / "test.plt"
+    output = "../output/test.plt"
 
     save_hpgl(
         [(sticker,sticker)],
