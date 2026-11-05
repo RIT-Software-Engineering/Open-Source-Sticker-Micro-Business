@@ -110,7 +110,7 @@ docker compose up --build
 **Line endings:** the repo's root `.gitattributes` file converts checked out files to your operating system's native ending when you check out.
 
 ### Continuous integration
-GitHub Actions runs checks on pull requests:
+GitHub Actions runs checks on pull requests and merges to main:
 - **Frontend** ([frontend.yml](.github/workflows/frontend.yml)): `npm ci`, `npm test`, `npm run lint`, and `npm run build` (which includes the TypeScript checks).
 - **Backend** ([backend.yml](.github/workflows/backend.yml)): `./mvnw -B clean verify`, which builds the application, runs its tests, and checks Java formatting; a separate job starts MySQL 8.4 and waits for its health check to pass.
 

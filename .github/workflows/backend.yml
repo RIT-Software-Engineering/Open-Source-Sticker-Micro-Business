@@ -1,6 +1,12 @@
 name: Backend CI
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'sticker-business/**'
+      - '.github/workflows/backend.yml'
   pull_request:
     paths:
       - 'sticker-business/**'
