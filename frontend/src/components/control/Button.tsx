@@ -235,13 +235,13 @@ export default function Button(props: IButtonProps): ReactElement {
                 switch(buttonColorState) {
                     case "downInside":
                     case "downOutside":
-                        back = palatte.Dark(color);
+                        back = palatte.Dark(palatte.Dark(color));
                         break;
                     case "hovered":
-                        back = color;
+                        back = palatte.Dark(color);
                         break;
                     default:
-                        back = palatte.Light(color);
+                        back = color;
                         break;
                 }
 

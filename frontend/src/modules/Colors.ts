@@ -187,7 +187,7 @@ function TextColor(source: CSSProperties["color"]): CSSProperties["color"] {
     return dark;
 }
 
-interface IColors {
+interface IColorsInternal {
     /** Primary colors for the application */
     primaryPalatte  : Palatte,
     /** Secondary colors for the application */
@@ -219,7 +219,7 @@ interface IColors {
 }
 
 /** The public colors object */
-const colors: Readonly<IColors> = Object.freeze({
+const colors: Readonly<IColorsInternal> = Object.freeze({
     primaryPalatte,
     secondaryPalatte,
     neutralPalatte,
@@ -236,10 +236,13 @@ const colors: Readonly<IColors> = Object.freeze({
     TextColor
 });
 
+/** The public color type */
+export type IColors = typeof colors;
+
 /**
  * The color context object
  */
-const ColorContext: Context<typeof colors> = createContext(colors);
+const ColorContext: Context<IColors> = createContext(colors);
 
 /**
  * Hook to use dynamic colors

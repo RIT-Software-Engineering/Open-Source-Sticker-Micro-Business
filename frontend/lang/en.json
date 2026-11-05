@@ -14,5 +14,10 @@
     },
     "home": {
         "greeting"  : "Hi, $000000"
+    },
+    "shop": {
+        "title": "Stickers",
+        "desc": "Add and edit stickers to sell on your storefront",
+        "new": "Add Sticker"
     }
 }

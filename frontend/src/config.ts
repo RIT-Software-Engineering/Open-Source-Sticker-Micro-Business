@@ -6,12 +6,12 @@ const config = {
     }
 }
 
-export type Config = typeof config;
+export type IConfig = typeof config;
 
 /**
  * Use the application config  
  * Stubbed hook
  */
-export default function useConfig(): DeepReadonly<typeof config> {
+export default function useConfig(): DeepReadonly<IConfig> {
     return config;
 }
