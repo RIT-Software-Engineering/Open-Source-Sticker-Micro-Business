@@ -9,6 +9,9 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/${MYSQL_DATABASE}
       - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
       - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+      - FILE_STORAGE_ROOT=/app/data
+    volumes:
+      - ./data:/app/data
     depends_on:
       database:
         condition: service_healthy

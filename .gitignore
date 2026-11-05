@@ -6,3 +6,6 @@
 .vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
+
+/data/*
+!/data/.gitkeep
