@@ -15,6 +15,11 @@ Each week a new 4-Up will be appeneded to the top of the section below.
 
 ---
 
+| **11/2/2026-11/8/2026** | |
+| --- | --- |
+| **Progress** <ul><li>More wireframes of screens.</li><li>More frontend implementation.</li><li>More implementation of Hibernate classes.</li></ul> | **Risks** <ul><li>The frontend and backend remain disconnected.But if there is no code freeze over the winter break, this is not a huge concern.</li></ul> |
+| **Plans** <ul><li>Continue working to get the MVP set up.</li><li>Staging area and cart ticket to explore the system flow needed to support this feature.</li><li>Staging area, sheet preview and cart wireframes for implementation.</li><li>The algorithm is currently being extended to create PDFs, and we plan to create an algorithm that shows the packing as each new sticker is added to the staging area.</li><li>End of sprint on 11/19.</li></ul> | **Needs** <ul><li>None</li></ul> |
+
 | **10/26/2026-11/1/2026** | |
 | --- | --- |
 | **Progress** <ul><li>More frontend implementation; the frontend is now navigable.</li><li>Opened a PR for the UML class diagram.</li><li>Reviewed the login flows and sequence diagrams as a team.</li><li>Completed the initial API design.</li><li>Opened a PR for a mini algorithm to precompute if a sticker fits on a sheet before 2D packing algorithm is run.</li><li>More work on the 2D packing algorithm; it now outputs an HPGL file.</li></ul> | **Risks** <ul><li>The frontend is still not connected to the backend, and it's week 11.</li></ul> |
