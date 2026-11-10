@@ -1,4 +1,4 @@
-package gold_star.sticker_business.entities;
+package entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,7 +28,6 @@ public class Tag {
     return this.label;
   }
 
-  public void setLabel(String label) {
-    this.label = label;
-  }
+  // No setters because tags are meant to be immutable, a different
+  // label is just a different tag
 }
