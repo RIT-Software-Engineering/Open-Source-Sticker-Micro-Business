@@ -29,51 +29,51 @@ public class Sticker {
     this.active = true;
   }
 
-  public int get_id() {
+  public int getId() {
     return this.id;
   }
 
-  public String get_name() {
+  public String getName() {
     return this.name;
   }
 
-  public double get_length() {
+  public double getLength() {
     return this.length;
   }
 
-  public double get_width() {
+  public double getWidth() {
     return this.width;
   }
 
-  public String get_desc() {
+  public String getDesc() {
     return desc;
   }
 
-  public String get_svgPath() {
+  public String getSvgPath() {
     return svgPath;
   }
 
-  public boolean get_active() {
+  public boolean getActive() {
     return active;
   }
 
-  public void set_name(String name) {
+  public void setName(String name) {
     this.name = name;
   }
 
-  public void set_length(double length) {
+  public void setLength(double length) {
     this.length = length;
   }
 
-  public void set_width(double width) {
+  public void setWidth(double width) {
     this.width = width;
   }
 
-  public void set_desc(String desc) {
+  public void setDesc(String desc) {
     this.desc = desc;
   }
 
-  public void set_SvgPath(String svgPath) {
+  public void setSvgPath(String svgPath) {
     this.svgPath = svgPath;
   }
 
