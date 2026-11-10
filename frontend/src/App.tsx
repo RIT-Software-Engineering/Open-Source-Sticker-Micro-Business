@@ -28,26 +28,24 @@ export default function App(): ReactElement {
     const user = new User();
 
     // Note that this is treated as the visual root component of the app (fills screen)
-    return <BackgroundClicksProvider style={{width: "100vw", height: "100vh", display: "flex", flex: 1, backgroundColor: background, color: colors.TextColor(background), fontFamily: "Inter", flexDirection: "column"}}>
+    return <BackgroundClicksProvider style={{width: "100vw", height: "100vh", display: "flex", flex: 1, backgroundColor: background, color: colors.TextColor(background), fontFamily: "Inter", flexDirection: "column", borderColor: colors.neutral}}>
         <UserContext value={user}>            
             <Navpane storeName={STORE_NAME} show={showNav}>
-                <div style={{padding: 10, display: "flex", flex: 1}}>
-                    <Routes>
-                        <Route path=""        element={<Home   />}/>
-                        <Route path="shop">
-                            <Route index          element={<Shop   />}/>
-                            <Route path=":id"     element={<Sticker/>}/>
-                        </Route>
-                        <Route path="orders"  element={<Orders />}/>
-                        <Route path="jobs"    element={<Jobs   />}/>
-                        <Route path="login">
-                            <Route index          element={<Login  />}/>
-                            <Route path="forgot"  element={<Forgot />}/>
-                            <Route path="reset"   element={<Reset  />}/>
-                        </Route>
-                        <Route path="settings" element={<Settings/>}/>
-                    </Routes>
-                </div>
+                <Routes>
+                    <Route path=""        element={<Home   />}/>
+                    <Route path="shop">
+                        <Route index          element={<Shop   />}/>
+                        <Route path=":id"     element={<Sticker/>}/>
+                    </Route>
+                    <Route path="orders"  element={<Orders />}/>
+                    <Route path="jobs"    element={<Jobs   />}/>
+                    <Route path="login">
+                        <Route index          element={<Login  />}/>
+                        <Route path="forgot"  element={<Forgot />}/>
+                        <Route path="reset"   element={<Reset  />}/>
+                    </Route>
+                    <Route path="settings" element={<Settings/>}/>
+                </Routes>
             </Navpane>
         </UserContext>
     </BackgroundClicksProvider>

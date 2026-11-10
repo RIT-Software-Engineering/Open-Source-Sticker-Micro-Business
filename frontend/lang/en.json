@@ -16,8 +16,14 @@
         "greeting"  : "Hi, $000000"
     },
     "shop": {
+        "collections": {
+            "allStickers": "All Stickers",
+            "stickerCount": "$000000 stickers"
+        },
         "title": "Stickers",
         "desc": "Add and edit stickers to sell on your storefront",
-        "new": "Add Sticker"
+        "newSticker": "Create Sticker",
+        "newCollection": "Add Collection",
+        "search": "Search by name, description or tag"
     }
 }

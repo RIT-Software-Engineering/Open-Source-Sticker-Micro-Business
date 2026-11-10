@@ -180,11 +180,11 @@ function FindPalatte(value: string): Palatte {
 }
 
 const light = "white";
-const dark = "black"
+const dark = "black";
 
 function TextColor(source: CSSProperties["color"]): CSSProperties["color"] {
-    if(tinycolor2(source).getLuminance() < 0.1791) return light;
-    return dark;
+    const {r, g, b} = tinycolor2(source).toRgb();
+    return (r * 0.299 + g * 0.587 + b * 0.114) > 186 ? dark : light;
 }
 
 interface IColorsInternal {

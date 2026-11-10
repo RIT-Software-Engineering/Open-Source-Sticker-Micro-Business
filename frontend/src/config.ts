@@ -1,9 +1,11 @@
 import type { DeepReadonly } from "./modules/Types";
 
 const config = {
-    navbar: {
-        collapseWidth: 600 // The minimum uncollapsed width of the navbar
-    }
+    shop: {
+        maxShortDescriptionLength: 100 // The maximum description length that can be shown without truncation on a sticker card
+    },
+    borderRadius                 : 4,  // The application boder radius (border radius is not inherited apparently and you can't apply it to all elements)
+    mobileWidthCutoffPx          : 600 // Screens thinner than this are assumed to be mobile
 }
 
 export type IConfig = typeof config;

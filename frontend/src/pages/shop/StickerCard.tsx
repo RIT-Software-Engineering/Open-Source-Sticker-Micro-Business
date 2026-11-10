@@ -1,41 +1,45 @@
-import type { ReactElement, ReactNode } from "react";
-import { exampleSticker, type ISticker } from "../../modules/data/Sticker";
-import type { StateRef } from "../../Types";
+import type { ReactElement } from "react";
+import type { ISticker } from "../../modules/data/Sticker";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useColors } from "../../modules/Colors";
+import useConfig from "../../config";
+import { trimTrailingZerosRe } from "../../modules/Regex";
 import Button from "../../components/control/Button";
 
-const PREVIEW_PADDING = 5;
+const IMG_VPAD = 15;
+const IMG_HPAD_RATIO = 1/5;
 
-export interface IListingCardProps {
-    /** The listing to display */
-    sticker? : ISticker  | undefined | null;
-    /** The size of the card */
-    size     : number;
-    /** What to do when the card is clicked */
-    onClick? : StateRef<ISticker | undefined | null> | undefined;
-    children?: ReactNode | undefined;
-    /** Should this card respond like a button */
-    silent?  : boolean   | undefined
+export interface IStickerCardProps {
+    sticker : ISticker;
+    cardSize: number;
 }
 
-/**
- * Displays some details about a listing as a card
- */
-export default function ListingCard({silent, sticker, size, onClick, children}: IListingCardProps): ReactElement {
+export default function StickerCard({sticker, cardSize}: IStickerCardProps): ReactElement {
     const colors = useColors();
+    const config = useConfig();
 
-    sticker = sticker ?? exampleSticker();
+    const stickerPhysicalSize = `${sticker.physicalWidth.toFixed(2).replace(trimTrailingZerosRe, "")}" x ${sticker.physicalHeight.toFixed(2).replace(trimTrailingZerosRe, "")}";`
 
-    return <div style={{width: size, display: "content", flexDirection: "column", alignItems: "center", borderStyle: "none"}}>
-        <Button silent={silent} onClick={onClick != null ? () => onClick(sticker) : undefined} style={{backgroundColor: "#00000000", padding: PREVIEW_PADDING}}>
-            {children ?? <div>
-                <img src={sticker?.designPath} width={size - PREVIEW_PADDING * 2} alt={sticker?.name}></img>
-                <p style={{fontWeight: "bold", fontSize: 16}}>{sticker?.name}</p>
-                <p style={{fontStyle: "italic"}}>{sticker.physicalWidth.toFixed(2)}" x {sticker.physicalHeight.toFixed(2)}"</p>
-            </div>}
-        </Button>
-        <div style={{display: "flex", flexDirection: "row", padding: "0 10px"}}>
-            <Button style={{flex: 1}}>Add to cart</Button>
+    return <div style={{width: cardSize, display: "flex", flexDirection: "column"}}>
+        <img src={sticker.designPath} style={{backgroundColor: colors.neutralPalatte.Lightest(), borderTopLeftRadius: config.borderRadius, borderTopRightRadius: config.borderRadius, padding: `${IMG_VPAD}px ${Math.round((cardSize - IMG_VPAD) * IMG_HPAD_RATIO) + IMG_VPAD}px`}}/>
+        
+        <div style={{padding: 10, borderColor: colors.neutralPalatte.Lightest(), borderStyle: "solid", borderWidth: 1, borderBottomLeftRadius: config.borderRadius, borderBottomRightRadius: config.borderRadius}}>
+            <div style={{display: "flex", flexDirection: "row", alignItems: "center", marginTop: 5, marginBottom: 2.5}}>
+                <div style={{flex: 1}}>
+                    {sticker.name}
+                </div>
+
+                <Button size="none" style={{padding: 5}}>
+                    <FontAwesomeIcon icon={faEllipsis}/>
+                </Button>
+            </div>
+
+            <div style={{fontSize: "0.75em", color: colors.neutralPalatte.Darkest()}}>
+                {sticker.description}
+                <div style={{height: 2.5}}/>
+                {stickerPhysicalSize}
+            </div>
         </div>
     </div>
 }

@@ -12,7 +12,7 @@ const BORDER_WIDTH = 5;
 function DefineStyle(radius: number, hpad: number, vpad: number, fontSize: number): Readonly<{borderRadius: number, padding: string, fontSize: string}> {
     return Object.freeze({
         borderRadius: radius,
-        padding: `${hpad / 2}px ${vpad / 2}px`,
+        padding: `${vpad / 2}px ${hpad / 2}px`,
         fontSize: `${fontSize}em`,
     });
 }
@@ -21,10 +21,11 @@ function DefineStyle(radius: number, hpad: number, vpad: number, fontSize: numbe
  * Size detail enumeration
  */
 const SIZE_DEFINITION = Object.freeze({
-    "large"     : DefineStyle(4, 32, 20, 1.25 ),
-    "medium"    : DefineStyle(4, 32, 16, 1    ),
-    "small"     : DefineStyle(4, 24, 12, 0.875),
-    "extraSmall": DefineStyle(4, 24,  8, 0.875)
+    "large" : DefineStyle(4, 32, 20, 1.25 ),
+    "medium": DefineStyle(4, 24, 20, 1    ),
+    "small" : DefineStyle(4, 16, 12, 0.875),
+    "tiny"  : DefineStyle(4, 16,  8, 0.875),
+    "none"  : DefineStyle(4,  0,  0, 1    )
 })
 
 /** States that the button can be in (the actual granular states) */

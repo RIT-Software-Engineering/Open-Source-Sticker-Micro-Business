@@ -8,3 +8,5 @@ export type DeepReadonly<T> =
     T extends any[] ? DeepReadonlyArray<T[number]> :
     T extends object ? DeepReadonlyObject<T> :
     T;
+
+export type ReservedJsonNames = "$name" | "$desc";

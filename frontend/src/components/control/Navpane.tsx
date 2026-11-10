@@ -9,6 +9,8 @@ import type { Callback } from "../../Types";
 import { useUser } from "../../modules/User";
 import { useColors } from "../../modules/Colors";
 import { useNavigate } from "react-router";
+import { useIsMobile } from "../../modules/Hooks";
+import BackgroundClicksScope from "./BackgroundClicks";
 
 const ICON_SIZE = 25;
 
@@ -29,19 +31,21 @@ function SidebarTab({target, title, icon}: ISidebarTabProps): ReactElement {
 }
 
 interface ISidebarProps {
-    open     : boolean;
-    children?: ReactNode | undefined;
-    storeName: string;
+    open           : boolean;
+    children?      : ReactNode | undefined;
+    storeName      : string;
+    onClickSidebar?: Callback  | undefined;
 }
 
-function Sidebar({open, children, storeName}: ISidebarProps): ReactElement {
+function Sidebar({open, children, storeName, onClickSidebar}: ISidebarProps): ReactElement {
     const text = useText();
-
+    const colors = useColors();
+    const isMobile = useIsMobile();
     const navigate = useNavigate();
 
     return <div style={{display: "flex", flexDirection: "row", flex: 1}}>
         {open
-            ? <div style={{display: "flex", flexDirection: "column", borderRightStyle: "solid", borderWidth: 1, padding: 10}}>
+            ? <BackgroundClicksScope onBackgroundClick={open && isMobile ? onClickSidebar : undefined} style={{top: 0, display: "flex", flexDirection: "column", borderRightStyle: "solid", borderWidth: 1, padding: 10, position: isMobile ? "absolute" : undefined, zIndex: 9, backgroundColor: colors.light}}>
                 <div style={{flex: 1, display: "flex", flexDirection: "column"}}>
                     <Button onClick={() => navigate("/")          } style={{alignItems: "center", display: "flex", flexDirection: "row", backgroundColor: "#00000000", textAlign: "left"}} silent>
                         <img src={"../../../assets/images/logo-temp.webp"} style={{width: 30, height: 30, margin: -2.5}}/>
@@ -50,14 +54,14 @@ function Sidebar({open, children, storeName}: ISidebarProps): ReactElement {
 
                     <SidebarTab icon={faHouse     } target={"/"          } title={text.nav.home      }/>
                     <SidebarTab icon={faStickyNote} target={"/shop"      } title={text.nav.shop      }/>
-                    <SidebarTab icon={faFolder    } target={"/categories"} title={text.nav.categories}/>
+                    {/* <SidebarTab icon={faFolder    } target={"/categories"} title={text.nav.categories}/> */}
                     <SidebarTab icon={faClipboard } target={"/jobs"      } title={text.nav.jobs      }/>
                 </div>
 
-                <div style={{flex: 0, display: "flex", flexDirection: "column"}}>
+                <div style={{flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-end"}}>
                     <SidebarTab icon={faGear      } target={"/settings"  } title={text.nav.settings  }/>
                 </div>
-            </div>
+            </BackgroundClicksScope>
             : undefined
         }
         {children}
@@ -68,7 +72,7 @@ interface IHeaderProps {
     children?          : ReactNode | undefined;
     showSidebarControls: boolean;
     storeName          : string;
-    onClickSidebar?    : Callback;
+    onClickSidebar?    : Callback  | undefined;
 }
 
 function Header({children, showSidebarControls, storeName, onClickSidebar}: IHeaderProps): ReactElement {
@@ -106,16 +110,20 @@ export interface INavpaneProps {
 }
 
 export default function Navpane({children, storeName, show}: INavpaneProps): ReactElement {
-    const config = useConfig();
-    const [open, setOpen] = useState<boolean>(window.innerWidth > config.navbar.collapseWidth);
+    const isMobile = useIsMobile();
+    const [open, setOpen] = useState<boolean>(isMobile);
 
     if(show) {
-        return <Sidebar open={open} storeName={storeName}>
+        return <Sidebar open={open} storeName={storeName} onClickSidebar={() => setOpen(!open)}>
             <Header showSidebarControls={!open} storeName={storeName} onClickSidebar={() => setOpen(!open)}>
-                {children}
+                <div style={{flex: 1, overflowY: "auto"}}>
+                    <div style={{display: "flex", flex: 1, padding: "10px 0 0 10px"}}>
+                        {children}
+                    </div>
+                </div>
             </Header>
         </Sidebar>
-    } else return <>
+    } else return <div style={{display: "flex", flex: 1, overflowY: "auto", padding: 10}}>
         {children}
-    </>
+    </div>
 }

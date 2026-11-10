@@ -9,12 +9,14 @@
 }
 
 * {
-    font-size: 16;
+    font-size: 16px;
     line-height: 140%;
     font-family: "Inter";
+    overflow: hidden;
+    flex-shrink: 0;
 }
 
-body {
+html, body, .root {
   margin: 0;
 }
 
@@ -42,6 +44,8 @@ h3 {
     font-size: 1.5em;
     font-weight: "bold";
     line-height: 120%;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 /* button {
