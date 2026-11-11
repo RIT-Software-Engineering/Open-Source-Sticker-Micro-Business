@@ -1,10 +1,11 @@
 package gold_star.sticker_business.entities;
 
-// import jakarta.persistence.Convert;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.HashMap;
 
 @Entity
 @Table(name = "StickerSheets")
@@ -15,6 +16,6 @@ public class StickerSheets {
 
   private String stickerIdsJSON;
 
-  //   @Convert(converter = HashMapConverter.class)
-  //   private Map<Sticker, int> stickerIds;
+  @Convert(converter = HashMapConverter.class)
+  private HashMap<Sticker, int> stickerIds;
 }

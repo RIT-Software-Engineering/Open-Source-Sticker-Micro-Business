@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.Immutable;
 
 @Entity
 @Table(name = "Tag")
@@ -12,6 +13,7 @@ public class Tag {
   @Id @GeneratedValue private int id;
 
   @Column(unique = true)
+  @Immutable
   private String label;
 
   public Tag() {}

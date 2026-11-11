@@ -1,6 +1,7 @@
 package entities;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,9 +15,11 @@ import java.util.List;
 public class Collection {
   @Id @GeneratedValue private int id;
 
+  @Column(unique = true)
   private String name;
 
   // Reference to all the CollectionItems in the order
+  // No setter -- stickers in a collection should not be modified this way
   @OneToMany(mappedBy = "collectionId", cascade = CascadeType.ALL)
   private List<CollectionItems> items = new ArrayList<CollectionItems>();
 
@@ -28,6 +31,10 @@ public class Collection {
 
   public String getName() {
     return this.name;
+  }
+
+  public List<CollectionItems> getItems() {
+    return this.items;
   }
 
   public void setName(String name) {

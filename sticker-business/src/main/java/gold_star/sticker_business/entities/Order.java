@@ -1,6 +1,7 @@
 package entities;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,6 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -22,23 +24,48 @@ public class Order {
 
   @ManyToOne
   @JoinColumn(name = "customerId")
-  private int customerId; // FK to User --> TODO: change type to User when class exists
+  private User customer;
 
   @CreationTimestamp private Instant placementTimestamp;
 
   @Enumerated(EnumType.STRING)
   private OrderStatus status;
 
-  private String address; // json?? maybe use a blob instead?
+  private String addressJSON;
+
+  private String note;
 
   // Reference to all the OrderItems in the order
   @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL)
   private List<OrderItems> items = new ArrayList<OrderItems>();
 
+  // Reference to all the OrderUpdates for the order
+  @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL)
+  private List<OrderUpdates> updates = new ArrayList<OrderUpdates>();
+
+  @Convert(converter = AddressConverter.class)
+  private HashMap<String, String> address;
+
   public Order() {}
 
-  public Order(int customerId, String address) {
-    this.customerId = customerId;
-    this.address = address;
+  public Order(User customer, String addressJSON) {
+    this.customer = customer;
+    this.addressJSON = addressJSON;
+  }
+
+  public int getId() {
+    return this.id;
+  }
+
+  public User getCustomer() {
+    return this.customer;
+  }
+
+  public Instant getPlacementTimestamp() {
+    return this.placementTimestamp;
+  }
+
+  public OrderStatus getStatus() {
+    return this.status;
   }
 }
