@@ -4,6 +4,7 @@ from reportlab.pdfgen import canvas
 from reportlab.graphics import renderPDF
 from svglib.svglib import svg2rlg
 from shapely.affinity import rotate, translate
+from app.models.sticker import Sticker
 
 PAGE_SIZE = (5.5*inch, 8.5*inch)
 
@@ -34,12 +35,12 @@ def _get_rotation(original,placed):
     )
 
 
-def save_pdf(placements, sticker_paths, output):
+def save_pdf(placements, sticker_lookup, output):
     """Export packed stickers as a full-color half-letter PDF.
 
     Args:
         placements: List of (original_geometry, placed_geometry) pairs.
-        sticker_paths: Dictionary mapping id(original_geometry) to SVG paths.
+        stickerlookup: Dictionary mapping id(original_geometry) to SVG paths.
         output: Destination PDF file path."""
 
     output = Path(output)
@@ -48,7 +49,15 @@ def save_pdf(placements, sticker_paths, output):
     pdf = canvas.Canvas(str(output), pagesize = PAGE_SIZE)
 
     for original, placed in placements:
-        svg_path = sticker_paths.get(id(original))
+        sticker = sticker_lookup.get(id(original))
+
+        sticker_or_path = sticker_lookup.get(id(original))
+        if isinstance(sticker_or_path, Sticker):
+            svg_path = sticker_or_path.svg_path
+        else:
+            svg_path = sticker_or_path
+
+
 
         if not svg_path:
             raise ValueError(
