@@ -15,6 +15,11 @@ Each week a new 4-Up will be appeneded to the top of the section below.
 
 ---
 
+| **10/26/2026-11/1/2026** | |
+| --- | --- |
+| **Progress** <ul><li>More frontend implementation; the frontend is now navigable.</li><li>Opened a PR for the UML class diagram.</li><li>Reviewed the login flows and sequence diagrams as a team.</li><li>Completed the initial API design.</li><li>Opened a PR for a mini algorithm to precompute if a sticker fits on a sheet before 2D packing algorithm is run.</li><li>More work on the 2D packing algorithm; it now outputs an HPGL file.</li></ul> | **Risks** <ul><li>The frontend is still not connected to the backend, and it's week 11.</li></ul> |
+| **Plans** <ul><li>This is our last sprint of the semester. It is 3 weeks long so that we finish before Thanksgiving break.</li><li>We will seek to complete the design and implementation of our MVP; connecting the frontend to the backend.</li></ul> | **Needs** <ul><li>Hardware from the project sponsor to begin hardware investigation.</li></ul> |
+
 | **10/19/2026-10/25/2026** | |
 | --- | --- |
 | **Progress** <ul><li>Merged in our first feature ticket!!!</li><li>Continued frontend implementation.</li><li>Continued work on the 2D shape packing algorithm.</li><li>Began API design.</li><li>Began design on login user flows.</li></ul> | **Risks** <ul><li>Still no demonstratable product.</li></ul> |
