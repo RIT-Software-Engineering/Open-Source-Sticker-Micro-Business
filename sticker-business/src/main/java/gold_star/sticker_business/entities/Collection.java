@@ -1,4 +1,4 @@
-package entities;
+package gold_star.sticker_business.entities;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@SuppressWarnings("NullAway.Init")
 @Table(name = "Collection")
 public class Collection {
   @Id @GeneratedValue private int id;

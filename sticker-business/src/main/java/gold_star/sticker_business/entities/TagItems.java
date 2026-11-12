@@ -1,4 +1,4 @@
-package entities;
+package gold_star.sticker_business.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
+@SuppressWarnings("NullAway.Init")
 @Table(name = "TagItems")
 public class TagItems {
   @Id @GeneratedValue private int id;

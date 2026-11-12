@@ -1,4 +1,4 @@
-package entities;
+package gold_star.sticker_business.entities;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Convert;
@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 
+@SuppressWarnings("NullAway.Init")
 @Entity
 @Table(name = "PlacedOrder") // 'order' is a reserved keyword in MySQL
 public class Order {
@@ -67,5 +68,21 @@ public class Order {
 
   public OrderStatus getStatus() {
     return this.status;
+  }
+
+  public HashMap<String, String> getAddress() {
+    return this.address;
+  }
+
+  public String getNote() {
+    return this.note;
+  }
+
+  public void setStatus(OrderStatus status) {
+    this.status = status;
+  }
+
+  public void setNote(String note) {
+    this.note = note;
   }
 }

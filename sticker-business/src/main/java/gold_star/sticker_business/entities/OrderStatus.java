@@ -1,4 +1,4 @@
-package entities;
+package gold_star.sticker_business.entities;
 
 public enum OrderStatus {
   SUBMITTED,

@@ -1,5 +1,6 @@
 package gold_star.sticker_business.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -9,10 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@SuppressWarnings("NullAway.Init")
 @Table(name = "PermissionType")
 public class PermissionType {
   @Id @GeneratedValue private int id;
 
+  @Column(unique = true)
   private String name;
 
   @OneToMany(mappedBy = "permissionType")

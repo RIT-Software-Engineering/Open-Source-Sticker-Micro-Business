@@ -1,4 +1,4 @@
-package entities;
+package gold_star.sticker_business.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import org.hibernate.annotations.Immutable;
 
 @Entity
+@SuppressWarnings("NullAway.Init")
 @Table(name = "Tag")
 public class Tag {
   @Id @GeneratedValue private int id;

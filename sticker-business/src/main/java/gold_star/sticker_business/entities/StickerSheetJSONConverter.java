@@ -1,19 +1,19 @@
-package entities;
+package gold_star.sticker_business.entities;
 
 import jakarta.persistence.AttributeConverter;
-import java.util.HashMap;
+import java.util.Map;
 
 public class StickerSheetJSONConverter
-    implements AttributeConverter<HashMap<Sticker, Integer>, String> {
+    implements AttributeConverter<Map<Sticker, Integer>, String> {
 
   @Override
-  public String convertToDatabaseColumn(HashMap<Sticker, Integer> stickerIds) {
+  public String convertToDatabaseColumn(Map<Sticker, Integer> stickerIds) {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'convertToDatabaseColumn'");
   }
 
   @Override
-  public HashMap<Sticker, Integer> convertToEntityAttribute(String stickerIdsJSON) {
+  public Map<Sticker, Integer> convertToEntityAttribute(String stickerIdsJSON) {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'convertToEntityAttribute'");
   }

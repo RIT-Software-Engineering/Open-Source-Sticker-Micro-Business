@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
+@SuppressWarnings("NullAway.Init")
 @Table(name = "User")
 public class User {
   @Id @GeneratedValue private int id;

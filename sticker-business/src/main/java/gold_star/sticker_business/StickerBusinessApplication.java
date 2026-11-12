@@ -1,6 +1,6 @@
 package gold_star.sticker_business;
 
-import entities.Sticker;
+import gold_star.sticker_business.entities.Sticker;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;

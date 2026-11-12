@@ -1,4 +1,4 @@
-package entities;
+package gold_star.sticker_business.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -11,6 +11,7 @@ import java.time.Instant;
 import org.hibernate.annotations.Immutable;
 
 @Entity
+@SuppressWarnings("NullAway.Init")
 @Table(name = "OrderUpdates")
 public class OrderUpdates {
 

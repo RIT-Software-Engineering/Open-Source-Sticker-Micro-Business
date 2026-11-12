@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@SuppressWarnings("NullAway.Init")
 @Table(name = "Permission")
 public class Permission {
   @Id @GeneratedValue private int id;

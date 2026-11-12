@@ -1,4 +1,4 @@
-package entities;
+package gold_star.sticker_business.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
+@SuppressWarnings("NullAway.Init")
 @Table(name = "Sticker")
 public class Sticker {
   @Id @GeneratedValue private int id;
