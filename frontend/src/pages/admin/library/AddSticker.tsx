@@ -1,8 +1,8 @@
 import { useState, type ReactElement } from "react";
-import type { Callback, StateRef } from "../../Types";
-import { useColors } from "../../modules/Colors";
-import Button from "../../components/control/Button";
-import { exampleSticker, type ISticker } from "../../modules/data/Sticker";
+import type { Callback, StateRef } from "../../../Types";
+import { useColors } from "../../../modules/Colors";
+import Button from "../../../components/control/Button";
+import { GetExampleSticker, type ISticker } from "../../../modules/data/Sticker";
 
 export interface IAddListingProps {
     onSubmit?: StateRef<ISticker> | undefined;
@@ -10,8 +10,13 @@ export interface IAddListingProps {
     screenPadding?: number | undefined;
 }
 
+/**
+ * To be redone
+ * @param param0 
+ * @returns 
+ */
 export default function AddSticker({onSubmit, onCancel, screenPadding}: IAddListingProps): ReactElement {
-    const [value, setValue] = useState<ISticker>(exampleSticker());
+    const [value, _setValue] = useState<ISticker>(GetExampleSticker());
 
     const colors = useColors();
 

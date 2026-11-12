@@ -3,6 +3,9 @@ import useConfig from "../config";
 import { useRerender } from "./Utility";
 import type { StateRef } from "../Types";
 
+/**
+ * Use if the application should be assumed to be on a mobile or mobile-ish device
+ */
 export function useIsMobile(): boolean {
     const config = useConfig();
     const rerender = useRerender("isMobile");

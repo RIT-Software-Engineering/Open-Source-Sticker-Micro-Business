@@ -1,12 +1,13 @@
-import { type ReactElement } from 'react'
 import './App.css'
+import "./Icons.css";
+import { type ReactElement } from 'react'
 import { useColors } from './modules/Colors';
 import { Route, Routes, useLocation } from 'react-router';
 import Home from './pages/admin/home/Home';
-import Library from './pages/library/Library';
+import Library from './pages/admin/library/Library';
 import Orders from './pages/admin/orders/Orders';
 import Jobs from './pages/admin/jobs/Jobs';
-import Sticker from './pages/library/Sticker';
+import Sticker from './pages/admin/library/Sticker';
 import Login from './pages/login/Login';
 import Forgot from './pages/login/Forgot';
 import Reset from './pages/login/Reset';

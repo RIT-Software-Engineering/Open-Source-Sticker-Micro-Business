@@ -1,0 +1,42 @@
+.library-section-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.library-section-header {
+    display: flex;
+    flex: 1;
+    border-radius: var(--border-radius);
+    padding: 4px 8px;
+    align-items: center;
+}
+
+.library-section-edit {
+    margin: 5px;
+    margin-right: 10px;
+}
+
+.library-section-noedit {
+    padding: 10px 0;
+    color: #00000000;
+}
+
+.library-section-name {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.library-section-move {
+    font-size: 24px;
+    margin-left: 7.5px;
+}
+
+.library-section-body {
+    display:flex;
+    flex-direction: row;
+    overflow-x: auto;
+    column-gap: 10px;
+    padding-bottom: 5px;
+}

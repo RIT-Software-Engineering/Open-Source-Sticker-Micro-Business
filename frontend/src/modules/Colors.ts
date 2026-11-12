@@ -5,6 +5,9 @@ import tinycolor2 from "tinycolor2";
  * This is pretty complicated, but it seems like the only way to get the styles from the spec  
  * It doesn't seem to be doable from just CSS
  * Pretty easy to use once you get used to it
+ * 
+ * Check up on if this is possible to do with CSS again  
+ * The wireframes may have to make sacrifices
  */
 
 /** A way to look up palattes by color */

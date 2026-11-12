@@ -4,8 +4,11 @@
 }
 
 :root {
+    --light: #ffffff;
+    --dark: #000000;
     --primary: #8A8BF1;
     --secondary: #FFCF70;
+    --border-radius: 4px;
 }
 
 * {
@@ -14,6 +17,10 @@
     font-family: "Inter";
     overflow: hidden;
     flex-shrink: 0;
+}
+
+.flex-spacer {
+    flex: 1;
 }
 
 html, body, .root {

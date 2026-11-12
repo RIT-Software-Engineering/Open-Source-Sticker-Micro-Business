@@ -1,0 +1,53 @@
+.library-container {
+    padding: 5px;
+    flex: 1;
+    overflow-y: visible;
+}
+
+.library-header {    
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    margin-bottom: 15px;
+}
+
+.library-about {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-right: 25px;
+}
+
+.library-description {
+    max-width: 500px;
+}
+
+.library-control-positioner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.library-control-shaper {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.library-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.library-control-add-icon {
+    font-size: 25px;
+    margin-right: 10px;
+}
+
+.library-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    row-gap: 10px;
+}

@@ -1,32 +1,9 @@
-import { useEffect, useRef, type ButtonHTMLAttributes, type CSSProperties, type MouseEvent, type ReactElement, type ReactNode } from "react";
+import "./Button.css";
+import { useEffect, useRef, type ButtonHTMLAttributes, type CSSProperties, type MouseEvent, type ReactElement } from "react";
 import type { Callback } from "../../Types";
 import { useColors } from "../../modules/Colors";
 import { useRerender } from "../../modules/Utility";
-
-/** The width for the border of the button */
-const BORDER_WIDTH = 5;
-
-/**
- * Style definition helper function
- */
-function DefineStyle(radius: number, hpad: number, vpad: number, fontSize: number): Readonly<{borderRadius: number, padding: string, fontSize: string}> {
-    return Object.freeze({
-        borderRadius: radius,
-        padding: `${vpad / 2}px ${hpad / 2}px`,
-        fontSize: `${fontSize}em`,
-    });
-}
-
-/**
- * Size detail enumeration
- */
-const SIZE_DEFINITION = Object.freeze({
-    "large" : DefineStyle(4, 32, 20, 1.25 ),
-    "medium": DefineStyle(4, 24, 20, 1    ),
-    "small" : DefineStyle(4, 16, 12, 0.875),
-    "tiny"  : DefineStyle(4, 16,  8, 0.875),
-    "none"  : DefineStyle(4,  0,  0, 1    )
-})
+import type { ISupportsChildren, ISupportsStyle } from "../../modules/Types";
 
 /** States that the button can be in (the actual granular states) */
 type IInternalButtonState = "inactive" | "hovered" | "downInside" | "downOutside";
@@ -35,17 +12,14 @@ export type IButtonState  = "hovered" | "down";
 /** Styling types of the button */
 export type IButtonType   = "outline" | "solid" | "invisible";
 /** Available sizes of the button */
-export type IButtonSize   = keyof typeof SIZE_DEFINITION;
+export type IButtonSize   = "large" | "medium" | "small" | "tiny" | "none";
 
 /** Base customized button props */
 type _ICustomButtonProps = {
-    children?   : ReactNode     | undefined;
     /** What to do when the button is clicked */
     onClick?    : Callback      | undefined;
     /** The color of the button */
     color?      : CSSProperties["color"];
-    /** Note that you cannot override `position` */
-    style?      : CSSProperties | undefined;
     /** The size of the button (default medium) */
     size?       : IButtonSize   | undefined;
     /** Is the button disabled */
@@ -56,7 +30,7 @@ type _ICustomButtonProps = {
     value?      : IButtonState  | undefined;
     /** Is the button dark text on a light background (default false) */
     darkOnLight?: boolean       | undefined
-}
+} & ISupportsStyle & ISupportsChildren;
 
 /** Props for the button component */
 export type IButtonProps = 
@@ -65,13 +39,12 @@ export type IButtonProps =
 
 /** A wrapped button component */
 export default function Button(props: IButtonProps): ReactElement {
-    const {onClick, value, color: colorProp, darkOnLight, size, children, style, disabled, silent} = props;
+    const {className: classNameProp, onClick, value, color: colorProp, darkOnLight, size, children, style, disabled, silent} = props;
 
     const rerender = useRerender("Button");
     const state = useRef<IInternalButtonState>("inactive");
 
     const colors = useColors();
-    const def = SIZE_DEFINITION[size ?? "medium"] ?? SIZE_DEFINITION["medium"];
 
     // Handle when the button is controlled
     const controlLog = useRef<IButtonProps["value"]>(value);
@@ -269,6 +242,11 @@ export default function Button(props: IButtonProps): ReactElement {
         }
     }
 
+    let className = (size ?? "medium") + "-generic-button generic-button";
+    if(classNameProp != null) {
+        className += " " + classNameProp;
+    }
+
     return <button
         {...(props as ButtonHTMLAttributes<HTMLButtonElement>)}
         onMouseDown={OnClickStart}
@@ -276,9 +254,10 @@ export default function Button(props: IButtonProps): ReactElement {
         onMouseEnter={OnEnter}
         onMouseLeave={OnLeave}
         onClick={() => {}} // On click is handled manually
-        style={{...def, borderWidth: 0, backgroundColor: back ?? "#00000000", color: text, borderColor: darkOnLight ? color : "#00000000", cursor: "pointer", ...(style ?? {}), position: "relative"}}
+        style={{backgroundColor: back ?? "#00000000", color: text, borderColor: darkOnLight ? color : "#00000000", ...(style ?? {}), position: "relative"}} // Position should always be overriden
+        className={className}
     >
-        <div style={{position: "absolute", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: shade, margin: -BORDER_WIDTH, borderRadius: def.borderRadius}}/>
+        <div className="generic-button-overlay" style={{backgroundColor: shade}}/>
         {children}
     </button>
 }

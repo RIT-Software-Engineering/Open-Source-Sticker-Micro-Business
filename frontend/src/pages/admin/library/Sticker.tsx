@@ -1,11 +1,9 @@
 import type { ReactElement } from "react";
 import { useNavigate, useParams } from "react-router";
-import Button from "../../components/control/Button";
+import Button from "../../../components/control/Button";
 
 /**
- * A page displaying a single listing
- * 
- * @param id Takes an id path parameter corresponding to a listing id
+ * To be redone
  */
 export default function Sticker(): ReactElement {
     const {id} = useParams();

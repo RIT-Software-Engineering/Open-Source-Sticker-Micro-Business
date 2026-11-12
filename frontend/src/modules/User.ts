@@ -1,5 +1,8 @@
 import { createContext, useContext } from "react";
 
+/**
+ * Represents a user (partially a placeholder)
+ */
 export default class User {
     private _isAdmin: boolean;
     private _name: string
@@ -18,8 +21,14 @@ export default class User {
     }
 }
 
+/**
+ * Provide user context
+ */
 export const UserContext = createContext<User | null>(null);
 
+/**
+ * Use the current user
+ */
 export function useUser(): User | null {
     return useContext(UserContext);
 }

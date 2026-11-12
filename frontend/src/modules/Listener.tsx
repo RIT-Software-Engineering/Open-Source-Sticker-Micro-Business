@@ -69,10 +69,16 @@ export default abstract class Listener {
         this.bound.clear();
     }
 
+    /**
+     * The keys for currently bound listeners (ie. .keys())
+     */
     protected get BoundListeners(): MapIterator<number> {
         return this.bound.keys();
     }
 
+    /**
+     * The amount of listeners bound
+     */
     protected get ListenerCount(): number {
         return this.bound.size;
     }

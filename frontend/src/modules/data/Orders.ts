@@ -1,3 +1,7 @@
+/**
+ * Represents an order
+ */
 export type IOrder = {
-    id: number
+    /** The id of the order */
+    id: number;
 };

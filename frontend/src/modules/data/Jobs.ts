@@ -1,3 +1,7 @@
+/**
+ * Represents a job
+ */
 export type IJob = {
-    id: number
+    /** The id of the job */
+    id: number;
 };

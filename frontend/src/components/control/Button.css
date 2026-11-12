@@ -1,0 +1,37 @@
+button {
+    border-radius: var(--border-radius);
+    border-width: 0;
+}
+
+.large-generic-button {
+    padding: 16px 10px;
+    font-size: 1.25em;
+}
+
+.medium-generic-button {
+    padding: 12px 10px;
+}
+
+.small-generic-button {
+    padding: 8px 6px;
+}
+
+.tiny-generic-button {
+    padding: 8px 4px;
+}
+
+.generic-button {
+    cursor: pointer;
+    border-color: #00000000;
+    border-width: 0px;
+}
+
+.generic-button-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: -5px;
+    border-radius: 4px;
+}
