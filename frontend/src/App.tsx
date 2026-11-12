@@ -3,10 +3,10 @@ import './App.css'
 import { useColors } from './modules/Colors';
 import { Route, Routes, useLocation } from 'react-router';
 import Home from './pages/admin/home/Home';
-import Shop from './pages/shop/Shop';
+import Library from './pages/library/Library';
 import Orders from './pages/admin/orders/Orders';
 import Jobs from './pages/admin/jobs/Jobs';
-import Sticker from './pages/shop/Sticker';
+import Sticker from './pages/library/Sticker';
 import Login from './pages/login/Login';
 import Forgot from './pages/login/Forgot';
 import Reset from './pages/login/Reset';
@@ -14,6 +14,7 @@ import { BackgroundClicksProvider } from './components/control/BackgroundClicks'
 import User, { UserContext } from './modules/User';
 import Navpane from './components/control/Navpane';
 import Settings from './pages/Settings';
+import Store from './pages/store/Store';
 
 const STORE_NAME = "Gold Star";
 
@@ -33,8 +34,8 @@ export default function App(): ReactElement {
             <Navpane storeName={STORE_NAME} show={showNav}>
                 <Routes>
                     <Route path=""        element={<Home   />}/>
-                    <Route path="shop">
-                        <Route index          element={<Shop   />}/>
+                    <Route path="library">
+                        <Route index          element={<Library   />}/>
                         <Route path=":id"     element={<Sticker/>}/>
                     </Route>
                     <Route path="orders"  element={<Orders />}/>
@@ -45,6 +46,9 @@ export default function App(): ReactElement {
                         <Route path="reset"   element={<Reset  />}/>
                     </Route>
                     <Route path="settings" element={<Settings/>}/>
+                    <Route path="store">
+                        <Route index          element={<Store  />}/>
+                    </Route>
                 </Routes>
             </Navpane>
         </UserContext>

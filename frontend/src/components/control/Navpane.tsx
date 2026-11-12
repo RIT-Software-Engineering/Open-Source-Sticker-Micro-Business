@@ -1,9 +1,9 @@
 import { useState, type ReactElement, type ReactNode } from "react";
 import Button from "./Button";
-import { faClipboard, faFolder, faHouse, faStickyNote, type IconDefinition } from "@fortawesome/free-regular-svg-icons";
+import { faFolder, type IconDefinition } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useConfig from "../../config";
-import { faBars, faGear } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faClipboard, faGear, faHouse, faStickyNote, faStore } from "@fortawesome/free-solid-svg-icons";
 import useText, { TemplateText } from "../../modules/Text";
 import type { Callback } from "../../Types";
 import { useUser } from "../../modules/User";
@@ -52,14 +52,14 @@ function Sidebar({open, children, storeName, onClickSidebar}: ISidebarProps): Re
                         <h2 style={{flex: 1, marginRight: 10, fontWeight: "bold", lineHeight: "100%", marginBottom: -10, marginTop: -10, marginLeft: 12.5}}>{storeName}</h2>
                     </Button>
 
-                    <SidebarTab icon={faHouse     } target={"/"          } title={text.nav.home      }/>
-                    <SidebarTab icon={faStickyNote} target={"/shop"      } title={text.nav.shop      }/>
-                    {/* <SidebarTab icon={faFolder    } target={"/categories"} title={text.nav.categories}/> */}
-                    <SidebarTab icon={faClipboard } target={"/jobs"      } title={text.nav.jobs      }/>
+                    <SidebarTab icon={faHouse     } target={"/"        } title={text.nav.home    }/>
+                    <SidebarTab icon={faStickyNote} target={"/library" } title={text.nav.library }/>
+                    <SidebarTab icon={faClipboard } target={"/jobs"    } title={text.nav.jobs    }/>
+                    <SidebarTab icon={faStore     } target={"/store"   } title={text.nav.store   }/>
                 </div>
 
                 <div style={{flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-end"}}>
-                    <SidebarTab icon={faGear      } target={"/settings"  } title={text.nav.settings  }/>
+                    <SidebarTab icon={faGear      } target={"/settings"} title={text.nav.settings}/>
                 </div>
             </BackgroundClicksScope>
             : undefined

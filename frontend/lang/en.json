@@ -3,7 +3,8 @@
     "$desc": "This file contains the english language assets to make localization (relatively) easy in the future. Note that template string follow the format $xxxxxx where x is the xth format template parameter. So for example, 'I like my $000000 $111111 with $222222'{'green', 'eggs', 'ham'} would result in 'I like my green eggs with ham'",
     "nav": {
         "home"      : "Home",
-        "shop"      : "Shop",
+        "library"   : "Library",
+        "store"     : "Store",
         "categories": "Categories",
         "jobs"      : "Jobs",
         "settings"  : "Settings",
@@ -15,15 +16,19 @@
     "home": {
         "greeting"  : "Hi, $000000"
     },
-    "shop": {
+    "library": {
         "collections": {
             "allStickers": "All Stickers",
             "stickerCount": "$000000 stickers"
         },
-        "title": "Stickers",
+        "title": "Library",
         "desc": "Add and edit stickers to sell on your storefront",
         "newSticker": "Create Sticker",
         "newCollection": "Add Collection",
         "search": "Search by name, description or tag"
+    },
+    "store": {
+        "title": "Store",
+        "desc": "Make and purchase sticker sheets"
     }
 }

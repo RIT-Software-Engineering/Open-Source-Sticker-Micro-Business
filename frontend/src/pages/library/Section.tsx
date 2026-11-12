@@ -33,7 +33,7 @@ export default function Collection({collection, stickers: allStickers, disallowE
                 <h3>{collection.name}</h3>
             </div>
 
-            <div>{TemplateText(text.shop.collections.stickerCount, ownedStickers.length.toString())}</div>
+            <div>{TemplateText(text.library.collections.stickerCount, ownedStickers.length.toString())}</div>
             {!disallowEdit
                 ? <FontAwesomeIcon icon={faBars} style={{fontSize: 24, marginLeft: 7.5}}/>
                 : undefined

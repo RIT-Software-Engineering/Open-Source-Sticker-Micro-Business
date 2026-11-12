@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import useConfig from "../config";
 import { useRerender } from "./Utility";
 import type { StateRef } from "../Types";
