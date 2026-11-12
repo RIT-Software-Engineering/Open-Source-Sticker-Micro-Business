@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "test": "vitest run",
+    "test": "node --test src/mini-algo.test.ts && vitest run src/App.test.tsx",
     "preview": "vite preview"
   },
   "dependencies": {
