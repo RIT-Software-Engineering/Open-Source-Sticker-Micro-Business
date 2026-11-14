@@ -1,5 +1,5 @@
 from app.svg.loader import load_sticker_svg
-from shapely.geometry import Polygon
+from shapely.geometry import Point, Polygon
 from pathlib import Path
 import pytest
 
@@ -76,3 +76,33 @@ def test_svg_loads_as_one_nonempty_sticker():
     assert len(geometry.interiors) == 0
     assert geometry.exterior.is_ring
     assert geometry.is_simple
+
+def test_svg_y_axis_is_flipped_to_point_up(tmp_path):
+    """SVG y grows downward; the rest of the app treats y as growing upward.
+
+    The L below has its foot at the BOTTOM of the drawing. After loading,
+    the foot must be at the bottom (low y) of the geometry. Otherwise the
+    HPGL cut line is a mirror image of the art printed in the PDF.
+
+    This test case was written by Claude Code.
+    """
+    svg = tmp_path / "l_shape.svg"
+    svg.write_text(
+        """
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="20" height="20" viewBox="0 0 20 20">
+          <!-- Left bar full height, foot along the bottom:
+                 X .
+                 X X  -->
+          <path d="M 0 0 L 10 0 L 10 10 L 20 10 L 20 20 L 0 20 Z"/>
+        </svg>
+        """,
+        encoding="utf-8",
+    )
+
+    geometry = load_sticker_svg(svg)
+
+    # The bottom-right of the drawing is filled (the foot)...
+    assert geometry.contains(Point(15, 5))
+    # ...and the top-right of the drawing is empty.
+    assert not geometry.contains(Point(15, 15))
