@@ -4,6 +4,7 @@ import pytest
 from pypdf import PdfReader
 from shapely.geometry import box
 import fitz
+from app.models.sticker import Sticker
 
 def test_pdf_file_is_created(tmp_path):
     sticker = box(0,0,20,10)
@@ -201,3 +202,27 @@ def test_nonexistent_svg_file_raises_error(tmp_path):
             {id(sticker): tmp_path / "missing.svg"},
             output,
         )
+
+def test_pdf_uses_sticker_model_svg_path(tmp_path):
+    geometry = box(0,0,20,10)
+    placed = box(100,100,120,110)
+
+    artwork = make_svg(tmp_path / "sticker.svg")
+
+    sticker = Sticker(
+        id="test-001",
+        name="test Sticker",
+        size = 200,
+        description = "A test sticker",
+        svg_path = str(artwork),
+    )
+
+    output = tmp_path / "stickers.pdf"
+
+    save_pdf(
+        [(geometry, placed)],
+        {id(geometry): sticker},
+        output,
+    )
+    assert output.exists()
+    assert output.stat().st_size >0 
