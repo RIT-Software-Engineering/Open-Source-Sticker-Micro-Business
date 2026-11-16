@@ -15,6 +15,11 @@ Each week a new 4-Up will be appeneded to the top of the section below.
 
 ---
 
+| **11/9/2026-11/15/2026** | |
+| --- | --- |
+| **Progress** <ul><li>The algorithm PR has been reviewed and the feedback is being addressed.</li><ul><li>Algorithm now outputs PDF files!!</li></ul><li>Controller tier implementation work has begun.</li><li>Investigating SQL table setup using a script.</li><li>Hiberante class implementation almost PR ready. Debugging a test issue.</li><li>More frontend implementation. Work is now separated into tickets.</li><li>Figma wireframes updated from our conversation last week.</li></ul> | **Risks** <ul><li>The frontend and backend are still disconnected. Controller tier implementation is underway to resolve this.</li><li>Thanksgiving break is next week, and we are not sure how much time we can dedicate to this project. Will discuss at next team meeting.</li></ul> |
+| **Plans** <ul><li>End of sprint on 11/19.</li><li>Review the intern plan with the project sponsor and submit it by end of week.</li><li>Record the video for the "Why is our project important?" deliverable by end of week.</li></ul> | **Needs** <ul><li>None</li></ul> |
+
 | **11/2/2026-11/8/2026** | |
 | --- | --- |
 | **Progress** <ul><li>More wireframes of screens.</li><li>More frontend implementation.</li><li>More implementation of Hibernate classes.</li></ul> | **Risks** <ul><li>The frontend and backend remain disconnected.But if there is no code freeze over the winter break, this is not a huge concern.</li></ul> |
