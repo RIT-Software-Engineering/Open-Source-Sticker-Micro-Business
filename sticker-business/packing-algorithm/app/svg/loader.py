@@ -1,7 +1,7 @@
 from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
-
+from shapely.affinity import scale
 from shapely.geometry import Polygon
 from shapely.ops import unary_union
 from svgpathtools import parse_path
@@ -172,4 +172,9 @@ def load_sticker_svg(
         raise ValueError("no usable sticker geometry")
 
     # Return only the exterior silhouette, discarding interior rings.
-    return Polygon(geometry.exterior)
+    return scale(
+        Polygon(geometry.exterior),
+        xfact=1,
+        yfact=-1,
+        origin="center",
+    )

@@ -5,16 +5,17 @@ import pytest
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
-def test_svg_loads_as_one_nonempty_sticker():
-    geometry = load_sticker_svg(
-        FIXTURES/"tetrispieceI.svg"
-    )
+# Duplicated test, oops
+# def test_svg_loads_as_one_nonempty_sticker():
+#     geometry = load_sticker_svg(
+#         FIXTURES/"tetrispieceI.svg"
+#     )
 
-    assert not geometry.is_empty
-    assert geometry.is_valid
-    assert geometry.geom_type == "Polygon"
-    assert geometry.area > 0
-    assert len(geometry.interiors) == 0
+#     assert not geometry.is_empty
+#     assert geometry.is_valid
+#     assert geometry.geom_type == "Polygon"
+#     assert geometry.area > 0
+#     assert len(geometry.interiors) == 0
 
 def test_multiple_touching_blocks_form_one_outline(tmp_path):
     svg = tmp_path / "two_blocks.svg"
