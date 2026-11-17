@@ -2,19 +2,20 @@ package gold_star.sticker_business.entities;
 
 import jakarta.persistence.AttributeConverter;
 import java.util.Map;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 public class StickerSheetJSONConverter
     implements AttributeConverter<Map<Sticker, Integer>, String> {
+  ObjectMapper objMapper = new ObjectMapper();
 
   @Override
   public String convertToDatabaseColumn(Map<Sticker, Integer> stickerIds) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'convertToDatabaseColumn'");
+    return objMapper.writeValueAsString(stickerIds);
   }
 
   @Override
   public Map<Sticker, Integer> convertToEntityAttribute(String stickerIdsJSON) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'convertToEntityAttribute'");
+    return objMapper.readValue(stickerIdsJSON, new TypeReference<Map<Sticker, Integer>>() {});
   }
 }
