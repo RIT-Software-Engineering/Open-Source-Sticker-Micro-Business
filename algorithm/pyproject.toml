@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backed = "setuptools.build_meta"
+
+[project]
+name = "sticker-packer"
+version = "0.1.0"
+description = "Test-driven geometry and HPGL tools for packing sticker outlines"
+requires-python = ">=3.11"
+dependencies = [
+    "shapely>=2.0, <3.0",
+    "svgpathtools>=1.6,<2.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0,<9.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+pythonpath = ["."]
+addopts = "-ra"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
