@@ -212,7 +212,8 @@ def test_pdf_uses_sticker_model_svg_path(tmp_path):
     sticker = Sticker(
         id="test-001",
         name="test Sticker",
-        size = 200,
+        width_cm=2.0,
+        height_cm=1.0,
         description = "A test sticker",
         svg_path = str(artwork),
     )

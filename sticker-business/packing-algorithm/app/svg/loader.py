@@ -5,6 +5,7 @@ from shapely.affinity import scale
 from shapely.geometry import Polygon
 from shapely.ops import unary_union
 from svgpathtools import parse_path
+import math
 
 def _local_tag(element):
     """Return an SVG element's tag without the XML namespace, for testing/parsing."""
@@ -115,6 +116,8 @@ def load_sticker_svg(
     path: str | Path,
     *,
     merge_tolerance: float = 0.0,
+    width_cm: float | None = None,
+    height_cm: float | None = None,
 ):
     """Load one sticker SVG and return its exterior silhouette.
 
@@ -172,9 +175,67 @@ def load_sticker_svg(
         raise ValueError("no usable sticker geometry")
 
     # Return only the exterior silhouette, discarding interior rings.
-    return scale(
+    geometry = scale(
         Polygon(geometry.exterior),
         xfact=1,
         yfact=-1,
         origin="center",
+    )
+    # physical sizing
+    if(width_cm is None) != (height_cm is None):
+        raise ValueError(
+            "Both width_cm and height_cm must be provided"
+        )
+    if(width_cm is not None):
+        if (
+            not math.isfinite(width_cm)
+            or not math.isfinite(height_cm)
+            or width_cm <= 0
+            or height_cm <= 0
+        ):
+            raise ValueError(
+                "Sticker dimensions must be positive and finite"
+            )
+
+        min_x, min_y, max_x, max_y = geometry.bounds
+        original_width = max_x - min_x
+        original_height = max_y - min_y
+
+        if original_width <= 0 or original_height <= 0:
+            raise ValueError("Sticker geometry has invalid dimensions.")
+
+        scale_factor = width_cm / original_width
+        calculated_height = original_height * scale_factor
+
+        if not math.isclose(
+            calculated_height,
+            height_cm,
+            rel_tol=1e-6,
+            abs_tol=1e-9,
+        ):
+            raise ValueError(
+                "Requested dimensions do not match the SVG aspect ratio."
+            )
+
+        geometry = scale(
+            geometry,
+            xfact=scale_factor,
+            yfact=scale_factor,
+            origin="center",
+        )
+
+    return geometry
+    
+
+def load_sticker_geometry(sticker, *, merge_tolerance=0.0):
+    """Load a sticker's SVG using its database dimensions in cm"""
+    if not sticker.svg_path:
+        raise ValueError("Sticker does not have an SVG path.")
+
+
+    return load_sticker_svg(
+        sticker.svg_path,
+        merge_tolerance=merge_tolerance,
+        width_cm = sticker.width_cm,
+        height_cm = sticker.height_cm
     )

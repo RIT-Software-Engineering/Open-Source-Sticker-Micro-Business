@@ -5,7 +5,8 @@ def test_sticker_stores_catalog_properties():
     sticker = Sticker(
         id="tetris-i",
         name="Tetris I Block",
-        size=100.0,
+        width_cm=100,
+        height_cm=100,
         description="A straight Tetris-style sticker.",
         tags=["tetris","block","geometric"],
         category = "Tetris Blocks",
@@ -15,7 +16,8 @@ def test_sticker_stores_catalog_properties():
 
     assert sticker.id == "tetris-i"
     assert sticker.name == "Tetris I Block"
-    assert sticker.size==100.0
+    assert sticker.width_cm==100
+    assert sticker.height_cm==100
     assert sticker.description=="A straight Tetris-style sticker."
     assert sticker.tags==["tetris","block","geometric"]
     assert sticker.category == "Tetris Blocks"
@@ -26,7 +28,8 @@ def test_stickers_can_have_independent_tag_lists():
     first = Sticker(
         id="sticker-a",
         name="Sticker A",
-        size = 10.0,
+        width_cm=5,
+        height_cm=2,
         description = "First sticker.",
         tags = ["test"],
         category = "Tests",
@@ -37,7 +40,8 @@ def test_stickers_can_have_independent_tag_lists():
     second = Sticker(
         id="sticker-b",
         name="Sticker B",
-        size = 20.0,
+        height_cm=10,
+        width_cm=20,
         description = "Second sticker.",
         tags = ["example"],
         category = "Examples",

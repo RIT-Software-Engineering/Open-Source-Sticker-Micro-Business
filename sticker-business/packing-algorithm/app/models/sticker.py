@@ -6,7 +6,7 @@ class Sticker:
     """Catalog metadata and file refs for one sticker."""
     id:str
     name:str
-    width_cm = float
+    width_cm: float
     height_cm: float
     description:str
     tags:list[str] = field(default_factory=list)
