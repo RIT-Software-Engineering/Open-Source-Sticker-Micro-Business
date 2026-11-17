@@ -18,6 +18,7 @@ services:
     env_file: .env
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./backend/init_tables.sql:/docker-entrypoint-initdb.d/1-init_tables.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
       interval: 5s

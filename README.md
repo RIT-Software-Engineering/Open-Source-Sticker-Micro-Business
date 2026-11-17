@@ -77,6 +77,7 @@ docker compose up --build
 - `--build` rebuilds the images so they include your latest code. Docker compiles the backend for you inside a container.
 - The **first** build takes several minutes while Docker downloads Java, Node.js, MySQL and all libraries. Later builds are much faster because Docker caches (reuses) those downloads.
 - Wait until the logs stop scrolling. The database needs up to ~30 seconds to become healthy before the backend starts.
+- Runs `backend/init_tables.sql` to create the tables. Initialization scripts create new tables only when the database volume is empty; changing the script later does not update an existing database.
 - Open http://localhost:8080. You should see **Hello Docker World**.
 - Open http://localhost:5173. You should see the React starter page.
 
