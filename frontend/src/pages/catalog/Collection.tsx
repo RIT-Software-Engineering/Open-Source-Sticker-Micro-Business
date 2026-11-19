@@ -1,13 +1,14 @@
-import "./Section.css";
+import "./Collection.css";
 import { useMemo, type ReactElement } from "react";
-import type { ICollection } from "../../../modules/data/Collection";
-import type { ISticker } from "../../../modules/data/Sticker";
-import { useColors } from "../../../modules/Colors";
+import type { ICollection } from "../../modules/data/Collection";
+import type { ISticker } from "../../modules/data/Sticker";
+import { useColors } from "../../modules/Colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import Button from "../../../components/control/Button";
-import useText, { TemplateText } from "../../../modules/Text";
+import Button from "../../components/control/Button";
+import useText, { TemplateText } from "../../modules/Text";
 import StickerCard from "./StickerCard";
+import type { StateRef } from "../../Types";
 
 export interface ICollectionProps {
     /** The collection to display */
@@ -16,12 +17,14 @@ export interface ICollectionProps {
     stickers     : ISticker[];
     /** Should the user not be allowed to edit this collection (all stickers) */
     disallowEdit?: boolean;
+    /** What to do when a sticker is added */
+    onAddSticker?: StateRef<ISticker> | undefined;
 }
 
 /**
  * A collection of stickers
  */
-export default function Collection({collection, stickers: allStickers, disallowEdit}: ICollectionProps): ReactElement {
+export default function Collection({collection, stickers: allStickers, disallowEdit, onAddSticker}: ICollectionProps): ReactElement {
     const text = useText();
     const colors = useColors();
 
@@ -45,7 +48,7 @@ export default function Collection({collection, stickers: allStickers, disallowE
         </div>
 
         <div className="library-section-body">
-            {ownedStickers.map(sticker => <StickerCard key={sticker.id} sticker={sticker}/>)}
+            {ownedStickers.map(sticker => <StickerCard key={sticker.id} sticker={sticker} onAddSticker={onAddSticker}/>)}
         </div>
     </div>
 }

@@ -34,7 +34,7 @@
 }
 
 .library-section-body {
-    display:flex;
+    display: flex;
     flex-direction: row;
     overflow-x: auto;
     column-gap: 10px;

@@ -3,3 +3,4 @@
 !.env.example
 *.private.*
 .vscode
+*.hpgl

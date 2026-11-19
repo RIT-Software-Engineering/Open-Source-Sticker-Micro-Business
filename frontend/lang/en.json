@@ -29,6 +29,7 @@
     },
     "store": {
         "title": "Store",
-        "desc": "Make and purchase sticker sheets"
+        "desc": "Make and purchase sticker sheets",
+        "add": "Add"
     }
 }

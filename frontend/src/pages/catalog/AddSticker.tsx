@@ -1,8 +1,8 @@
 import { useState, type ReactElement } from "react";
-import type { Callback, StateRef } from "../../../Types";
-import { useColors } from "../../../modules/Colors";
-import Button from "../../../components/control/Button";
-import { GetExampleSticker, type ISticker } from "../../../modules/data/Sticker";
+import type { Callback, StateRef } from "../../Types";
+import { useColors } from "../../modules/Colors";
+import Button from "../../components/control/Button";
+import { GetExampleSticker, type ISticker } from "../../modules/data/Sticker";
 
 export interface IAddListingProps {
     onSubmit?: StateRef<ISticker> | undefined;

@@ -4,10 +4,9 @@ import { type ReactElement } from 'react'
 import { useColors } from './modules/Colors';
 import { Route, Routes, useLocation } from 'react-router';
 import Home from './pages/admin/home/Home';
-import Library from './pages/admin/library/Library';
 import Orders from './pages/admin/orders/Orders';
 import Jobs from './pages/admin/jobs/Jobs';
-import Sticker from './pages/admin/library/Sticker';
+import Sticker from './pages/catalog/Sticker';
 import Login from './pages/login/Login';
 import Forgot from './pages/login/Forgot';
 import Reset from './pages/login/Reset';
@@ -15,7 +14,8 @@ import { BackgroundClicksProvider } from './components/control/BackgroundClicks'
 import User, { UserContext } from './modules/User';
 import Navpane from './components/control/Navpane';
 import Settings from './pages/Settings';
-import Store from './pages/store/Store';
+import Library from './pages/Library';
+import Store from './pages/Store';
 
 const STORE_NAME = "Gold Star";
 
@@ -36,7 +36,7 @@ export default function App(): ReactElement {
                 <Routes>
                     <Route path=""        element={<Home   />}/>
                     <Route path="library">
-                        <Route index          element={<Library   />}/>
+                        <Route index          element={<Library/>}/>
                         <Route path=":id"     element={<Sticker/>}/>
                     </Route>
                     <Route path="orders"  element={<Orders />}/>

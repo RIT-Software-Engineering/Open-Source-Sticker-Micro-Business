@@ -37,3 +37,20 @@
 .sticker-card-description {
     font-size: 0.75em;
 }
+
+.sticker-card-add-container {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    margin-top: 10px;
+}
+
+.sticker-card-add {
+    flex: 1;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.sticker-card-add-icon {
+    margin-right: 5px;
+}

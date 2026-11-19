@@ -1,51 +1,51 @@
-.library-container {
+.catalog-container {
     padding: 5px;
     flex: 1;
     overflow-y: visible;
 }
 
-.library-header {    
+.catalog-header {    
     display: flex;
     flex-direction: row;
     flex: 1;
     margin-bottom: 15px;
 }
 
-.library-about {
+.catalog-about {
     display: flex;
     flex-direction: column;
     flex: 1;
     margin-right: 25px;
 }
 
-.library-description {
+.catalog-description {
     max-width: 500px;
 }
 
-.library-control-positioner {
+.catalog-control-positioner {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.library-control-shaper {
+.catalog-control-shaper {
     display: flex;
     flex-direction: row;
     gap: 10px;
 }
 
-.library-control {
+.catalog-control {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.library-control-add-icon {
+.catalog-control-add-icon {
     font-size: 25px;
     margin-right: 10px;
 }
 
-.library-content {
+.catalog-content {
     display: flex;
     flex-direction: column;
     flex: 1;

@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import { useNavigate, useParams } from "react-router";
-import Button from "../../../components/control/Button";
+import Button from "../../components/control/Button";
 
 /**
  * To be redone
