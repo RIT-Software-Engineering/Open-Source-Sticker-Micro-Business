@@ -30,6 +30,11 @@
     "store": {
         "title": "Store",
         "desc": "Make and purchase sticker sheets",
-        "add": "Add"
+        "add": "Add",
+        "stagingArea": {
+            "title": "Staging Area",
+            "empty": "Items ready to build will appear here",
+            "ready": "$000000 item$111111 ready to build"
+        }
     }
 }

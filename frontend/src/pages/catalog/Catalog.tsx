@@ -41,8 +41,6 @@ export default function Catalog({live, title, desc, onAddSticker}: ICatalogProps
     const colors = useColors();
     const isMobile = useIsMobile();
 
-    console.log(live, onAddSticker);
-
     return <div className="catalog-container">
         <div className="catalog-header">
             <div className="catalog-about">

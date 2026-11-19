@@ -29,7 +29,7 @@ function SidebarTab({target, title, icon}: ISidebarTabProps): ReactElement {
     const colors = useColors();
     const navigate = useNavigate();
 
-    return <Button color={colors.primary} darkOnLight onClick={() => navigate(target)} className="navpane-sidebar-tab-button">
+    return <Button color={colors.primary} inverted onClick={() => navigate(target)} className="navpane-sidebar-tab-button">
         <div className="navpane-sidebar-tab-title">{title}</div>
         <FontAwesomeIcon icon={icon} className="medium-icon"/>
     </Button>
@@ -107,7 +107,7 @@ function Header({children, showSidebarControls, storeName, onClickSidebar}: IHea
 
             <div className="flex-spacer"/>
 
-            <Button darkOnLight color={colors.neutral} className="navpane-header-user">
+            <Button inverted color={colors.neutral} className="navpane-header-user">
                 {TemplateText(text.nav.username, user?.Name ?? text.user.guest)}
             </Button>
         </div>
@@ -127,7 +127,7 @@ export type INavpaneProps = {
  */
 export default function Navpane({children, storeName, show}: INavpaneProps): ReactElement {
     const isMobile = useIsMobile();
-    const [open, setOpen] = useState<boolean>(isMobile);
+    const [open, setOpen] = useState<boolean>(!isMobile);
 
     if(show) {
         return <Sidebar open={open} storeName={storeName} onClickSidebar={() => setOpen(!open)}>

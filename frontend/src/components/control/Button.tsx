@@ -1,36 +1,22 @@
 import "./Button.css";
 import { useEffect, useRef, type ButtonHTMLAttributes, type CSSProperties, type MouseEvent, type ReactElement } from "react";
 import type { Callback } from "../../Types";
-import { useColors } from "../../modules/Colors";
 import { useRerender } from "../../modules/Utility";
 import type { ISupportsChildren, ISupportsStyle } from "../../modules/Types";
-
-/** States that the button can be in (the actual granular states) */
-type IInternalButtonState = "inactive" | "hovered" | "downInside" | "downOutside";
-/** States that the button can be in */
-export type IButtonState  = "hovered" | "down";
-/** Styling types of the button */
-export type IButtonType   = "outline" | "solid" | "invisible";
-/** Available sizes of the button */
-export type IButtonSize   = "large" | "medium" | "small" | "tiny" | "none";
+import { useControllableColor, type EControlableSize, type IControllableFlags as IControllableFlags, type IControllableState } from "./Controllable";
+import Disabled from "./Disabled";
 
 /** Base customized button props */
 type _ICustomButtonProps = {
     /** What to do when the button is clicked */
-    onClick?    : Callback      | undefined;
+    onClick?    : Callback           | undefined;
     /** The color of the button */
     color?      : CSSProperties["color"];
     /** The size of the button (default medium) */
-    size?       : IButtonSize   | undefined;
-    /** Is the button disabled */
-    disabled?   : boolean       | undefined;
-    /** Does the button not react */
-    silent?     : boolean       | undefined;
+    size?       : EControlableSize   | undefined;
     /** The value of the button if it is controlled */
-    value?      : IButtonState  | undefined;
-    /** Is the button dark text on a light background (default false) */
-    darkOnLight?: boolean       | undefined
-} & ISupportsStyle & ISupportsChildren;
+    value?      : IControllableState | undefined;
+} & ISupportsStyle & ISupportsChildren & IControllableFlags;
 
 /** Props for the button component */
 export type IButtonProps = 
@@ -39,43 +25,36 @@ export type IButtonProps =
 
 /** A wrapped button component */
 export default function Button(props: IButtonProps): ReactElement {
-    const {className: classNameProp, onClick, value, color: colorProp, darkOnLight, size, children, style, disabled, silent} = props;
+    const {className: classNameProp, onClick, value, color, inverted, size, children, style, disabled, silent} = props;
+    props = {...props};
+    delete props.inverted;
+    delete props.silent;
 
     const rerender = useRerender("Button");
-    const state = useRef<IInternalButtonState>("inactive");
-
-    const colors = useColors();
+    const state = useRef<IControllableState>({active: false, inside: false});
 
     // Handle when the button is controlled
-    const controlLog = useRef<IButtonProps["value"]>(value);
+    const controlLog = useRef<IControllableState>(value);
     if(controlLog.current != value) {
-        state.current = "inactive";
+        state.current.active = false;
         controlLog.current = value;
     }
 
     const controlled = value != undefined;
-    if(value == "down") {
-        switch(state.current) {
-            case "inactive":
-                state.current = "downOutside";
-                break;
-            case "hovered":
-                state.current = "downInside";
-                break;
-        }
-    } else if(value == "hovered") {
-        state.current = "hovered";
-    }
+    if(value != null) state.current = value;
 
     /**
      * Updates the state of the button, call this instead of setting .current directly
      * @param value The state of the button
      */
-    const UpdateState = (value: typeof state["current"]) => {
+    const UpdateState = (value: Partial<IControllableState>) => {
         if(controlled) return;
+        if(state.current.active == value.active && state.current.inside == value.inside) return;
 
-        state.current = value;
-        rerender(value);
+        if(value.active != null) state.current.active = value.active;
+        if(value.inside != null) state.current.inside = value.inside;
+
+        rerender(JSON.stringify(state));
     }
 
     /**
@@ -87,7 +66,7 @@ export default function Button(props: IButtonProps): ReactElement {
 
         if(props.onMouseDown != null) props.onMouseDown(event);
 
-        UpdateState("downInside");
+        UpdateState({active: true});
     }
 
     /**
@@ -99,15 +78,11 @@ export default function Button(props: IButtonProps): ReactElement {
     const OnClickEnd = (event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
         if(disabled) return;
 
-        const canPress = state.current == "downInside";
+        const canPress = state.current.active && state.current.inside;
 
         if(props.onMouseUp != null) props.onMouseUp(event);
 
-        if(state.current == "downOutside") {
-            UpdateState("inactive");
-        } else {
-            UpdateState("hovered");
-        }
+        UpdateState({active: false});
 
         if(canPress) {
             if(onClick != null) onClick();
@@ -125,11 +100,7 @@ export default function Button(props: IButtonProps): ReactElement {
 
         if(props.onMouseEnter != null) props.onMouseEnter(event);
 
-        if(state.current == "inactive") {
-            UpdateState("hovered");
-        } else if(state.current == "downOutside") {
-            UpdateState("downInside");
-        }
+        UpdateState({inside: true});
     }
 
     /**
@@ -143,11 +114,7 @@ export default function Button(props: IButtonProps): ReactElement {
 
         if(props.onMouseLeave != null) props.onMouseLeave(event);
 
-        if(state.current == "hovered") {
-            UpdateState("inactive");
-        } else if(state.current == "downInside") {
-            UpdateState("downOutside");
-        }
+        UpdateState({inside: false});
     }
 
     /**
@@ -158,8 +125,8 @@ export default function Button(props: IButtonProps): ReactElement {
         const handler = () => {
             if(disabled) return;
 
-            if(state.current == "downOutside") {
-                UpdateState("inactive");
+            if(state.current.active && !state.current.inside) {
+                UpdateState({active: false});
             }
         }
 
@@ -170,77 +137,11 @@ export default function Button(props: IButtonProps): ReactElement {
         }
     }, []);
 
-    // Determine the color of the button
-    /** The root color of the button */
-    let color: CSSProperties["color"] = colorProp;
-    /** The shading color of the button (overlay) */
-    let shade: CSSProperties["color"] = undefined;
-    /** The text color of the button */
-    let text : CSSProperties["color"] = undefined;
-    /** The background color of the button */
-    let back : CSSProperties["color"] = undefined;
-    /** The palatte that the button is using */
-    const palatte = color == null ? colors.neutralPalatte : colors.FindPalatte(color);
-    const buttonColorState: IInternalButtonState = silent ? "inactive" : state.current;
-    if(color != null && palatte.Has(color)) {
-        // Palatte color
-        if(disabled) {
-            back = colors.neutralPalatte.Dark(colors.neutralPalatte.Lightest());
-            text = colors.TextColor(back);
-        } else {
-            if(darkOnLight) {
-                // Text color is primary
-                switch(buttonColorState) {
-                    case "downInside":
-                    case "downOutside":
-                        back = color;
-                        text = colors.TextColor(back);
-                        break;
-                    case "hovered":
-                        back = palatte.Light(color);
-                        text = color;
-                        break;
-                    default:
-                        text = color;
-                        break;
-                }
-            } else {
-                // Background color is primary
-                switch(buttonColorState) {
-                    case "downInside":
-                    case "downOutside":
-                        back = palatte.Dark(palatte.Dark(color));
-                        break;
-                    case "hovered":
-                        back = palatte.Dark(color);
-                        break;
-                    default:
-                        back = color;
-                        break;
-                }
-
-                text = colors.TextColor(back);
-            }
-        }
-    } else {
-        // No color or non-palatte color
-        if(disabled) {
-            // If the button is disabled, set the color to disabled
-            shade = "#80808060"
-        } else {
-            switch(buttonColorState) {
-                case "downInside":
-                case "downOutside":
-                    // If the button is held, make it really dark
-                    shade = "#80808080";
-                    break;
-                case "hovered":
-                    // If the button is hovered, make it darker
-                    shade = "#80808050";
-                    break;
-            }
-        }
-    }
+    const {shade, text, back} = useControllableColor(
+        color,
+        state.current,
+        {silent, disabled, inverted: !inverted}
+    );
 
     let className = (size ?? "medium") + "-generic-button generic-button";
     if(classNameProp != null) {
@@ -254,10 +155,10 @@ export default function Button(props: IButtonProps): ReactElement {
         onMouseEnter={OnEnter}
         onMouseLeave={OnLeave}
         onClick={() => {}} // On click is handled manually
-        style={{backgroundColor: back ?? "#00000000", color: text, borderColor: darkOnLight ? color : "#00000000", ...(style ?? {}), position: "relative"}} // Position should always be overriden
+        style={{backgroundColor: back ?? "#00000000", color: text, borderColor: inverted ? color : "#00000000", ...(style ?? {}), position: "relative"}} // Position should always be overriden
         className={className}
     >
-        <div className="generic-button-overlay" style={{backgroundColor: shade}}/>
+        <Disabled shade={shade}/>
         {children}
     </button>
 }

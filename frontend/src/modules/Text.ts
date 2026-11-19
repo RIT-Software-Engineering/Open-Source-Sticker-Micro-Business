@@ -35,3 +35,11 @@ export function TruncateText(source: string, length: number, ellipsis: string = 
         return source.slice(0, Math.max(0, length - ellipsis.length)) + ellipsis;
     } return source;
 }
+
+/**
+ * Return an "s" if a number is plural, "" otherwise  
+ * Note that 1 is the only singular number
+ */
+export function GetPlural(source: number): string {
+    return source == 1 ? "" : "s";
+}
