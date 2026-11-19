@@ -12,7 +12,7 @@ class StickerBusinessApplicationTests {
   void contextLoads() {}
 
   @Test
-  void dataSchemaValidates() {
+  void dataSchemaValidates() throws SchemaValidationException {
     sessionFactory.getSchemaManager().validate();
   }
 }
