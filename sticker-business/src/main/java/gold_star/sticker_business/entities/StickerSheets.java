@@ -4,7 +4,10 @@ import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -16,6 +19,9 @@ public class StickerSheets {
   private String filePath;
 
   private String stickerIdsJSON;
+
+  @OneToMany(mappedBy = "sheet")
+  private List<OrderItems> orderItems = new ArrayList<OrderItems>();
 
   @Convert(converter = StickerSheetJSONConverter.class)
   private Map<Sticker, Integer> stickerIds;

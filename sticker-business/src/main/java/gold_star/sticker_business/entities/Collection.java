@@ -21,7 +21,7 @@ public class Collection {
 
   // Reference to all the CollectionItems in the order
   // No setter -- stickers in a collection should not be modified this way
-  @OneToMany(mappedBy = "collectionId", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL)
   private List<CollectionItems> items = new ArrayList<CollectionItems>();
 
   public Collection() {}

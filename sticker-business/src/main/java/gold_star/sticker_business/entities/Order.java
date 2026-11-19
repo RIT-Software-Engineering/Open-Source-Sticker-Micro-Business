@@ -37,11 +37,11 @@ public class Order {
   private String note;
 
   // Reference to all the OrderItems in the order
-  @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
   private List<OrderItems> items = new ArrayList<OrderItems>();
 
   // Reference to all the OrderUpdates for the order
-  @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
   private List<OrderUpdates> updates = new ArrayList<OrderUpdates>();
 
   @Convert(converter = AddressConverter.class)

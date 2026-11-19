@@ -1,11 +1,14 @@
 package gold_star.sticker_business.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @SuppressWarnings("NullAway.Init")
@@ -18,8 +21,18 @@ public class OrderItems {
   @JoinColumn(name = "orderId", foreignKey = @ForeignKey(name = "ORDER_ID_FK"))
   private Order order;
 
+  @ManyToOne // fk to StickerSheets table
+  @JoinColumn(name = "sheetId", foreignKey = @ForeignKey(name = "STICKER_SHEET_ID_FK"))
   private StickerSheets sheet;
+
   private int quantity;
+
+  @OneToOne(
+      mappedBy = "orderItem",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.LAZY)
+  private OrderItemsStatus status;
 
   public OrderItems() {}
 

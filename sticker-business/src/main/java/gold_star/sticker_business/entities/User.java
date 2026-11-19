@@ -1,9 +1,13 @@
 package gold_star.sticker_business.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @SuppressWarnings("NullAway.Init")
@@ -13,6 +17,9 @@ public class User {
 
   private String username;
   private String passwordHash;
+
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  private List<Permission> permissions = new ArrayList<Permission>();
 
   public User() {}
 
@@ -31,6 +38,10 @@ public class User {
 
   public String getPasswordHash() {
     return passwordHash;
+  }
+
+  public List<Permission> getPermissions() {
+    return permissions;
   }
 
   public void setUsername(String username) {
