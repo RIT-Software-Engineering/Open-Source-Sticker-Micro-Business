@@ -18,7 +18,7 @@ public class OrderUpdates {
   @Id @GeneratedValue private int id;
 
   @ManyToOne // fk to Order table
-  @JoinColumn(name = "orderId", foreignKey = @ForeignKey(name = "ORDER_ID_FK"))
+  @JoinColumn(name = "orderId", foreignKey = @ForeignKey(name = "ORDER_UPDATES_ORDER_ID_FK"))
   private Order order;
 
   @Immutable private Instant timestamp;

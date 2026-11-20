@@ -15,11 +15,13 @@ public class CollectionItems {
   @Id @GeneratedValue private int id;
 
   @ManyToOne
-  @JoinColumn(name = "stickerId", foreignKey = @ForeignKey(name = "STICKER_ID_FK"))
+  @JoinColumn(name = "stickerId", foreignKey = @ForeignKey(name = "COLLECTION_ITEMS_STICKER_ID_FK"))
   private Sticker sticker;
 
   @ManyToOne
-  @JoinColumn(name = "collectionId", foreignKey = @ForeignKey(name = "COLLECTION_ID_FK"))
+  @JoinColumn(
+      name = "collectionId",
+      foreignKey = @ForeignKey(name = "COLLECTION_ITEMS_COLLECTION_ID_FK"))
   private Collection collection;
 
   public CollectionItems() {}

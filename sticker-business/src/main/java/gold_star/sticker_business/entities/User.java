@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @SuppressWarnings("NullAway.Init")
-@Table(name = "User")
+@Table(name = "Account") // 'User' is a reserved keyword in many dialects
 public class User {
   @Id @GeneratedValue private int id;
 

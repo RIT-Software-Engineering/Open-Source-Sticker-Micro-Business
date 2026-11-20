@@ -15,11 +15,11 @@ public class TagItems {
   @Id @GeneratedValue private int id;
 
   @ManyToOne // fk to Tag table
-  @JoinColumn(name = "tagId", foreignKey = @ForeignKey(name = "TAG_ID_FK"))
+  @JoinColumn(name = "tagId", foreignKey = @ForeignKey(name = "TAG_ITEMS_TAG_ID_FK"))
   private Tag tag;
 
   @ManyToOne
-  @JoinColumn(name = "stickerId", foreignKey = @ForeignKey(name = "STICKER_ID_FK"))
+  @JoinColumn(name = "stickerId", foreignKey = @ForeignKey(name = "TAG_ITEMS_STICKER_ID_FK"))
   private Sticker sticker;
 
   public TagItems() {}

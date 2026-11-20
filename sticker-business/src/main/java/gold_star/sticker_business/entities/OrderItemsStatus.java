@@ -17,7 +17,9 @@ public class OrderItemsStatus {
 
   // fk to OrderItems table
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "orderItemsId", foreignKey = @ForeignKey(name = "ORDER_ITEMS_ID_FK"))
+  @JoinColumn(
+      name = "orderItemsId",
+      foreignKey = @ForeignKey(name = "ORDER_ITEMS_STATUS_ORDER_ITEMS_ID_FK"))
   private OrderItems orderItem;
 
   private boolean complete;

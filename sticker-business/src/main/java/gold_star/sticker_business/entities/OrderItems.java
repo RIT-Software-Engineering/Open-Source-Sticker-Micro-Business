@@ -18,11 +18,11 @@ public class OrderItems {
   @Id @GeneratedValue private int id;
 
   @ManyToOne // fk to PlacedOrder table
-  @JoinColumn(name = "orderId", foreignKey = @ForeignKey(name = "ORDER_ID_FK"))
+  @JoinColumn(name = "orderId", foreignKey = @ForeignKey(name = "ORDER_ITEMS_ORDER_ID_FK"))
   private Order order;
 
   @ManyToOne // fk to StickerSheets table
-  @JoinColumn(name = "sheetId", foreignKey = @ForeignKey(name = "STICKER_SHEET_ID_FK"))
+  @JoinColumn(name = "sheetId", foreignKey = @ForeignKey(name = "ORDER_ITEMS_STICKER_SHEET_ID_FK"))
   private StickerSheets sheet;
 
   private int quantity;
