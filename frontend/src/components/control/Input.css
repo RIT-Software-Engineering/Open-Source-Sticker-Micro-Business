@@ -5,4 +5,13 @@
 .generic-input {
     border-style: solid;
     outline-style: none;
+    /*-moz-appearance: textfield; /** Apparently this will hide the spinner on firefox */
+    appearance: textfield;
+}
+
+/** Hide the spinner on safari and chrome */
+.generic-input::-webkit-inner-spin-button,
+.generic-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

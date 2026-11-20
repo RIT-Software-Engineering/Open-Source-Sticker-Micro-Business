@@ -89,20 +89,13 @@
     padding: 0 5px;
 }
 
-.navpane-container {
-    flex: 1;
-    overflow-y: auto;
-}
-
 .navpane-content {
     display: flex;
     flex: 1;
-    padding: 10px 0 0 10px;
 }
 
 .navpane-disabled-content-wrapper {
     display: flex;
     flex: 1;
     overflow-y: auto;
-    padding: 10;
 }

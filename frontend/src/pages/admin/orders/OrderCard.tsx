@@ -16,7 +16,7 @@ export interface IOrderCardProps {
 /**
  * Displays some details about an order
  */
-export default function OrderCard({order, size, onClick}: IOrderCardProps): ReactElement {
+export default function OrderCard({size, onClick}: IOrderCardProps): ReactElement {
     return <div style={{display: "flex", flexDirection: "row"}}>
         <Button onClick={onClick} style={{display: "flex", flex: 1, backgroundColor: "#00000000", padding: 0, border: "none"}}>
             <div style={{height: size, display: "flex", flex: 1}}>

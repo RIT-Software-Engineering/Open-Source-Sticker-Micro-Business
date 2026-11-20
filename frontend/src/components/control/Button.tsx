@@ -4,7 +4,7 @@ import type { Callback } from "../../Types";
 import { useRerender } from "../../modules/Utility";
 import type { ISupportsChildren, ISupportsStyle } from "../../modules/Types";
 import { useControllableColor, type EControlableSize, type IControllableFlags as IControllableFlags, type IControllableState } from "./Controllable";
-import Disabled from "./Disabled";
+import Overlay from "../display/Overlay";
 
 /** Base customized button props */
 type _ICustomButtonProps = {
@@ -158,7 +158,7 @@ export default function Button(props: IButtonProps): ReactElement {
         style={{backgroundColor: back ?? "#00000000", color: text, borderColor: inverted ? color : "#00000000", ...(style ?? {}), position: "relative"}} // Position should always be overriden
         className={className}
     >
-        <Disabled shade={shade}/>
+        <Overlay shade={shade}/>
         {children}
     </button>
 }

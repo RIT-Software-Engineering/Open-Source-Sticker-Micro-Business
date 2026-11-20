@@ -1,6 +1,9 @@
 import type { ISticker } from "./Sticker";
 
+/**
+ * Represents a staged sticker
+ */
 export default interface IStagedItem {
-    item: ISticker;
+    sticker : ISticker;
     quantity: number;
 }

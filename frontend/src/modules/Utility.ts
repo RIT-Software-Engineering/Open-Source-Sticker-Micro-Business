@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, type Ref } from "react";
 import type { StateRef } from "../Types";
 
 /**
@@ -19,6 +19,19 @@ export function useRerender(name: string): StateRef<string> {
 /**
  * Picks a random item from the source
  */
-export function randomPick<T>(source: T[]): T {
+export function RandomPick<T>(source: T[]): T {
     return source[Math.floor(Math.random() * source.length)];
+}
+
+/**
+ * Bind an out ref value to an out ref reference
+ */
+export function BindRef<T>(ref: Ref<T> | undefined, value: T) {
+    if(ref == null) return;
+
+    if(typeof ref == "function") {
+        ref(value);
+    } else {
+        ref.current = value;
+    }
 }

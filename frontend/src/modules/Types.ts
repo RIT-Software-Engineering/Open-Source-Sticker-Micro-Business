@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, ReactNode, Ref } from "react";
 
 interface DeepReadonlyArray<T> extends ReadonlyArray<DeepReadonly<T>> {}
 
@@ -32,4 +32,11 @@ export type ISupportsStyle<T = CSSProperties> = {
  */
 export type ISupportsChildren<T = ReactNode> = {
     children?: T | undefined;
+}
+
+/**
+ * Props extender for components that support refs
+ */
+export type ISupportsRef<T> = {
+    ref?: Ref<T> | undefined;
 }

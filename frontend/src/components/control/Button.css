@@ -25,13 +25,3 @@ button {
     border-color: #00000000;
     border-width: 0px;
 }
-
-.generic-button-overlay {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: -5px;
-    border-radius: 4px;
-}

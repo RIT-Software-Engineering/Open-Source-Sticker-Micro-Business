@@ -1,7 +1,6 @@
 .catalog-container {
-    padding: 5px;
     flex: 1;
-    overflow-y: visible;
+    padding: 10px 0 0 10px;
 }
 
 .catalog-header {    

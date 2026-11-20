@@ -6,14 +6,13 @@ import { faEllipsis, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useColors } from "../../modules/Colors";
 import { trimTrailingZerosRe } from "../../modules/Regex";
 import Button from "../../components/control/Button";
-import type { StateRef } from "../../Types";
 import useText from "../../modules/Text";
 
 export interface IStickerCardProps {
     /** The sticker to display on the card */
     sticker      : ISticker;
     /** What to do when a sticker is added, does not display an add sticker button if not passed */
-    onAddSticker?: StateRef<ISticker> | undefined;
+    onAddSticker?: ((sticker: ISticker, quantity?: number) => unknown) | undefined;
 }
 
 /**
@@ -47,7 +46,7 @@ export default function StickerCard({sticker, onAddSticker}: IStickerCardProps):
 
             {onAddSticker != null
                 ? <div className="sticker-card-add-container">
-                    <Button color={colors.primary} size="small" className="sticker-card-add" onClick={() => onAddSticker}>
+                    <Button color={colors.primary} size="small" className="sticker-card-add" onClick={() => onAddSticker(sticker, 1)}>
                         <FontAwesomeIcon icon={faPlus} className="sticker-card-add-icon"/>
                         {text.store.add}
                     </Button>

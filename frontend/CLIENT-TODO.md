@@ -1,9 +1,11 @@
+See the tickets now
+
 ## TODO
 * UI
     * Update currently done pages
     * Sticker Library
         * Development
-            * Stickers need to wrap instead (wireframe was ambiguous, easy to do)
+            * Stickers need to wrap instead (wireframe was ambiguous, easy to do?)
         * Cleanup
             * Conformation
             * Memoization

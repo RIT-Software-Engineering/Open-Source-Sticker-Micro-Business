@@ -24,7 +24,7 @@
 }
 
 html, body, .root {
-  margin: 0;
+    margin: 0;
 }
 
 .display {
@@ -53,6 +53,11 @@ h3 {
     line-height: 120%;
     margin-top: 0;
     margin-bottom: 0;
+}
+
+.scrollable {
+    flex: 1;
+    overflow-y: auto;
 }
 
 /* button {

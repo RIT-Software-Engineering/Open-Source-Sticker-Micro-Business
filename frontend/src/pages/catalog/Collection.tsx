@@ -8,7 +8,6 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/control/Button";
 import useText, { TemplateText } from "../../modules/Text";
 import StickerCard from "./StickerCard";
-import type { StateRef } from "../../Types";
 
 export interface ICollectionProps {
     /** The collection to display */
@@ -18,7 +17,7 @@ export interface ICollectionProps {
     /** Should the user not be allowed to edit this collection (all stickers) */
     disallowEdit?: boolean;
     /** What to do when a sticker is added */
-    onAddSticker?: StateRef<ISticker> | undefined;
+    onAddSticker?: ((sticker: ISticker, quantity?: number) => unknown) | undefined;
 }
 
 /**

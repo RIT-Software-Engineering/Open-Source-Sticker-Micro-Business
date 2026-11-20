@@ -132,10 +132,8 @@ export default function Navpane({children, storeName, show}: INavpaneProps): Rea
     if(show) {
         return <Sidebar open={open} storeName={storeName} onClickSidebar={() => setOpen(!open)}>
             <Header showSidebarControls={!open} storeName={storeName} onClickSidebar={() => setOpen(!open)}>
-                <div className="navpane-container">
-                    <div className="navpane-content">
-                        {children}
-                    </div>
+                <div className="navpane-content">
+                    {children}
                 </div>
             </Header>
         </Sidebar>

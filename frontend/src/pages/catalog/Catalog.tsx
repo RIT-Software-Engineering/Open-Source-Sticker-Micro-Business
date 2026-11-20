@@ -10,13 +10,12 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Collection from "./Collection";
 import { useIsMobile } from "../../modules/Hooks";
 import Search from "../../components/control/Search";
-import type { StateRef } from "../../Types";
 
 export interface ICatalogProps {
-    live: boolean;
-    title: string;
-    desc: string;
-    onAddSticker?: StateRef<ISticker>;
+    live         : boolean;
+    title        : string;
+    desc         : string;
+    onAddSticker?: ((sticker: ISticker, quantity?: number) => unknown) | undefined;
 }
 
 /**
@@ -41,45 +40,47 @@ export default function Catalog({live, title, desc, onAddSticker}: ICatalogProps
     const colors = useColors();
     const isMobile = useIsMobile();
 
-    return <div className="catalog-container">
-        <div className="catalog-header">
-            <div className="catalog-about">
-                <h2>{title}</h2>
-                <div className="catalog-description" style={{color: colors.neutralPalatte.Darkest()}}>{desc}</div>
+    return <div className="scrollable">
+        <div className="catalog-container">
+            <div className="catalog-header">
+                <div className="catalog-about">
+                    <h2>{title}</h2>
+                    <div className="catalog-description" style={{color: colors.neutralPalatte.Darkest()}}>{desc}</div>
+                </div>
+
+                {!live
+                    ? <div className="catalog-control-positioner">
+                        <div className="catalog-control-shaper" style={{flexDirection: isMobile ? "column" : "row"}}>
+                            <Button size="medium" color={colors.primary} className="catalog-control">
+                                <FontAwesomeIcon icon={faPlus} className="catalog-control-add-icon"/>
+                                <div>{text.library.newSticker}</div>
+                            </Button>
+                            <Button size="medium" color={colors.primary} className="catalog-control">
+                                <FontAwesomeIcon icon={faPlus} className="catalog-control-add-icon"/>
+                                <div>{text.library.newCollection}</div>
+                            </Button>
+                        </div>
+                    </div> : undefined
+                }
             </div>
 
-            {!live
-                ? <div className="catalog-control-positioner">
-                    <div className="catalog-control-shaper" style={{flexDirection: isMobile ? "column" : "row"}}>
-                        <Button size="medium" color={colors.primary} className="catalog-control">
-                            <FontAwesomeIcon icon={faPlus} className="catalog-control-add-icon"/>
-                            <div>{text.library.newSticker}</div>
-                        </Button>
-                        <Button size="medium" color={colors.primary} className="catalog-control">
-                            <FontAwesomeIcon icon={faPlus} className="catalog-control-add-icon"/>
-                            <div>{text.library.newCollection}</div>
-                        </Button>
-                    </div>
-                </div> : undefined
-            }
-        </div>
+            <Search/>
 
-        <Search/>
-
-        <div className="catalog-content">
-            <Collection
-                collection={{id: -1, name: text.library.collections.allStickers, stickers: new Set(stickers.map(sticker => sticker.id))}}
-                stickers={stickers}
-                disallowEdit
-                onAddSticker={live ? onAddSticker : undefined}
-            />
-            {collections.map(collection => <Collection
-                key={collection.id}
-                collection={collection}
-                stickers={stickers}
-                disallowEdit={live}
-                onAddSticker={live ? onAddSticker : undefined}
-            />)}
+            <div className="catalog-content">
+                <Collection
+                    collection={{id: -1, name: text.library.collections.allStickers, stickers: new Set(stickers.map(sticker => sticker.id))}}
+                    stickers={stickers}
+                    disallowEdit
+                    onAddSticker={live ? onAddSticker : undefined}
+                />
+                {collections.map(collection => <Collection
+                    key={collection.id}
+                    collection={collection}
+                    stickers={stickers}
+                    disallowEdit={live}
+                    onAddSticker={live ? onAddSticker : undefined}
+                />)}
+            </div>
         </div>
     </div>
 }

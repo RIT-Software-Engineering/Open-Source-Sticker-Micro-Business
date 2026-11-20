@@ -1,4 +1,4 @@
-import { randomPick } from "../Utility";
+import { RandomPick } from "../Utility";
 
 /**
  * Represents a sticker
@@ -26,7 +26,7 @@ export type ISticker = {
 export function GetExampleSticker(id: number = -1): ISticker {
     return {
         id: id,
-        designPath: "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/" + randomPick(["penrose-tiling", "python", "alphachannel", "caution", "compass", "couch"]) + ".svg",
+        designPath: "https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/" + RandomPick(["penrose-tiling", "python", "alphachannel", "caution", "compass", "couch"]) + ".svg",
         name: "Example Sticker" + (id != -1 ? ` ${id}` : ""),
         description: "This is an example sticker!",
         physicalHeight: Math.random() * 10,

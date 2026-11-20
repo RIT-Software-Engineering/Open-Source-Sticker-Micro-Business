@@ -1,5 +1,5 @@
 .staged-item-card-container {
-    border-radius: "var(--border-radius)";
+    border-radius: var(--border-radius);
     padding: 10px;
 }
 
