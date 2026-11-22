@@ -1,6 +1,12 @@
 .env
 .env.*
 !.env.example
-*.private.*
-.vscode
 *.hpgl
+
+# Allow local drafting
+*.private.*
+
+# Share only the team VS Code settings.
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json

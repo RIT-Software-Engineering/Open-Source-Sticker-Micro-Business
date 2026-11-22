@@ -1,0 +1,15 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.autobuild.enabled": true,
+
+    "[java]": {
+        "editor.defaultFormatter": "josevseb.google-java-format-for-vs-code",
+        "editor.formatOnSave": true
+    },
+
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.errors.incompleteClasspath.severity": "warning",
+    "java.eclipse.downloadSources": true,
+
+    "java.jdt.ls.javac.enabled": "on"
+}
