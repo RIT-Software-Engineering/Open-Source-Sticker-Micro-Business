@@ -3,9 +3,9 @@ import "./Icons.css";
 import { type ReactElement } from 'react'
 import { useColors } from './modules/Colors';
 import { Route, Routes, useLocation } from 'react-router';
-import Home from './pages/admin/home/Home';
-import Orders from './pages/admin/orders/Orders';
-import Jobs from './pages/admin/jobs/Jobs';
+import Home from './pages/home/Home';
+import Orders from './pages/orders/Orders';
+import Jobs from './pages/jobs/Jobs';
 import Sticker from './pages/catalog/Sticker';
 import Login from './pages/login/Login';
 import Forgot from './pages/login/Forgot';
@@ -15,9 +15,10 @@ import User, { UserContext } from './modules/User';
 import Navpane from './components/control/Navpane';
 import Settings from './pages/Settings';
 import Library from './pages/Library';
-import Store from './pages/Store';
+import Store from './pages/store/Store';
 
 const STORE_NAME = "Gold Star";
+
 
 export default function App(): ReactElement {
     const location = useLocation();

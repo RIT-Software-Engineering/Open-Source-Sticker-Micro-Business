@@ -12,9 +12,13 @@ import { useIsMobile } from "../../modules/Hooks";
 import Search from "../../components/control/Search";
 
 export interface ICatalogProps {
+    /** Is this live (can you not edit) */
     live         : boolean;
+    /** The title of the page */
     title        : string;
+    /** The description of the page */
     desc         : string;
+    /** What to do when requesting to add a sticker, do not pass to not show the button */
     onAddSticker?: ((sticker: ISticker, quantity?: number) => unknown) | undefined;
 }
 
@@ -22,6 +26,7 @@ export interface ICatalogProps {
  * The admin's sticker library
  */
 export default function Catalog({live, title, desc, onAddSticker}: ICatalogProps): ReactElement {
+    /** All stickers to display */
     const [stickers, _setStickers] = useState<ISticker[]>([
         GetExampleSticker(0),
         GetExampleSticker(1),
@@ -31,6 +36,7 @@ export default function Catalog({live, title, desc, onAddSticker}: ICatalogProps
         GetExampleSticker(5)
     ]);
 
+    /** The collections to display */
     const [collections, _setCollections] = useState<ICollection[]>([
         {id: 0, name: "Collection A", stickers: new Set([0, 1, 2])},
         {id: 1, name: "Collection B", stickers: new Set([3, 4, 5])}

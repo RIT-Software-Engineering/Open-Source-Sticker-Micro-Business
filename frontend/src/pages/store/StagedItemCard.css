@@ -1,0 +1,44 @@
+.staged-item-card-container {
+    border-radius: var(--border-radius);
+    padding: 10px;
+}
+
+.staged-item-card-sticker-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.staged-item-card-image {
+    width: 75px;
+    aspect-ratio: 1;
+    margin-right: 10px;
+}
+
+.staged-item-card-control-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.staged-item-card-quantity {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+}
+
+.staged-item-card-quantity-minus {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.staged-item-card-quantity-input {
+    width: 50px;
+}
+
+.staged-item-card-quantity-add {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
