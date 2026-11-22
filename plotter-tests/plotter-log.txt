@@ -1,0 +1,96 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261121204231
+Configuration Name: 
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File .\plotter-pen-test.ps1 -Port COM3 -Pen 1
+Process ID: 14116
+PSVersion: 5.1.26100.9818
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9818
+BuildVersion: 10.0.26100.9818
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Plotter pen test: port COM3, pen 1 (Rapidoplot fibre fine)
+Log mode: rewrite
+== Setup: turn the plotter on, reset it, and check it answers
+-> <ESC>.(                Plotter on: start listening to this computer
+-> <ESC>.B                Status check: how much room is left in your input memory?
+	<- 1024           input memory is empty (all 1024 bytes free)
+-> IN;                    Reset all drawing settings to their defaults
+-> OI;                    Question: what model are you?
+	<- 7550A          the plotter identified itself
+-> OS;                    Question: what is your drawing status?
+	<- 26             ready for data, initialized, drawing area set
+-> OA;                    Question: where is the pen right now?
+	<- 0,7840,0       pen at 0 mm right, 196 mm up; pen up
+-> OT;                    Question: what type of pen carousel is installed, and which slots hold pens?
+	<- 1,7            carousel type 1; pens in slots: 1, 2, 3
+
+== Step 1 of 9: Slow the pen to 10 cm per second so old pens lay down more ink
+-> VS10;                  Slow the pen to 10 cm per second so old pens lay down more ink
+-> OE;                    Question: did the last command cause an error?
+	<- 0              no error
+-> OA;                    Question: where is the pen right now?
+	<- 0,7840,0       pen at 0 mm right, 196 mm up; pen up
+
+== Step 2 of 9: Press pen 1 down as hard as possible: force level 8 (paper pens default to about 2)
+-> FS8,1;                 Press pen 1 down as hard as possible: force level 8 (paper pens default to about 2)
+-> OE;                    Question: did the last command cause an error?
+	<- 0              no error
+-> OA;                    Question: where is the pen right now?
+	<- 0,7840,0       pen at 0 mm right, 196 mm up; pen up
+
+== Step 3 of 9: Pick up pen 1 (Rapidoplot fibre fine) from the carousel
+-> SP1;                   Pick up pen 1 (Rapidoplot fibre fine) from the carousel
+-> OE;                    Question: did the last command cause an error?
+	<- 0              no error
+-> OA;                    Question: where is the pen right now?
+	<- 0,7840,0       pen at 0 mm right, 196 mm up; pen up
+
+== Step 4 of 9: Lift the pen and move to 2.5 cm right, 2.5 cm up from the corner
+-> PU1000,1000;           Lift the pen and move to 2.5 cm right, 2.5 cm up from the corner
+-> OE;                    Question: did the last command cause an error?
+	<- 0              no error
+-> OA;                    Question: where is the pen right now?
+	<- 1000,1000,0    pen at 25 mm right, 25 mm up; pen up
+
+== Step 5 of 9: Lower the pen and draw a 10 cm line to the right
+-> PD5000,1000;           Lower the pen and draw a 10 cm line to the right
+-> OE;                    Question: did the last command cause an error?
+	<- 0              no error
+-> OA;                    Question: where is the pen right now?
+	<- 5000,1000,1    pen at 125 mm right, 25 mm up; pen down
+
+== Step 6 of 9: Keep the pen down and draw a 10 cm line upward
+-> PD5000,5000;           Keep the pen down and draw a 10 cm line upward
+-> OE;                    Question: did the last command cause an error?
+	<- 0              no error
+-> OA;                    Question: where is the pen right now?
+	<- 5000,5000,1    pen at 125 mm right, 125 mm up; pen down
+
+== Step 7 of 9: Lift the pen off the paper
+-> PU;                    Lift the pen off the paper
+-> OE;                    Question: did the last command cause an error?
+	<- 0              no error
+-> OA;                    Question: where is the pen right now?
+	<- 5000,5000,0    pen at 125 mm right, 125 mm up; pen up
+
+== Step 8 of 9: Put the pen back in the carousel
+-> SP0;                   Put the pen back in the carousel
+-> OE;                    Question: did the last command cause an error?
+	<- 0              no error
+-> OA;                    Question: where is the pen right now?
+	<- 12200,5000,0   pen at 305 mm right, 125 mm up; pen up
+
+== Step 9 of 9: Advance the page: eject the finished sheet
+-> PG;                    Advance the page: eject the finished sheet
+   The finished sheet should now be ejected.
+
+== Done
+**********************
+Windows PowerShell transcript end
+End time: 20261121204246
+**********************
