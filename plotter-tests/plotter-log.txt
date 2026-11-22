@@ -1,10 +1,7 @@
 ﻿**********************
 Windows PowerShell transcript start
 Start time: 20261121204231
-Username: OG15\theos
-RunAs User: OG15\theos
 Configuration Name: 
-Machine: OG15 (Microsoft Windows NT 10.0.26200.0)
 Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File .\plotter-pen-test.ps1 -Port COM3 -Pen 1
 Process ID: 14116
 PSVersion: 5.1.26100.9818
