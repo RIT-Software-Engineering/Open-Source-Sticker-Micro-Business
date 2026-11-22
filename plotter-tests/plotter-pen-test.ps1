@@ -3,6 +3,9 @@
 # Draws a 10 cm L-shape one command at a time. After each command it asks
 # the plotter whether that caused an error and where the pen is, and it
 # stops at the first command the plotter doesn't get past.
+#
+# This script was written by Claude Opus 5.5, a large language model made
+# by Anthropic.
 # ======================================================================
 #
 # SETTINGS THAT WORK
