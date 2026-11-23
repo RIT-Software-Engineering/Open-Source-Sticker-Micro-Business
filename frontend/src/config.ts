@@ -2,10 +2,13 @@ import type { DeepReadonly } from "./modules/Types";
 
 const config = {
     shop: {
-        maxShortDescriptionLength: 100 // The maximum description length that can be shown without truncation on a sticker card
+        maxShortDescriptionLength: 100  // The maximum description length that can be shown without truncation on a sticker card
     },
-    borderRadius                 : 4,  // The application boder radius (border radius is not inherited apparently and you can't apply it to all elements)
-    mobileWidthCutoffPx          : 600 // Screens thinner than this are assumed to be mobile
+    borderRadius                 : 4,   // The application boder radius (border radius is not inherited apparently and you can't apply it to all elements)
+    mobileWidthCutoffPx          : 600, // Screens thinner than this are assumed to be mobile
+    catalog: {
+        maxTagLength             : 20   // The maximum length allowed for tags
+    }
 }
 
 export type IConfig = typeof config;

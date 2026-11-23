@@ -4,7 +4,7 @@ import type { ISticker } from "../../modules/data/Sticker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useColors } from "../../modules/Colors";
-import { trimTrailingZerosRe } from "../../modules/Regex";
+import { trimDecimalRe } from "../../modules/Regex";
 import Button from "../../components/control/Button";
 import useText from "../../modules/Text";
 
@@ -22,7 +22,7 @@ export default function StickerCard({sticker, onAddSticker}: IStickerCardProps):
     const text = useText();
     const colors = useColors();
 
-    const stickerPhysicalSize = `${sticker.physicalWidth.toFixed(2).replace(trimTrailingZerosRe, "")}" x ${sticker.physicalHeight.toFixed(2).replace(trimTrailingZerosRe, "")}"`;
+    const stickerPhysicalSize = `${sticker.physicalWidth.toFixed(2).replace(trimDecimalRe, "")}" x ${sticker.physicalHeight.toFixed(2).replace(trimDecimalRe, "")}"`;
 
     return <div className="sticker-card-container">
         <img src={sticker.designPath} className="sticker-card-image" style={{backgroundColor: colors.neutralPalatte.Lightest()}}/>

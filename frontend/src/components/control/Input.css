@@ -7,6 +7,8 @@
     outline-style: none;
     /*-moz-appearance: textfield; /** Apparently this will hide the spinner on firefox */
     appearance: textfield;
+    border-radius: var(--border-radius);
+    border-width: 2px;
 }
 
 /** Hide the spinner on safari and chrome */

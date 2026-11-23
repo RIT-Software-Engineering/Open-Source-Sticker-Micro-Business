@@ -10,11 +10,61 @@
         "settings"  : "Settings",
         "username"  : "Sign Out, $000000"
     },
+    "generic": {
+        "name": "Name",
+        "cancel": "Cancel",
+        "create": "Create",
+        "validation": {
+            "badLength": "Please enter a value",
+            "badNumber": "Please enter a valid number",
+            "needsPositive": "Please enter a positive number"
+        }
+    },
+    "components": {
+        "filePicker": {
+            "drop": "Drop a file or click to choose",
+            "replace": "Replace file",
+            "remove": "Remove file"
+        }
+    },
+    "measurements": {
+        "systems": {
+            "metric": "metric",
+            "imperial": "imperial"
+        },
+        "units": {
+            "inches": {
+                "full": "inch",
+                "abbr": "in",
+                "plural": "inches"
+            },
+            "centimeters": {
+                "full": "centimeter",
+                "abbr": "cm",
+                "plural": "centimeters"
+            }
+        }
+    },
     "user": {
-        "guest"     : "Guest"
+        "guest": "Guest"
     },
     "home": {
-        "greeting"  : "Hi, $000000"
+        "greeting": "Hi, $000000"
+    },
+    "catalog": {
+        "addSticker": {
+            "title": "Upload a sticker",
+            "file": "SVG File",
+            "fileDesc": "Drop an SVG here or choose a file (up to 10 MB)",
+            "desc": "Description",
+            "size": "Size in $000000",
+            "width": "Width",
+            "height": "Height",
+            "tags": "Tags",
+            "addTag": "Add tag",
+            "tagDesc": "Type a tag and press Enter. Add as many as you like.",
+            "badTagLength": "Tags must be shorter than $000000 characters"
+        }
     },
     "library": {
         "collections": {

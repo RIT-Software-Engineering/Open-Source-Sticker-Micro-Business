@@ -2,12 +2,12 @@ import "./Button.css";
 import { useEffect, useRef, type ButtonHTMLAttributes, type CSSProperties, type MouseEvent, type ReactElement } from "react";
 import type { Callback } from "../../Types";
 import { useRerender } from "../../modules/Utility";
-import type { ISupportsChildren, ISupportsStyle } from "../../modules/Types";
+import type { ISupportsChildren, ISupportsStyle, TypeSplat } from "../../modules/Types";
 import { useControllableColor, type EControlableSize, type IControllableFlags as IControllableFlags, type IControllableState } from "./Controllable";
 import Overlay from "../display/Overlay";
 
 /** Base customized button props */
-type _ICustomButtonProps = {
+type ICustomButtonProps = {
     /** What to do when the button is clicked */
     onClick?    : Callback           | undefined;
     /** The color of the button */
@@ -18,10 +18,10 @@ type _ICustomButtonProps = {
     value?      : IControllableState | undefined;
 } & ISupportsStyle & ISupportsChildren & IControllableFlags;
 
-/** Props for the button component */
-export type IButtonProps = 
-    Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof _ICustomButtonProps> &
-    _ICustomButtonProps;
+export type IButtonProps = TypeSplat<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    ICustomButtonProps
+>;
 
 /** A wrapped button component */
 export default function Button(props: IButtonProps): ReactElement {

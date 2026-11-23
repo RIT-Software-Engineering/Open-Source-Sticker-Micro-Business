@@ -9,6 +9,7 @@
     --primary: #8A8BF1;
     --secondary: #FFCF70;
     --border-radius: 4px;
+    --border-width: 2px;
 }
 
 * {
@@ -21,6 +22,16 @@
 
 .flex-spacer {
     flex: 1;
+}
+
+.hbox {
+    display: flex;
+    flex-direction: row;
+}
+
+.vbox {
+    display: flex;
+    flex-direction: column;
 }
 
 html, body, .root {
@@ -49,10 +60,22 @@ h2 {
 
 h3 {
     font-size: 1.5em;
-    font-weight: "bold";
+    font-weight: bold;
     line-height: 120%;
     margin-top: 0;
     margin-bottom: 0;
+}
+
+h4 {
+    font-size: 1.2em;
+    font-weight: bold;
+    line-height: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.desc {
+    font-size: 0.85em;
 }
 
 .scrollable {
@@ -60,24 +83,7 @@ h3 {
     overflow-y: auto;
 }
 
-/* button {
-    --base-color: var(--primary);
-    --opacity: 0.8;
-    background-color: rgb(from var(--base-color)
-        calc(sqrt(pow(r, 2) / var(--opacity)))
-        calc(sqrt(pow(g, 2) / var(--opacity)))
-        calc(sqrt(pow(b, 2) / var(--opacity)))
-    );
+.h-scrollable {
+    flex: 1;
+    overflow-x: auto;
 }
-
-button:hover {
-    --opacity: 1;
-}
-
-button:active {
-    --opacity: 1.5;
-}
-
-button:disabled {
-
-} */

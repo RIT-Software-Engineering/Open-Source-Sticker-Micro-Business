@@ -1,0 +1,8 @@
+.tag-button {
+    display: flex;
+    flex-direction: row;
+    column-gap: 4px;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 0;
+}

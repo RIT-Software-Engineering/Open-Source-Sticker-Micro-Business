@@ -25,3 +25,7 @@ button {
     border-color: #00000000;
     border-width: 0px;
 }
+
+.generic-button:disabled {
+    cursor: unset;
+}

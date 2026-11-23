@@ -1,0 +1,51 @@
+.generic-file-input-label {
+    display: flex;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    border-width: var(--border-width);
+    border-style: solid;
+    cursor: pointer;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+}
+
+.generic-file-input-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 16px;
+    flex: 1;
+}
+
+.generic-file-input-preview {
+    height: 100px;
+    aspect-ratio: 1;
+    border-style: none;
+}
+
+.generic-file-input-desc {
+    display: flex;
+    flex-direction: column;
+    flex: 1
+}
+
+.generic-file-input-controls {
+    display: flex;
+    flex-direction: row;
+    column-gap: 4px;
+}
+
+.generic-file-input-control {
+    padding: 0px;
+    text-decoration-line: underline;
+}
+
+.generic-file-input-icon {
+    font-size: 1.25em;
+}
+
+.generic-file-input {
+    display: none;
+}

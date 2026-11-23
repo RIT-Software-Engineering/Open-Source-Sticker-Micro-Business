@@ -40,6 +40,17 @@ export function TruncateText(source: string, length: number, ellipsis: string = 
  * Return an "s" if a number is plural, "" otherwise  
  * Note that 1 is the only singular number
  */
-export function GetPlural(source: number): string {
-    return source == 1 ? "" : "s";
+export function GetPlural(source: number, plural: string = "s"): string {
+    return source == 1 ? "" : plural;
+}
+
+/**
+ * Capitalize a string
+ * @param source The string to capitalize
+ * @param [onlyFirst=false] Should only the start of the string be capitalized or after every space
+ */
+export function Capitalize(source: string, onlyFirst: boolean = false): string {
+    if(source.length == 0) return source;
+    if(onlyFirst) return source[0].toUpperCase() + source.slice(1);
+    return source.split(" ").map(chunk => Capitalize(chunk, true)).join(" ");
 }

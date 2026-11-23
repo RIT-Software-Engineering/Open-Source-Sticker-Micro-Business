@@ -108,7 +108,7 @@ function Header({children, showSidebarControls, storeName, onClickSidebar}: IHea
             <div className="flex-spacer"/>
 
             <Button inverted color={colors.neutral} className="navpane-header-user">
-                {TemplateText(text.nav.username, user?.Name ?? text.user.guest)}
+                {TemplateText(text.nav.username, user?.name ?? text.user.guest)}
             </Button>
         </div>
         {children}

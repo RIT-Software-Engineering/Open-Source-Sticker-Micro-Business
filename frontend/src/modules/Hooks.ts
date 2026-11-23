@@ -33,3 +33,29 @@ export function useIsMobile(): boolean {
 
     return state.current;
 }
+
+/**
+ * Calculate the state difference between renders  
+ * Very useful for testing, espsecially with directive rerenders  
+ * Pass in an object and it will return added and removed keys and changed reference values
+ */
+export function useDifference(state: Record<string, unknown>): string[] {
+    const lazy = useRef<Record<string, unknown>>(state);
+
+    const diff = [];
+    for(const key of Object.keys(lazy.current)) {
+        if(!Object.keys(state).includes(key)) {
+            diff.push(key);
+        } else if(state[key] != lazy.current.key) {
+            diff.push(key);
+        }
+    } for(const key of Object.keys(state)) {
+        if(!Object.keys(lazy.current).includes(key)) {
+            diff.push(key);
+        }
+    };
+
+    lazy.current = state;
+
+    return diff;
+}

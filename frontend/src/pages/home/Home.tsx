@@ -13,7 +13,7 @@ export default function Home(): ReactElement {
     const text = useText();
 
     return <div style={{display: "flex", flexDirection: "column", flex: 1, padding: 15}}>
-        <h2 style={{marginBottom: 5}}>{TemplateText(text.home.greeting, user?.Name ?? text.user.guest)}</h2>
+        <h2 style={{marginBottom: 5}}>{TemplateText(text.home.greeting, user?.name ?? text.user.guest)}</h2>
 
         <div style={{display: "flex", flexDirection: "row", flex: 1, marginBottom: 10}}>
             {/* Job updates */}

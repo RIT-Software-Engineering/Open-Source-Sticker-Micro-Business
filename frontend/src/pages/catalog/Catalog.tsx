@@ -1,6 +1,6 @@
 import "./catalog.css";
-import { useState, type ReactElement } from "react";
-import { GetExampleSticker, type ISticker } from "../../modules/data/Sticker";
+import { useCallback, useReducer, useState, type ReactElement } from "react";
+import { GetExampleSticker, type ILocalSticker, type ISticker } from "../../modules/data/Sticker";
 import { useColors } from "../../modules/Colors";
 import Button from "../../components/control/Button";
 import type { ICollection } from "../../modules/data/Collection";
@@ -10,6 +10,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Collection from "./Collection";
 import { useIsMobile } from "../../modules/Hooks";
 import Search from "../../components/control/Search";
+import AddSticker from "./AddSticker";
 
 export interface ICatalogProps {
     /** Is this live (can you not edit) */
@@ -46,6 +47,15 @@ export default function Catalog({live, title, desc, onAddSticker}: ICatalogProps
     const colors = useColors();
     const isMobile = useIsMobile();
 
+    const [addingSticker, setAddingSticker] = useState<boolean>(false);
+    const [addStickerKey, updateAddStickerKey] = useReducer(_ => Math.random(), 0);
+
+    const OnUploadSticker = useCallback((sticker: ILocalSticker) => {
+        updateAddStickerKey();
+        setAddingSticker(false);
+        sticker;
+    }, [updateAddStickerKey, setAddingSticker]);
+
     return <div className="scrollable">
         <div className="catalog-container">
             <div className="catalog-header">
@@ -57,7 +67,7 @@ export default function Catalog({live, title, desc, onAddSticker}: ICatalogProps
                 {!live
                     ? <div className="catalog-control-positioner">
                         <div className="catalog-control-shaper" style={{flexDirection: isMobile ? "column" : "row"}}>
-                            <Button size="medium" color={colors.primary} className="catalog-control">
+                            <Button size="medium" color={colors.primary} className="catalog-control" onClick={() => setAddingSticker(true)}>
                                 <FontAwesomeIcon icon={faPlus} className="catalog-control-add-icon"/>
                                 <div>{text.library.newSticker}</div>
                             </Button>
@@ -88,5 +98,12 @@ export default function Catalog({live, title, desc, onAddSticker}: ICatalogProps
                 />)}
             </div>
         </div>
+
+        <AddSticker
+            key={addStickerKey}
+            open={addingSticker}
+            onCancel={() => {setAddingSticker(false); updateAddStickerKey();}}
+            onSubmit={OnUploadSticker}
+        />
     </div>
 }

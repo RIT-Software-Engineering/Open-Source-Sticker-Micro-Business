@@ -40,7 +40,7 @@ export interface IControllableColor {
  * @param flags Flags for the controllable that affect the color
  * @returns 
  */
-export function useControllableColor(naturalColor: CSSProperties["color"], {active, inside}: IControllableState, {silent, disabled, inverted}: IControllableFlags): IControllableColor {
+export function useControllableColor(naturalColor: CSSProperties["color"], {active, inside}: Partial<IControllableState>, {silent, disabled, inverted}: IControllableFlags): IControllableColor {
     const colors = useColors();
 
     if(silent) {
@@ -67,7 +67,7 @@ export function useControllableColor(naturalColor: CSSProperties["color"], {acti
                     text = colors.TextColor(back);
                 } else if(inside) {
                     back = palatte.Light(naturalColor);
-                    text = naturalColor;
+                    text = palatte.Darker();
                 } else {
                     text = naturalColor;
                 }

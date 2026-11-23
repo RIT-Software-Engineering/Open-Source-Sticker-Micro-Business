@@ -40,3 +40,6 @@ export type ISupportsChildren<T = ReactNode> = {
 export type ISupportsRef<T> = {
     ref?: Ref<T> | undefined;
 }
+
+/** Splat two types without any funny business */
+export type TypeSplat<T, S> = Omit<T, keyof S> & S;

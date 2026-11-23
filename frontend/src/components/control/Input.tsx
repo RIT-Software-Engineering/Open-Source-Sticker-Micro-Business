@@ -1,6 +1,6 @@
 import "./Input.css";
 import { useCallback, useRef, type ChangeEvent, type CSSProperties, type FocusEvent, type InputHTMLAttributes, type KeyboardEvent, type ReactElement } from "react";
-import type { ISupportsRef, ISupportsStyle } from "../../modules/Types";
+import type { ISupportsRef, ISupportsStyle, TypeSplat } from "../../modules/Types";
 import { useColors } from "../../modules/Colors";
 import { useControllableColor, type EControlableSize, type IControllableFlags, type IControllableState } from "./Controllable";
 import { BindRef, useRerender } from "../../modules/Utility";
@@ -9,10 +9,19 @@ import type { StateRef } from "../../Types";
 export type IInputRef = {
     /** Set the value of the input */
     SetValue: StateRef<string>;
+    /** The base ref */
+    root: HTMLInputElement;
+    /** The value of the component */
+    value: string;
+    /** Is there an error in the component */
+    isError: boolean;
 }
 
+/** State out, value in */
+type IValueRequest = (value: string) => string | null | undefined | void;
+
 /** Base customized input props */
-type _ICustomInputProps = {
+type ICustomInputProps = {
     /** The color of the button when it is selected */
     color?        : CSSProperties["color"];
     /** The color of the button when it has incorrect data */
@@ -22,25 +31,30 @@ type _ICustomInputProps = {
     /** The size of the button (default medium) */
     size?         : EControlableSize | undefined;
     /** When the input's value is entered, pass a value to set a new value */
-    onEnter?      : ((value: string) => string | null | undefined | void) | undefined;
+    onEnter?      : IValueRequest | undefined;
     /** Control this component's value */
     value?        : string | undefined;
     /** The default value of the input */
     defaultValue? : string | undefined;
+    /** Allow multiple lines (min 1; more than one => textinput) */
+    lines?        : number | undefined;
+    /** Is the current value valid; sidenote, I'm probably using it wrong, but the default input validation is REALLY weak */
+    validator?    : IValueRequest | IValueRequest[] | undefined;
 } & ISupportsStyle & IControllableFlags & ISupportsRef<IInputRef>;
 
-/** Props for the input component */
-export type IInputProps = 
-    Omit<InputHTMLAttributes<HTMLInputElement>, keyof _ICustomInputProps | "color"> &
-    _ICustomInputProps;
+export type IInputProps = TypeSplat<
+    InputHTMLAttributes<HTMLInputElement>,
+    ICustomInputProps
+>;
 
 export default function Input(props: IInputProps): ReactElement {
-    const {ref, style, defaultValue, value: valueProp, onFocus, onBlur, onEnter, onKeyDown, color, errorColor, inactiveColor, onChange, size, className: classNameProp, inverted, disabled, silent} = props;
+    const {ref, lines, validator, style, defaultValue, value: valueProp, onFocus, onBlur, onEnter, onKeyDown, color, errorColor, inactiveColor, onChange, size, className: classNameProp, inverted, disabled, silent} = props;
     props = {...props};
     delete props.size;
     delete props.onEnter;
     delete props.defaultValue;
     delete props.ref;
+    delete props.validator;
 
     const colors = useColors();
     const rerender = useRerender("Input");
@@ -48,7 +62,7 @@ export default function Input(props: IInputProps): ReactElement {
     /** The controllable state of the component */
     const state = useRef<IControllableState>({active: props.autoFocus ?? false, inside: false});
     /** The error state of the component, true if there is an error */
-    const error = useRef<boolean>(false);
+    const error = useRef<string>("");
     /** The text value of the component */
     const value = useRef<string>(defaultValue ?? "");
     if(valueProp != null && valueProp != value.current) value.current = valueProp;
@@ -77,10 +91,10 @@ export default function Input(props: IInputProps): ReactElement {
     /**
      * Bind the up ref
      */
-    const OnRef = useCallback((value: HTMLInputElement | null) => {
+    const OnRef = useCallback((root: HTMLInputElement | null) => {
         if(value == null) return;
 
-        BindRef(ref, {SetValue});
+        BindRef(ref, {SetValue, root, value: value.current, isError: error.current.length > 0});
     }, [SetValue, ref]);
 
     /**
@@ -100,7 +114,7 @@ export default function Input(props: IInputProps): ReactElement {
     const OnBlur = useCallback((event: FocusEvent<HTMLInputElement, Element>) => {
         SetState({active: false});
 
-        if(onEnter && !error.current) {
+        if(onEnter && error.current.length == 0) {
             let next: string | null | undefined | void = null;
             next = onEnter(value.current);
             if(next != null) {
@@ -117,16 +131,29 @@ export default function Input(props: IInputProps): ReactElement {
      * Updates the internal state of the input
      */
     const OnChange = useCallback((event: ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
-        if(!event.target.validity.valid) {
-            error.current = true;
+        if(validator != null) {
+            if(typeof validator == "function") {
+                error.current = validator(event.target.value) ?? "";
+            } else {
+                for(const check of validator) {
+                    const msg = check(event.target.value) ?? "";
+                    if(msg.length > 0) {
+                        error.current = msg;
+                        break
+                    }
+                }
+            }
+        } else if(!event.target.validity.valid) {
+            error.current = event.target.validationMessage;
         } else if(error.current) {
-            error.current = false;
+            error.current = "";
         }
 
         if(valueProp == null) {
             value.current = event.target.value;
         } rerender("Input changed");
 
+        event.target.setCustomValidity(error.current);
         event.target.reportValidity();
 
         if(onChange) onChange(event);
@@ -137,7 +164,8 @@ export default function Input(props: IInputProps): ReactElement {
      * Just used to blur the input when the enter key is pressed
      */
     const OnKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
-        if(event.key == "Enter") {
+        // Require the shift key to be held if this is multiline
+        if(event.key == "Enter" && ((lines ?? 1) <= 1 || event.shiftKey)) {
             (event.target as HTMLInputElement).blur();
         }
 
@@ -146,7 +174,7 @@ export default function Input(props: IInputProps): ReactElement {
 
     // Determine the color of the input
     let {shade, back} = useControllableColor(color, state.current, {silent, disabled, inverted});
-    if(error.current) back = errorColor ?? colors.error;
+    if(error.current.length > 0) back = errorColor ?? colors.error;
 
     // Determine the class of the input
     let className = (size ?? "medium") + "-generic-input generic-input";
@@ -154,17 +182,22 @@ export default function Input(props: IInputProps): ReactElement {
         className += " " + classNameProp;
     }
 
-    return <input
-        {...props}
-        ref={OnRef}
-        size={undefined}
-        onFocus={OnFocus}
-        onBlur={OnBlur}
-        className={className}
-        onChange={OnChange}
-        onKeyDown={OnKeyDown}
-        value={value.current}
-        type="number"
-        style={{borderColor: back ?? inactiveColor ?? colors.neutralPalatte.Lighter(), backgroundColor: shade, ...(style ?? {})}}
-    />
+    const fullProps = {
+        ...props,
+        ref: OnRef,
+        size: undefined,
+        onFocus: OnFocus,
+        onBlur: OnBlur,
+        className: className,
+        onChange: OnChange,
+        onKeyDown: OnKeyDown,
+        value: value.current,
+        style: {borderColor: back ?? inactiveColor ?? colors.neutralPalatte.Lighter(), backgroundColor: shade, ...(style ?? {})}
+    }
+
+    if((lines ?? 1) <= 1) {
+        return <input {...fullProps as any}/>
+    } else {
+        return <textarea {...fullProps as any} rows={lines}/>
+    }
 }

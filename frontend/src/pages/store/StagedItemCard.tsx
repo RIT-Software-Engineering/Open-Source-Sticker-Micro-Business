@@ -69,6 +69,7 @@ export default function StagedItemCard({item, onRemoveItem, onUpdateItemQuantity
                     onEnter={(value: string) => OnUpdateItemQuantity(Number.parseInt(value))}
                     defaultValue={item.quantity.toString()}
                     ref={inputRef}
+                    type="number"
                 />
 
                 <Button className="staged-item-card-quantity-add"   color={colors.primary} size="tiny" onClick={() => OnUpdateItemQuantity(item.quantity + 1)}>

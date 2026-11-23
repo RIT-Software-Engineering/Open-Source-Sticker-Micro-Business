@@ -1,0 +1,38 @@
+.add-sticker-container {
+    border-radius: var(--border-radius);
+    display: flex; 
+    flex-direction: column;
+    row-gap: 16px;
+}
+
+.add-sticker-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.add-sticker-close {
+    font-size: 1.25em;
+}
+
+.add-sticker-input {
+    padding: 8px;
+}
+
+.add-sticker-sizing-header {
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.add-sticker-sizing-row {
+    align-items: center;
+    column-gap: 8px;
+}
+
+.add-sticker-sizing-item {
+    flex: 1;
+}
+
+.add-sticker-footer {
+    column-gap: 16px;
+}

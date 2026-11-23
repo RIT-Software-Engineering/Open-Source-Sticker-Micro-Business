@@ -36,6 +36,7 @@
 
 .staged-item-card-quantity-input {
     width: 50px;
+    border-radius: 0;
 }
 
 .staged-item-card-quantity-add {

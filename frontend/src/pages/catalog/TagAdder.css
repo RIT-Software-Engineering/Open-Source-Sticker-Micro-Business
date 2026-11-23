@@ -1,0 +1,17 @@
+.tag-adder-container {
+    row-gap: 8px;
+}
+
+.tag-adder-body {
+    column-gap: 8px;
+}
+
+.tag-adder-control-wrapper {
+    padding: 4px 0;
+    column-gap: 4px;
+}
+
+.tag-adder-input {
+    width: 100px;
+    padding: 4px;
+}

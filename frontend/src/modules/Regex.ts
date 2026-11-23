@@ -3,4 +3,4 @@
  * 
  * Ie. 12.000 -> 12 or 12.3400 -> 12.34
  */
-export const trimTrailingZerosRe = /\.?0*$/;
+export const trimDecimalRe = /\.?0*$/;
