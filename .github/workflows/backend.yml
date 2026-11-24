@@ -6,10 +6,12 @@ on:
       - main
     paths:
       - 'sticker-business/**'
+      - 'backend/init_tables.sql'
       - '.github/workflows/backend.yml'
   pull_request:
     paths:
       - 'sticker-business/**'
+      - 'backend/init_tables.sql'
       - '.github/workflows/backend.yml'
 
 permissions:
@@ -40,6 +42,8 @@ jobs:
     services:
       mysql:
         image: mysql:8.4
+        ports:
+          - 3306:3306
         env:
           MYSQL_ROOT_PASSWORD: ci-root-password
           MYSQL_DATABASE: sticker_business
@@ -50,5 +54,15 @@ jobs:
           --health-retries=10
           --health-start-period=30s
     steps:
-      - name: Confirm MySQL is healthy
-        run: echo "MySQL 8.4 is ready."
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install MySQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y mysql-client
+
+      - name: Run database schema
+        env:
+          MYSQL_PWD: ci-root-password
+        run: mysql --host=127.0.0.1 --user=root --database=sticker_business --batch --show-warnings < backend/init_tables.sql
